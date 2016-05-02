@@ -1,0 +1,10 @@
+file "db/optics_change.template" {
+  pattern {
+        ASYNPORT,       SCAN,           Sys,            Dev,    XDev,   PDev, AXIS_NO,DCPL_VAR, DCPL_PROG, EGU, PREC, NAME1,NAME2,NAME3,NAME4,NAME5,NAME6,NAME7,NAME8,NAME9,NAME10,
+    GDev1, GDev2, GDev3, GDev4, GDev5, GDev6, GDev7, GDev8, GDev9, GDev10}
+    {   "P0",        "1 second",     "XF:23ID2-OP",  "{Mono-Grt}", "{Mono-Ax:GrtX}","{Mono-Ax:GrtP}","4","P461", "14", "mm", "1",
+        "Grating 1","Grating 2","Grating 3","Grating 4","Grating 5","Grating 6","Grating 7","Grating 8","Grating 9","Grating 10",
+        "{Mono-Grt:01}", "{Mono-Grt:02}", "{Mono-Grt:03}", "{Mono-Grt:04}", "{Mono-Grt:05}", "{Mono-Grt:06}", 
+        "{Mono-Grt:07}", "{Mono-Grt:08}", "{Mono-Grt:09}", "{Mono-Grt:10}"
+    }
+}

@@ -1,0 +1,18 @@
+file db/selector.template
+{
+  pattern { Sys , Dev , LNK1, LNK2 , TPRO }
+  { "XF:23ID2-OP" , "{Mono-Corr:Sel}" , 
+    "XF:23ID2-OP{Mono-Corr}ASub_" , "XF:23ID2-OP{Mono-Corr}ASub_" , "0" }
+}
+
+file db/tables.template
+{
+  pattern { Sys , Dev , N , SDev, InLnk , IEGU , 
+            OutLnk , OutLnkRB, OEGU , TPRO }
+  { "XF:23ID2-OP" , "{Mono-Corr}", "1000000" , "{Mono-Corr:Sel}",
+    "XF:23ID2-OP{Mono}Enrgy-I CP MS" , "eV",
+    "XF:23IDA-OP:1{Mir:1-Ax:FPit}Mtr_POS_SP CA", 
+    "XF:23IDA-OP:1{Mir:1-Ax:FPit}Mtr_MON CP",
+    "urad" , "0"}
+}
+

@@ -1,0 +1,37 @@
+# This file contains the stream device protocols for the 
+# PI PZT-SERVO CONTROLLER PZ116E
+# 
+#
+# Modification History
+#   V0.5    2011-08-19  jmalovrh (Cosylab)
+# Written based on User manual (rel 1.3.0)
+#
+
+InTerminator = LF;
+OutTerminator = LF;
+replytimeout = 1000;
+readtimeout  = 1000;
+locktimeout = 60000;
+
+# A number of samples used for calculating averages. Larger numbers mean more stable output, but slower measurement speed
+# Can be set to 1, 2, 4, 8, 16, 32, 64
+getAverage { out "AVG?"; in "%d"; }
+setAverage { out "AVG %d"; }
+
+# Get Error code
+error { out "ERR?"; in "%d"; }
+
+#Open/Closed loop comands (Servo- control Mode) 1= closed loop; 0 = open loop
+getLoop { out "SVO? \$1"; in "%d"; }
+setLoop { out "SVO \$1 %d"; }
+
+#Voltage 100 command
+setVolt { out "SVA \$1 %f"; }
+
+#Read real Position in um
+getPos { out "POS? \$1"; in "%f"; }
+
+#Move Axis Absolute in um
+Move { out "MOV \$1 %f"; }
+getMove { out "MOV? \$1"; in "%f"; }
+

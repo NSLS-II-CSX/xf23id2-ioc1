@@ -1,0 +1,239 @@
+# Database for retrieve status information of 8 PMAC motors [V0.3, 16.05.2011]
+#
+# Macro explanations
+# ASYNPORT - communications port
+# SCAN - scan period
+# TMOT - communications timeout
+# P - prefix of the pv name
+# R - main part of the pv name
+
+record(stringout, "$(Sys)$(Dev)_8MTR_STS_IEOS_") {
+  field(DESC, "End of string delimiter")
+  field(VAL, "\006")
+  field(OUT, "$(Sys)$(Dev)_8MTR_STS_CMD_.IEOS")
+  field(PINI, "YES")
+}
+
+record(asyn, "$(Sys)$(Dev)_8MTR_STS_CMD_") {
+  field(DESC, "Send universal data to pmac")
+  field(DTYP, "asynRecordDevice")
+  field(SCAN, "$(SCAN)")
+  field(PORT, "$(ASYNPORT)")
+  field(ADDR, "-1")
+  field(OMAX, "400")
+  field(IMAX, "400")
+  field(TMOD, "Write/Read")
+  field(IFMT, "Hybrid")
+  field(TMOT, "$(TMOT)")
+  field(NRRD, "400")
+  field(AOUT, "\002 ")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR1_STSW_") {
+  field(DESC, "Extracted status for motor 1")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "0")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR1_STSW1_") {
+  field(DESC, "Motor 1, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR1_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR1_STSW2_") {
+  field(DESC, "motor 1, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR1_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR2_STSW_") {
+  field(DESC, "Extracted status for motor 2")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "13")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR2_STSW1_") {
+  field(DESC, "motor 2, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR2_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR2_STSW2_") {
+  field(DESC, "motor 2, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR2_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR3_STSW_") {
+  field(DESC, "Extracted status for motor 3")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "26")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR3_STSW1_") {
+  field(DESC, "motor 3, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR3_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR3_STSW2_") {
+  field(DESC, "motor 3, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR3_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR4_STSW_") {
+  field(DESC, "Extracted status for motor 4")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "39")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR4_STSW1_") {
+  field(DESC, "motor 4, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR4_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR4_STSW2_") {
+  field(DESC, "motor 4, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR4_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR5_STSW_") {
+  field(DESC, "Extracted status for motor 5")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "52")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR5_STSW1_") {
+  field(DESC, "motor 5, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR5_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR5_STSW2_") {
+  field(DESC, "motor 5, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR5_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR6_STSW_") {
+  field(DESC, "Extracted status for motor 6")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "65")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR6_STSW1_") {
+  field(DESC, "motor 6, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR6_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR6_STSW2_") {
+  field(DESC, "motor 6, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR6_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR7_STSW_") {
+  field(DESC, "Extracted status for motor 7")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "78")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR7_STSW1_") {
+  field(DESC, "motor 7, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR7_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR7_STSW2_") {
+  field(DESC, "motor 7, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR7_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(subArray, "$(Sys)$(Dev)_MTR8_STSW_") {
+  field(DESC, "Extracted status for motor 8")
+  field(DTYP, "Soft Channel")
+  field(INP, "$(Sys)$(Dev)_8MTR_STS_CMD_.BINP CP MS")
+  field(NELM, "12")
+  field(MALM, "104")
+  field(INDX, "91")
+  field(FTVL, "CHAR")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR8_STSW1_") {
+  field(DESC, "motor 8, 1st status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR8_STSW_ CP MS")
+  field(CALC, "($S(AA[0,5],'%xxxxxx'))")
+  field(PREC, "0")
+}
+
+record(scalcout, "$(Sys)$(Dev)_MTR8_STSW2_") {
+  field(DESC, "motor 8, 2nd status word")
+  field(SCAN, "Passive")
+  field(INAA, "$(Sys)$(Dev)_MTR8_STSW_ CP MS")
+  field(CALC, "($S(AA[6,11],'%xxxxxx'))")
+  field(PREC, "0")
+}
+

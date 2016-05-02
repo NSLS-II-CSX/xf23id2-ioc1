@@ -1,0 +1,148 @@
+record(ao, "$(P)$(R)$(PI)_TWV_SP") {
+  field(DESC, "Tweak step")
+  field(VAL, "1")
+  field(PREC, "$(PREC)")
+  field(SEVR, "NO_ALARM")
+  field(STAT, "NO_ALARM")
+  info(autosaveFields, "VAL")
+}
+
+record(calcout, "$(P)$(R)$(PI)_TWP_CMD") {
+  field(DESC, "Tweak Positive")
+  field(CALC, "A+B")
+  field(INPA, "$(P)$(R)$(PI)_POS_SP.VAL NPP MS")
+  field(INPB, "$(P)$(R)$(PI)_TWV_SP NPP MS")
+  field(OUT, "$(P)$(R)$(PI)_POS_SP.VAL PP")
+}
+
+record(calcout, "$(P)$(R)$(PI)_TWN_CMD") {
+  field(DESC, "Tweak Negative")
+  field(CALC, "A-B")
+  field(INPA, "$(P)$(R)$(PI)_POS_SP.VAL NPP MS")
+  field(INPB, "$(P)$(R)$(PI)_TWV_SP NPP MS")
+  field(OUT, "$(P)$(R)$(PI)_POS_SP.VAL PP")
+}
+
+record(ao, "$(P)$(R)$(PI)_CMD") {
+  field(DESC, "Write pos. command")
+  field(PREC, "$(PREC)")
+  field(DTYP, "stream")
+  field(OUT, "@devPI_E625Stream.proto Move($(CH)) $(PORT) 0")
+  field(EGU, "$(BaseUnit)")
+  field(SEVR, "NO_ALARM")
+  field(STAT, "NO_ALARM")
+}
+
+record(ao, "$(P)$(R)$(PI)_POS_SP") {
+  field(DESC, "Piezo motor position")
+  field(DRVL, "$(PI_DRVL)")
+  field(DRVH, "$(PI_DRVH)")
+  field(UDF, "0")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(EGU)")
+  field(FLNK, "$(P)$(R)$(PI)")
+  field(SEVR, "NO_ALARM")
+  field(STAT, "NO_ALARM")
+}
+
+record(calcout, "$(P)$(R)CHK_DRVH") {
+  field(DESC, "Check DRVH")
+  field(CALC, "A<=B")
+  field(INPA, "$(P)$(R)$(PI)_POS_SP.DRVL")
+  field(INPB, "$(P)$(R)$(PI)_POS_SP.DRVH CP")
+  field(OUT, "$(P)$(R)$(PI)_POS_SP.DRVH")
+  field(OOPT, "When Zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "A")
+}
+
+record(calcout, "$(P)$(R)CHK_DRVL") {
+  field(DESC, "CHeck DRVL")
+  field(CALC, "A<=B")
+  field(INPA, "$(P)$(R)$(PI)_POS_SP.DRVL CP")
+  field(INPB, "$(P)$(R)$(PI)_POS_SP.DRVH")
+  field(OUT, "$(P)$(R)$(PI)_POS_SP.DRVL")
+  field(OOPT, "When Zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "B")
+}
+
+record(calcout, "$(P)$(R)$(PI)") {
+  field(DESC, "PI setpoint")
+  field(CALC, "(A-B)*C")
+  field(INPA, "$(P)$(R)$(PI)_POS_SP")
+  field(INPB, "$(PI_DRVL)")
+  field(INPC, "$(PI_CONV)")
+  field(OUT, "$(P)$(R)$(PI)_CMD PP MS")
+  field(EGU, "$(EGU)")
+}
+
+record(ai, "$(P)$(R)$(PI)_RB_CMD") {
+  field(DESC, "Piezo motor position")
+  field(DTYP, "stream")
+  field(INP, "@devPI_E625Stream.proto getPos($(CH)) $(PORT) 0")
+  field(PREC, "$(PREC)")
+  field(EGU, "$(BaseUnit)")
+}
+
+record(calc, "$(P)$(R)$(PI)_MON") {
+  field(DESC, "PI readback")
+  field(CALC, "A/C+B")
+  field(INPA, "$(P)$(R)$(PI)_RB_CMD PP MS")
+  field(INPB, "$(PI_DRVL)")
+  field(INPC, "$(PI_CONV)")
+  field(SCAN, "$(SCAN)")
+  field(EGU, "$(EGU)")
+  field(PREC, "$(PREC)")
+}
+
+record(bi, "$(P)$(R)$(PI)_LOOP_MON") {
+  field(DESC, "Open/Closed loop")
+  field(DTYP, "stream")
+  field(INP, "@devPI_E625Stream.proto getLoop($(CH)) $(PORT) 0")
+  field(SCAN, "$(SCAN)")
+  field(ZNAM, "Open loop")
+  field(ONAM, "Closed loop")
+}
+
+record(bo, "$(P)$(R)$(PI)_LOOP_SP") {
+  field(DESC, "Open/Closed loop")
+  field(DTYP, "stream")
+  field(STAT, "NO_ALARM")
+  field(SEVR, "NO_ALARM")
+  field(VAL, "0")
+  field(OUT, "@devPI_E625Stream.proto setLoop($(CH)) $(PORT) 0")
+  field(ZNAM, "Open loop")
+  field(ONAM, "Closed loop")
+  info(autosaveFields, "VAL")
+}
+
+record(mbbi, "$(P)$(R)$(PI)_ERR_STS") {
+  field(DESC, "Error code")
+  field(DTYP, "Raw Soft Channel")
+  field(INP, "$(P)$(R)$(PI)_ERR_CODE_MON.VAL PP MS")
+  field(ZRVL, "0")
+  field(ONVL, "1")
+  field(TWVL, "2")
+  field(THVL, "3")
+  field(FRVL, "5")
+  field(FVVL, "10")
+  field(SXVL, "17")
+  field(SVVL, "89")
+  field(ZRST, "No error")
+  field(ONST, "Parameter error")
+  field(TWST, "Unknown command")
+  field(THST, "CMD length too long")
+  field(FRST, "Unallowable move")
+  field(FVST, "Controller was stopped")
+  field(SXST, "Parameter out of range")
+  field(SVST, "Command not allowed")
+  field(SCAN, "$(SCAN)")
+}
+
+record(longin, "$(P)$(R)$(PI)_ERR_CODE_MON") {
+  field(DESC, "Error status")
+  field(DTYP, "stream")
+  field(INP, "@devPI_E625Stream.proto error $(PORT) 0")
+}
+

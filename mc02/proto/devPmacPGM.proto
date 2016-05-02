@@ -1,0 +1,112 @@
+# send CTRL+K to kill motors
+sendKillMotors {
+  out "\x0B",LF;
+  in "";
+}
+
+sendAbortCommand {
+  out "&1A",LF;
+  in "";
+}
+
+# write function eg "P111=1500<LF>"
+sendSetpoint {
+	out "\$1=%.18f",LF;
+	in "";
+} #/sendSetpoint
+
+# read setpoint
+readSetpoint {
+	out "\$1",LF;
+	in "%f",CR;
+} #/readSetpoint
+
+readSetpointInt {
+  out "\$1",LF;
+  in "%d",CR;
+}
+
+sendStartFlyScan {
+  out "&1B1R",LF;
+  in "";
+}
+
+sendSPInt {
+	out "\$1=%d",LF;
+	in "";
+} #/sendSetpointInt
+
+
+#general send command function
+sendCommand {
+	out "%s",LF;
+	in "";
+} #/sendCommand
+
+
+#send command with error string readback
+sendCommandReadError {
+	@mismatch{in BEL"%s",LF;}
+	out "%s",LF;
+	in "";
+} #/sendCommandReadError
+
+
+#readback of a couple of uservariables
+readFlyScanStatus {
+	#@init { getFrequency; }
+	OUT "P182 P183 P184 P111 P112 P113 P119 P120 P121 M5180 M5182 P180",LF;
+	#OUT "\$1 \$2 \$3 \$4 \$5 \$6 \$7 \$8 ",LF;
+	in 	"%(A)f",CR,
+		"%(B)f",CR,
+		"%(C)f",CR,
+		"%(D)f",CR,
+		"%(E)f",CR,
+		"%(F)f",CR,
+		"%(G)d",CR,
+		"%(H)f",CR,
+		"%(I)f",CR,
+		"%(J)d",CR,
+		"%(K)d",CR,
+		"%(L)f",CR; # write the answer expected as decimal back to the record which has called this function and use field A of it.
+#	ExtraInput = Ignore;
+} #/readFlyScanStatus 
+
+#readback of a couple of uservariables
+readPGMStatus {
+	
+	@mismatch{in "",CR,ACK;}
+	
+	OUT "P127 P140 P141 P142 P143 P193 P194 P195 P133 P146 P133 P133",LF;
+	in 	"%(A)f",CR,
+		"%(B)f",CR,
+		"%(C)f",CR,
+		"%(D)f",CR,
+		"%(E)f",CR,
+		"%(F)f",CR,
+		"%(G)f",CR,
+		"%(H)f",CR,
+		"%(I)f",CR,
+		"%(J)f",CR,
+		"%(K)f",CR,
+		"%(L)f",CR;
+#	ExtraInput = Ignore;
+} #/readPGMStatus 
+
+#readback of a couple of uservariables
+readPGMInterlockStatus {
+	OUT "M11 M13 M14 M15 M39 I51 M320 M420 M115 M215 M315 M415",LF;
+	in 	"%(A)f",CR,
+		"%(B)f",CR,
+		"%(C)f",CR,
+		"%(D)f",CR,
+		"%(E)f",CR,
+		"%(F)f",CR,
+		"%(G)f",CR,
+		"%(H)f",CR,
+		"%(I)f",CR,
+		"%(J)f",CR,
+		"%(K)f",CR,
+		"%(L)f",CR;
+#	ExtraInput = Ignore;
+} #/readPGMStatus 

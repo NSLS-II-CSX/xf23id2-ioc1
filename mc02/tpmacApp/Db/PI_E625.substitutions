@@ -1,0 +1,20 @@
+file db/PI_E625.template {
+pattern { 	P, 		R, 		CH,	PI, 		PORT,	NAME,		PREC,	EGU,	BaseUnit,	PI_CONV,	SCAN,		PI_DRVL,	PI_DRVH}
+	{ 	"XF:23IDA-OP:1","{Mir:1-Ax:",	"A",	"FPit}Mtr",	"PI",	"Fine Pitch",	"1",	"urad",	"um",		"0.082793",		".1 second",	"0",		"833.472"}
+}
+
+## Macro explanations
+# P - Prefix of the pv name
+# R - Main part of the pv name (axis specific)
+# CH - The corresponding axis on Piezo controller
+# PI - Motor name
+# PORT - Device port
+# PREC - Precision
+# EGU - Units
+# PI_CONV - Conversion fact [urad/EGU]
+# SCAN - Scan interval
+# PI_DRVL - Motor low limit
+# PI_DRVH - Motor high limit
+
+# Sample Naming - XF:23IDA-OP:1{Mir:1-Ax:1}Mtr
+#EOF

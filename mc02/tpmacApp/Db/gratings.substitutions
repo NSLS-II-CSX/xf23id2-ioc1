@@ -1,0 +1,14 @@
+file "db/gratings.template" {
+  pattern { Sys, Dev }
+  { "XF:23ID2-OP", "{Mono-Grt:01}" }
+  { "XF:23ID2-OP", "{Mono-Grt:02}" }
+  { "XF:23ID2-OP", "{Mono-Grt:03}" }
+  { "XF:23ID2-OP", "{Mono-Grt:04}" }
+  { "XF:23ID2-OP", "{Mono-Grt:05}" }
+  { "XF:23ID2-OP", "{Mono-Grt:06}" }
+  { "XF:23ID2-OP", "{Mono-Grt:07}" }
+  { "XF:23ID2-OP", "{Mono-Grt:08}" }
+  { "XF:23ID2-OP", "{Mono-Grt:09}" }
+  { "XF:23ID2-OP", "{Mono-Grt:10}" }
+}
+

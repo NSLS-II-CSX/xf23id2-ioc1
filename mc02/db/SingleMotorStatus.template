@@ -1,0 +1,364 @@
+# Database for status of a single PMAC motor [V0.7, 05.09.2011]
+#
+# Macro explanations
+# P - prefix of the pv name
+# R - main part of the pv name
+# AXIS - name of the motor axis
+# PMAC_MTR - motor on PMAC
+
+record(transform, "$(Sys)$(Dev)_STSW1A_") {
+  field(DESC, "status word1 bits 12-23")
+  field(SCAN, "Passive")
+  field(INPA, "$(MSys)$(MDev)_MTR$(PMAC_MTR)_STSW1_.VAL CP MS")
+  field(CLCB, "(A>>23)&1")
+  field(CLCC, "(A>>22)&1")
+  field(CLCD, "(A>>21)&1")
+  field(CLCE, "(A>>20)&1")
+  field(CLCF, "(A>>19)&1")
+  field(CLCG, "(A>>18)&1")
+  field(CLCH, "(A>>17)&1")
+  field(CLCI, "(A>>16)&1")
+  field(CLCJ, "(A>>15)&1")
+  field(CLCK, "(A>>14)&1")
+  field(CLCL, "(A>>13)&1")
+  field(CLCM, "(A>>12)&1")
+  field(OUTB, "$(Sys)$(Dev)_MTACT_STS_.VAL PP NMS")
+  field(OUTC, "$(Sys)$(Dev)_MLIM_STS_.VAL PP NMS")
+  field(OUTD, "$(Sys)$(Dev)_PLIM_STS_.VAL PP NMS")
+  field(OUTF, "$(Sys)$(Dev)_AMPEN_STS_.VAL PP NMS")
+  field(OUTG, "$(Sys)$(Dev)_LOOPM_STS_.VAL PP NMS")
+  field(OUTH, "$(Sys)$(Dev)_TIACT_STS_.VAL PP NMS")
+  field(OUTI, "$(Sys)$(Dev)_INTMO_STS_.VAL PP NMS")
+  field(OUTJ, "$(Sys)$(Dev)_DWPRO_STS_.VAL PP NMS")
+  field(OUTK, "$(Sys)$(Dev)_DAERR_STS_.VAL PP NMS")
+  field(OUTL, "$(Sys)$(Dev)_DVZER_STS_.VAL PP NMS")
+  field(OUTM, "$(Sys)$(Dev)_ABDEC_STS_.VAL PP NMS")
+  field(PREC, "0")
+}
+
+record(transform, "$(Sys)$(Dev)_STSW1B_") {
+  field(DESC, "status word1 bits 0-11")
+  field(SCAN, "Passive")
+  field(INPA, "$(MSys)$(MDev)_MTR$(PMAC_MTR)_STSW1_.VAL CP MS")
+  field(CLCB, "(A>>11)&1")
+  field(CLCC, "(A>>10)&1")
+  field(CLCD, "(A>>9)&1")
+  field(CLCE, "(A>>8)&1")
+  field(CLCF, "(A>>7)&1")
+  field(CLCG, "(A>>6)&1")
+  field(CLCH, "(A>>5)&1")
+  field(CLCI, "(A>>4)&1")
+  field(CLCJ, "(A>>3)&1")
+  field(CLCK, "(A>>2)&1")
+  field(CLCL, "(A>>1)&1")
+  field(CLCM, "(A>>0)&1")
+  field(OUTB, "$(Sys)$(Dev)_BLREQ_STS_.VAL PP NMS")
+  field(OUTC, "$(Sys)$(Dev)_HSRCH_STS_.VAL PP NMS")
+  field(OUTD, "$(Sys)$(Dev)_UWPEN_STS_.VAL PP NMS")
+  field(OUTE, "$(Sys)$(Dev)_UWSEN_STS_.VAL PP NMS")
+  field(OUTF, "$(Sys)$(Dev)_ASODE_STS_.VAL PP NMS")
+  field(OUTG, "$(Sys)$(Dev)_PHMTR_STS_.VAL PP NMS")
+  field(OUTH, "$(Sys)$(Dev)_FOFFM_STS_.VAL PP NMS")
+  field(OUTI, "$(Sys)$(Dev)_FOLLE_STS_.VAL PP NMS")
+  field(OUTJ, "$(Sys)$(Dev)_ERRTG_STS_.VAL PP NMS")
+  field(OUTK, "$(Sys)$(Dev)_SWPOC_STS_.VAL PP NMS")
+  field(OUTL, "$(Sys)$(Dev)_ACOMO_STS_.VAL PP NMS")
+  field(OUTM, "$(Sys)$(Dev)_MAXRS_STS_.VAL PP NMS")
+  field(PREC, "0")
+}
+
+record(transform, "$(Sys)$(Dev)_STSW2B_") {
+  field(DESC, "status word2 bits")
+  field(SCAN, "Passive")
+  field(INPA, "$(MSys)$(MDev)_MTR$(PMAC_MTR)_STSW2_.VAL CP MS")
+  field(CLCB, "(A>>11)&1")
+  field(CLCC, "(A>>10)&1")
+  field(CLCD, "(A>>9)&1")
+  field(CLCE, "(A>>8)&1")
+  field(CLCF, "(A>>15)&1")
+  field(CLCG, "(A>>13)&1")
+  field(CLCH, "(A>>5)&1")
+  field(CLCI, "(A>>12)&1")
+  field(CLCJ, "(A>>3)&1")
+  field(CLCK, "(A>>2)&1")
+  field(CLCL, "(A>>1)&1")
+  field(CLCM, "(A>>0)&1")
+  field(CLCN, "(A>>7)&1")
+  field(CLCO, "(A>>6)&1")
+  field(OUTB, "$(Sys)$(Dev)_SOPL_STS_.VAL PP NMS")
+  field(OUTC, "$(Sys)$(Dev)_HOCPL_STS_.VAL PP NMS")
+  field(OUTD, "$(Sys)$(Dev)_PHSRA_STS_.VAL PP NMS")
+  field(OUTE, "$(Sys)$(Dev)_PREFE_STS_.VAL PP NMS")
+  field(OUTF, "$(Sys)$(Dev)_ASSCS_STS_.VAL PP NMS")
+  field(OUTG, "$(Sys)$(Dev)_FRPOS_STS_.VAL PP NMS")
+  field(OUTH, "$(Sys)$(Dev)_AMFAE_STS_.VAL PP NMS")
+  field(OUTI, "$(Sys)$(Dev)_SODPL_STS_.VAL PP NMS")
+  field(OUTJ, "$(Sys)$(Dev)_AMFE_STS_.VAL PP NMS")
+  field(OUTK, "$(Sys)$(Dev)_FAFOE_STS_.VAL PP NMS")
+  field(OUTL, "$(Sys)$(Dev)_WFOER_STS_.VAL PP NMS")
+  field(OUTM, "$(Sys)$(Dev)_INPOS_STS_.VAL PP NMS")
+  field(OUTN, "$(Sys)$(Dev)_TRMOV_STS_.VAL PP NMS")
+  field(OUTO, "$(Sys)$(Dev)_IFFE_STS_.VAL PP NMS")
+  field(PREC, "0")
+}
+
+record(bi, "$(Sys)$(Dev)_MTACT_STS_") {
+  field(DESC, "Motor Activated")
+  field(ZNAM, "Deactivated")
+  field(ONAM, "Activated")
+  field(ZSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_MLIM_STS_") {
+  field(DESC, "Negative End Limit Set")
+  field(ZNAM, "OK")
+  field(ONAM, "Tripped")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+  field(VAL, "0")
+}
+
+record(bi, "$(Sys)$(Dev)_PLIM_STS_") {
+  field(DESC, "Positive End Limit Set")
+  field(ZNAM, "OK")
+  field(ONAM, "Tripped")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_AMPEN_STS_") {
+  field(DESC, "Amplifier Enabled")
+  field(ZNAM, "Disabled")
+  field(ONAM, "Enabled")
+  field(ZSV, "MINOR")
+  field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(Sys)$(Dev)_LOOPM_STS_") {
+  field(DESC, "Open/Closed Loop Mode")
+  field(ZNAM, "Closed Loop")
+  field(ONAM, "Open Loop")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_TIACT_STS_") {
+  field(DESC, "Move Timer Active")
+  field(ZNAM, "Stopped")
+  field(ONAM, "Running A Program")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_INTMO_STS_") {
+  field(DESC, "Integration Mode")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+}
+
+record(bi, "$(Sys)$(Dev)_DWPRO_STS_") {
+  field(DESC, "Dwell In Progress")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+}
+
+record(bi, "$(Sys)$(Dev)_DAERR_STS_") {
+  field(DESC, "Data Block Error")
+  field(ZNAM, "OK")
+  field(ONAM, "Error")
+}
+
+record(bi, "$(Sys)$(Dev)_DVZER_STS_") {
+  field(DESC, "Desired Velocity Zero")
+  field(ZNAM, "Non Zero")
+  field(ONAM, "Zero")
+  field(ZSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_ABDEC_STS_") {
+  field(DESC, "Abort Deceleration")
+  field(OSV, "MINOR")
+  field(ZNAM, "Not Decelerating")
+  field(ONAM, "Decelerating")
+}
+
+record(bi, "$(Sys)$(Dev)_UWPEN_STS_") {
+  field(DESC, "User Written Phase Enable")
+  field(ZNAM, "Normal Phase Active")
+  field(ONAM, "User Phase Active")
+}
+
+record(bi, "$(Sys)$(Dev)_UWSEN_STS_") {
+  field(DESC, "User Written Servo Enable")
+  field(ZNAM, "Normal Servo")
+  field(ONAM, "User Servo ")
+}
+
+record(bi, "$(Sys)$(Dev)_ERRTG_STS_") {
+  field(DESC, "Error Trigger")
+  field(OSV, "MAJOR")
+  field(ZNAM, "OK")
+  field(ONAM, "Error")
+}
+
+record(bi, "$(Sys)$(Dev)_SWPOC_STS_") {
+  field(DESC, "Software Position Capture")
+  field(ZNAM, "Hardware Capture")
+  field(ONAM, "Software Capture")
+}
+
+record(bi, "$(Sys)$(Dev)_ASSCS_STS_") {
+  field(DESC, "Assigned to C.S.")
+  field(ZNAM, "Not Assigned ")
+  field(ONAM, "Assigned ")
+}
+
+record(bi, "$(Sys)$(Dev)_FRPOS_STS_") {
+  field(DESC, "Foreground In Position")
+  field(ZNAM, "Foreground Enabled")
+  field(ONAM, "Foreground Disabled")
+}
+
+record(bi, "$(Sys)$(Dev)_HSRCH_STS_") {
+  field(DESC, "Home Search In Progress")
+  field(ZNAM, "Not Homing")
+  field(ONAM, "Homing Active")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_SODPL_STS_") {
+  field(DESC, "Stopped On Software Limit")
+  field(ZNAM, "No Limit Stop")
+  field(ONAM, "Stopped On Limit")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_SOPL_STS_") {
+  field(DESC, "Stopped On Hardware Limit")
+  field(ZNAM, "No Limit Stop")
+  field(ONAM, "Stopped On Limit")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_HOCPL_STS_") {
+  field(DESC, "Home Complete")
+  field(ZNAM, "Not Homed")
+  field(ONAM, "Homed")
+  field(ZSV, "MAJOR")
+  field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(Sys)$(Dev)_PHSRA_STS_") {
+  field(DESC, "Phasing Search/Read Active")
+  field(ZNAM, "Phasing Inactive")
+  field(ONAM, "Phasing Active")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_PREFE_STS_") {
+  field(DESC, "Phasing Reference Error")
+  field(ZNAM, "No Phase Error")
+  field(ONAM, "Phase Search Error")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_TRMOV_STS_") {
+  field(DESC, "Trigger Move")
+  field(ZNAM, "No Trigger Move")
+  field(ONAM, "Trigger Move")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_IFFE_STS_") {
+  field(DESC, "Int. Fatal Following Error")
+  field(ZNAM, "No Error")
+  field(ONAM, "Error")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_AMFAE_STS_") {
+  field(DESC, "I2T Amplifier Fault Error")
+  field(ZNAM, "No Fault")
+  field(ONAM, "I2T Amplifier Fault")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_AMFE_STS_") {
+  field(DESC, "Amplifier Fault Error")
+  field(ZNAM, "No Fault")
+  field(ONAM, "Amplifier Fault")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_FAFOE_STS_") {
+  field(DESC, "Fatal Following Error")
+  field(ZNAM, "No Error")
+  field(ONAM, "Error")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MAJOR")
+}
+
+record(bi, "$(Sys)$(Dev)_WFOER_STS_") {
+  field(DESC, "Warning Following Error")
+  field(ZNAM, "No Warning")
+  field(ONAM, "Warning")
+  field(ZSV, "NO_ALARM")
+  field(OSV, "MINOR")
+}
+
+record(bi, "$(Sys)$(Dev)_INPOS_STS_") {
+  field(DESC, "In Position")
+  field(ZNAM, "Moving")
+  field(ONAM, "Positioned")
+  field(ZSV, "MINOR")
+  field(OSV, "NO_ALARM")
+}
+
+record(calc, "$(Sys)$(Dev)_CALC1_AXIS_STS_") {
+  field(DESC, "Calculate Motor Status")
+  field(CALC, "E+F>0?8:D=1?7:C=1?6:B=1?4:A=1?2:0")
+  field(INPA, "$(Sys)$(Dev)_PHSRA_STS_ CP")
+  field(INPB, "$(Sys)$(Dev)_SOPL_STS_ CP")
+  field(INPC, "$(Sys)$(Dev)_FAFOE_STS_ CP")
+  field(INPD, "$(Sys)$(Dev)_PREFE_STS_ CP")
+  field(INPE, "$(Sys)$(Dev)_AMFE_STS_ CP")
+  field(INPF, "$(Sys)$(Dev)_AMFAE_STS_ CP")
+}
+
+record(calc, "$(Sys)$(Dev)_CALC2_AXIS_STS_") {
+  field(DESC, "Calculate Motor Status")
+  field(CALC, "G>0?G:B=0?9:A=0&&C=0?0:1")
+  field(INPA, "$(Sys)$(Dev)_INPOS_STS_ CP")
+  field(INPB, "$(Sys)$(Dev)_AMPEN_STS_ CP")
+  field(INPC, "$(Sys)$(Dev)_LOOPM_STS_ CP")
+  field(INPG, "$(Sys)$(Dev)_CALC1_AXIS_STS_ CP")
+}
+
+record(mbbi, "$(Sys)$(Dev)Sts:Axis-Sts") {
+  field(DESC, "Motor General Status")
+  field(INP, "$(Sys)$(Dev)_CALC2_AXIS_STS_ CP")
+  field(ZRST, "Moving")
+  field(ONST, "Positioned")
+  field(TWST, "Phasing")
+  field(FRST, "At Limit")
+  field(FVST, "Overtravel")
+  field(SXST, "Follow Err")
+  field(SVST, "Phasing Err")
+  field(EIST, "Amp Fault")
+  field(NIST, "Disabled")
+  field(ZRSV, "MINOR")
+  field(ONSV, "NO_ALARM")
+  field(TWSV, "MINOR")
+  field(FRSV, "MAJOR")
+  field(FVSV, "MAJOR")
+  field(SXSV, "MAJOR")
+  field(SVSV, "MAJOR")
+  field(EISV, "MAJOR")
+  field(NISV, "MINOR")
+}
+

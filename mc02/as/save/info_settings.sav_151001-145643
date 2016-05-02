@@ -1,0 +1,323 @@
+# autosave R5.0	Automatically generated - DO NOT MODIFY - 151001-145310
+XF:23ID2-OP{Mono-Corr}Val:DBand-SP.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Inp-SP.VAL 93.75030298
+XF:23ID2-OP{Mono-Grt:01}Val:Density-SP.VAL 150
+XF:23ID2-OP{Mono-Grt:01}Val:EntArm-SP.VAL 1000000000
+XF:23ID2-OP{Mono-Grt:01}Val:ExitArm-SP.VAL 10000
+XF:23ID2-OP{Mono-Grt:01}Val:POffset-SP.VAL 0.11931
+XF:23ID2-OP{Mono-Grt:01}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:01}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:01}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:01}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:01}Val:XDef-SP.VAL -4.09
+XF:23ID2-OP{Mono-Grt:01}Val:b2-SP.VAL -0.00018
+XF:23ID2-OP{Mono-Grt:02}Val:Density-SP.VAL 400
+XF:23ID2-OP{Mono-Grt:02}Val:EntArm-SP.VAL 1000000000
+XF:23ID2-OP{Mono-Grt:02}Val:ExitArm-SP.VAL 10000
+XF:23ID2-OP{Mono-Grt:02}Val:POffset-SP.VAL 0.12642
+XF:23ID2-OP{Mono-Grt:02}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:02}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:02}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:02}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:02}Val:XDef-SP.VAL 58.91
+XF:23ID2-OP{Mono-Grt:02}Val:b2-SP.VAL -0.00018
+XF:23ID2-OP{Mono-Grt:03}Val:Density-SP.VAL 1200
+XF:23ID2-OP{Mono-Grt:03}Val:EntArm-SP.VAL 1000000000
+XF:23ID2-OP{Mono-Grt:03}Val:ExitArm-SP.VAL 10000
+XF:23ID2-OP{Mono-Grt:03}Val:POffset-SP.VAL 0.15645
+XF:23ID2-OP{Mono-Grt:03}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:03}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:03}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:03}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:03}Val:XDef-SP.VAL 121.91
+XF:23ID2-OP{Mono-Grt:03}Val:b2-SP.VAL -0.0001258
+XF:23ID2-OP{Mono-Grt:04}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:04}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:05}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:06}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:07}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:08}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:09}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:Density-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:EntArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:ExitArm-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:POffset-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:XDef-SP.VAL 0
+XF:23ID2-OP{Mono-Grt:10}Val:b2-SP.VAL 0
+XF:23ID2-OP{Mono}Enrgy-SP.VAL 250.00008539
+XF:23ID2-OP{Mono}Enrgy:FlyVelo-SP.VAL 0
+XF:23ID2-OP{Mono}Enrgy:Start-SP.VAL 250.00008539
+XF:23ID2-OP{Mono}Enrgy:Stop-SP.VAL 250.00008539
+XF:23ID2-OP{Mono}Val:Density-SP.VAL 150
+XF:23ID2-OP{Mono}Val:EntArm-SP.VAL 1000000000
+XF:23ID2-OP{Mono}Val:ExitArm-SP.VAL 10000
+XF:23ID2-OP{Mono}Val:Tune0-SP.VAL 0
+XF:23ID2-OP{Mono}Val:Tune1-SP.VAL 0
+XF:23ID2-OP{Mono}Val:Tune2-SP.VAL 0
+XF:23ID2-OP{Mono}Val:Tune3-SP.VAL 0
+XF:23ID2-OP{Mono}Val:b2-SP.VAL -0.00018
+XF:23ID2-OP{Mono-Corr}Enbl:Inp-Sel.VAL 1
+XF:23ID2-OP{Mono-Corr}Enbl:Out-Sel.VAL 0
+XF:23ID2-OP{Mono}Val:Order-SP.VAL 0
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.ONST Value 1
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.TWST Value 2
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.THST Value 3
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.FRST Value 4
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.FVST Value 5
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.SXST Value 6
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.SVST Value 7
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.EIST Value 8
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.NIST Value 9
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.TEST Value 10
+XF:23ID2-OP{Mono-Corr:Sel}Val:Table-Sel.VAL 0
+XF:23ID2-CT{IOC:MC02}:ACCESS.VAL 0
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name1-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name10-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name2-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name3-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name4-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name5-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name6-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name7-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name8-SP.VAL 
+XF:23ID2-OP{Mono-Corr:Sel}Val:Name9-SP.VAL 
+XF:23ID2-OP{Mono-Grt:01}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:02}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:03}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:04}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:05}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:06}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:07}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:08}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:09}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Grt:10}Val:Name-SP.VAL 
+XF:23ID2-OP{Mono-Corr}Val:Table1-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table10-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table2-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table3-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table4-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table5-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table6-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table7-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table8-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Corr}Val:Table9-Wfrm.VAL 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DIR 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DHLM 20
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DLLM -20
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.TWV 0.01
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.SREV 200
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.MRES 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.ERES 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.RRES 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.VBAS 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.VELO 0.05
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.VMAX 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.ACCL 0.1
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.BDST 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.BVEL 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.BACC 0.5
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.RDBD 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DESC Grating Pitch
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.EGU deg
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.RTRY 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.UEIP 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.URIP 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DLY 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.RDBL 
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.PREC 6
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DISA 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DISP 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.FOFF 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.OFF 0.11931
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.FRAC 1
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.OMSL 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.JVEL 0.05
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.JAR 0.5
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.PCOF 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.ICOF 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.DCOF 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.HVEL 0
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.NTM 1
+XF:23ID2-OP{Mono-Ax:GrtP}Mtr.NTMF 2
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DIR 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DHLM 200
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DLLM -200
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.TWV 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.SREV 200
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.MRES -0.0001
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.ERES -0.0001
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.RRES 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.VBAS 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.VELO 3
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.VMAX 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.ACCL 0.1
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.BDST 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.BVEL 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.BACC 0.5
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.RDBD 0.0001
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DESC Grating Translation
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.EGU mm
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.RTRY 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.UEIP 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.URIP 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DLY 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.RDBL 
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.PREC 3
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DISA 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DISP 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.FOFF 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.OFF 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.FRAC 1
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.OMSL 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.JVEL 3
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.JAR 30
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.PCOF 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.ICOF 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.DCOF 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.HVEL 0
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.NTM 1
+XF:23ID2-OP{Mono-Ax:GrtX}Mtr.NTMF 2
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DIR 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DHLM 20
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DLLM -20
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.TWV 0.1
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.SREV 200
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.MRES 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.ERES 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.RRES 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.VBAS 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.VELO 0.05
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.VMAX 0.05
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.ACCL 0.5
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.BDST 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.BVEL 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.BACC 0.5
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.RDBD 6.103515625e-07
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DESC Mirror Pitch
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.EGU deg
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.RTRY 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.UEIP 1
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.URIP 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DLY 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.RDBL 
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.PREC 6
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DISA 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DISP 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.FOFF 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.OFF 0.1221
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.FRAC 1
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.OMSL 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.JVEL 0.05
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.JAR 0.5
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.PCOF 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.ICOF 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.DCOF 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.HVEL 0
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.NTM 1
+XF:23ID2-OP{Mono-Ax:MirP}Mtr.NTMF 2
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DIR 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DHLM 200
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DLLM -200
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.TWV 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.SREV 200
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.MRES -0.0001
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.ERES -0.0001
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.RRES 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.VBAS 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.VELO 3
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.VMAX 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.ACCL 0.1
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.BDST 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.BVEL 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.BACC 0.5
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.RDBD 0.0001
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DESC Mirror Translation
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.EGU mm
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.RTRY 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.UEIP 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.URIP 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DLY 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.RDBL 
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.PREC 3
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DISA 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DISP 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.FOFF 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.OFF 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.FRAC 1
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.OMSL 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.JVEL 3
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.JAR 30
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.PCOF 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.ICOF 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.DCOF 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.HVEL 0
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.NTM 1
+XF:23ID2-OP{Mono-Ax:MirX}Mtr.NTMF 2
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.C 0.11931
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.D 0.12642
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.E 0.15645
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.F 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.G 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.H 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.I 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.J 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.K 0
+XF:23ID2-OP{Mono-Grt}Val:POffset-SP_.L 0
+<END>

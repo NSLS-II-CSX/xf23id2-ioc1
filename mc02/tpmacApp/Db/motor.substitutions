@@ -1,0 +1,9 @@
+file "db/motor.db"
+{
+  pattern
+  { P, M, MOTOR, PORT, ADDR, DESC, DTYP, MRES, PREC, EGU, VEL, TACC, HSLM, LSLM}
+  { "XF:23ID2-OP", "{Mono-Ax:MirP}Mtr", "motor", "P0", 1, "Mirror Pitch", asynMotor, 0.0000006103515625, 6, "deg", 0.05, 0.1, 20, -20 }
+  { "XF:23ID2-OP", "{Mono-Ax:GrtP}Mtr", "motor", "P0", 2, "Grating Pitch", asynMotor, 0.0000006103515625, 6, "deg", 0.05, 0.1 , 20, -20 }
+  { "XF:23ID2-OP", "{Mono-Ax:MirX}Mtr", "motor", "P0", 3, "Mirror Translation", asynMotor, -0.0001, 3, "mm", 3, 0.1, 200, -200}
+  { "XF:23ID2-OP", "{Mono-Ax:GrtX}Mtr", "motor", "P0", 4, "Grating Translation", asynMotor, -0.0001, 3, "mm", 3, 0.1, 200, -200}
+}

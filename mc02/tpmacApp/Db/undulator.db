@@ -1,0 +1,26 @@
+record(calc, "XF:23ID-ID{EPU:2}Sts:Move-Sts"){
+  field(INPA, "SR:C23-ID:G1A{EPU:2-Ax:TU}Sw:AmpEn-Sts CP")
+  field(INPB, "SR:C23-ID:G1A{EPU:2-Ax:TD}Sw:AmpEn-Sts CP")
+  field(INPC, "SR:C23-ID:G1A{EPU:2-Ax:BU}Sw:AmpEn-Sts CP")
+  field(INPD, "SR:C23-ID:G1A{EPU:2-Ax:BD}Sw:AmpEn-Sts CP")
+  field(INPE, "SR:C23-ID:G1A{EPU:2-Ax:TO}Sw:AmpEn-Sts CP")
+  field(INPF, "SR:C23-ID:G1A{EPU:2-Ax:TI}Sw:AmpEn-Sts CP")
+  field(INPG, "SR:C23-ID:G1A{EPU:2-Ax:BO}Sw:AmpEn-Sts CP")
+  field(INPH, "SR:C23-ID:G1A{EPU:2-Ax:BI}Sw:AmpEn-Sts CP")
+  field(INPI, "SR:C23-ID:G1A{EPU:2-Ax:Gap}-Mtr.DMOV CP")
+  field(CALC, "I == 1")
+  field(FLNK, "XF:23ID2-OP{Mono}Sts:Move-Sts_")
+}
+record(calc, "XF:23ID-ID{EPU:1}Sts:Move-Sts"){
+  field(INPA, "SR:C23-ID:G1A{EPU:1-Ax:TU}Sw:AmpEn-Sts CP")
+  field(INPB, "SR:C23-ID:G1A{EPU:1-Ax:TD}Sw:AmpEn-Sts CP")
+  field(INPC, "SR:C23-ID:G1A{EPU:1-Ax:BU}Sw:AmpEn-Sts CP")
+  field(INPD, "SR:C23-ID:G1A{EPU:1-Ax:BD}Sw:AmpEn-Sts CP")
+  field(INPE, "SR:C23-ID:G1A{EPU:1-Ax:TO}Sw:AmpEn-Sts CP")
+  field(INPF, "SR:C23-ID:G1A{EPU:1-Ax:TI}Sw:AmpEn-Sts CP")
+  field(INPG, "SR:C23-ID:G1A{EPU:1-Ax:BO}Sw:AmpEn-Sts CP")
+  field(INPH, "SR:C23-ID:G1A{EPU:1-Ax:BI}Sw:AmpEn-Sts CP")
+  field(INPI, "SR:C23-ID:G1A{EPU:1-Ax:Gap}-Mtr.DMOV CP")
+  field(CALC, "I == 1")
+  field(FLNK, "XF:23ID2-OP{Mono}Sts:Move-Sts_")
+}

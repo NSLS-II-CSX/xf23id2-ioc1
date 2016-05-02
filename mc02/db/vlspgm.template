@@ -1,0 +1,733 @@
+##
+## Decouple Ralated Commands
+##
+
+record(bi, "$(Sys)$(MXDev)Sts:Dcpl-Sts") {
+  field(DTYP, "stream")
+  field(DESC, "Mirror Decoupl. Status")
+  field(INP,  "@devPmacPGM.proto readSetpointInt(M320) $(ASYNPORT)")
+  field(ZNAM, "Coupled")
+  field(ONAM, "Decoupled")
+  field(ZSV,  "MINOR")
+  field(SCAN, "$(SCAN)")
+}
+
+record(bi, "$(Sys)$(GXDev)Sts:Dcpl-Sts") {
+  field(DTYP, "stream")
+  field(DESC, "Grating Decoupl. Status")
+  field(INP,  "@devPmacPGM.proto readSetpointInt(M420) $(ASYNPORT)")
+  field(ZNAM, "Coupled")
+  field(ONAM, "Decoupled")
+  field(ZSV,  "MINOR")
+  field(SCAN, "$(SCAN)")
+}
+
+##
+## Controller related commands
+##
+
+record(bo, "$(CSys)$(CDev)Cmd:Abort-Cmd") {
+  field(DESC, "Send Abort Command")
+  field(OUT,  "@devPmacPGM.proto sendAbortCommand() $(ASYNPORT)")
+  field(DTYP, "stream")
+  field(HIGH, "1")
+  field(ONAM, "ABORT")
+  field(ZNAM, "OK")
+}
+
+record(bo, "$(Sys)$(Dev)Cmd:FlyStart-Cmd") {
+  field(DESC, "Fly Scan Start Cmd")
+  field(DTYP, "stream")
+  field(ONAM, "START")
+  field(ZNAM, "OK")
+  field(HIGH, "1")
+  field(OUT,  "@devPmacPGM.proto sendStartFlyScan() $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Sts:Scan-Sts")
+}
+
+###
+### Energy Control and Information Records
+###
+
+record(ai, "$(Sys)$(Dev)Enrgy-I") {
+  field(DESC, "Calculated Photon Energy")
+  field(INP, "@devPmacPGM.proto readSetpoint(P127) $(ASYNPORT)")
+  field(DTYP, "stream")
+  field(PREC, "3")
+  field(EGU, "eV")
+  field(SCAN, "$(SCAN)")
+}
+
+## Energy calculation mode (VLS or Fixed Focus)
+
+record(calc, "$(Sys)$(Dev)Mode:Calc-Calc_"){
+  field(DESC, "Calculation Mode")
+  field(INPA,  "$(Sys)$(Dev)Val:b2-RB CP MSI")
+  field(CALC, "(A=0)?1:2")
+  field(FLNK, "$(Sys)$(Dev)Mode:Calc-I")
+}
+
+record(mbbi, "$(Sys)$(Dev)Mode:Calc-I"){
+  field(DESC, "Calculation Mode")
+  field(INP,  "$(Sys)$(Dev)Mode:Calc-Calc_ MSI")
+  field(VAL,  "0")
+  field(ZRST, "Invalid")
+  field(ONST, "Fixed Focus")
+  field(TWST, "VLS")
+  field(ZRSV, "MAJOR")
+  field(ONSV, "MINOR")
+}
+
+
+# Energy setpoint
+
+record(ao, "$(Sys)$(Dev)Enrgy-SP") {
+  field(DESC, "Desired Photon Energy")
+  field(PREC, "3")
+  field(DRVH, "$(E_HIGH)")
+  field(DRVL, "$(E_LOW)")
+  field(HOPR, "$(E_HIGH)")
+  field(LOPR, "$(E_LOW)")
+  field(MDEL, "0")
+  field(ADEL, "0")
+  field(HIHI, "$(E_HIGH)")
+  field(HIGH, "$(E_HIGH)")
+  field(LOW,  "$(E_LOW)")
+  field(LOLO, "$(E_LOW)")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+  field(EGU,  "eV")
+  field(FLNK, "$(Sys)$(Dev)Enrgy-SP_")
+  #field(SDIS, "$(Sys)$(Dev)Enrgy:Busy-Sts")
+  info(autosaveFields, "VAL")	
+}
+
+# Move to a single energy value
+
+record(seq, "$(Sys)$(Dev)Enrgy-SP_") {
+  field(DESC, "Start Energy Step")
+  field(DOL1, "$(Sys)$(Dev)Enrgy-SP")
+  field(DLY1, "0")
+  field(DOL2, "$(Sys)$(Dev)Enrgy-SP")
+  field(DLY2, "0")
+  field(DOL3, "1")
+  field(DLY3, "0")
+  field(DOL4, "1")
+  field(DLY4, "0")
+  field(LNK1, "$(Sys)$(Dev)Enrgy:Start-SP PP")
+  field(LNK2, "$(Sys)$(Dev)Enrgy:Stop-SP PP")
+  field(LNK3, "$(Sys)$(Dev)Cmd:FlyStart-Cmd PP")
+  field(LNK4, "$(Sys)$(Dev)Enrgy:Busy-Sts PP")
+  field(SELM, "All")
+}
+
+record(ao, "$(Sys)$(Dev)Enrgy:Start-SP") {
+  field(DESC, "Start Energy2")
+  field(DTYP, "stream")
+  field(EGU, "eV")
+  field(PREC, "3")
+  field(DRVH, "$(E_HIGH)")
+  field(DRVL, "$(E_LOW)")
+  field(HOPR, "$(E_HIGH)")
+  field(LOPR, "$(E_LOW)")
+  field(HIHI, "$(E_HIGH)")
+  field(HIGH, "$(E_HIGH)")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P111) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Enrgy:Start-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Enrgy:Start-RB") {
+  field(DESC, "Start Energy")
+  field(SCAN, "$(SCAN)")
+  field(DTYP, "stream")
+  field(EGU,  "eV")
+  field(PREC, "3")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P111) $(ASYNPORT)")
+}
+
+record(ao, "$(Sys)$(Dev)Enrgy:Stop-SP") {
+  field(DESC, "Stop Energy2")
+  field(DTYP, "stream")
+  field(EGU, "eV")
+  field(PREC, "3")
+  field(DRVH, "$(E_HIGH)")
+  field(DRVL, "$(E_LOW)")
+  field(HOPR, "$(E_HIGH)")
+  field(LOPR, "$(E_LOW)")
+  field(HIHI, "$(E_HIGH)")
+  field(HIGH, "$(E_HIGH)")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P112) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Enrgy:Stop-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Enrgy:Stop-RB") {
+  field(DESC, "Stop Energy")
+  field(DTYP, "stream")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "eV")
+  field(PREC, "3")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P112) $(ASYNPORT)")
+}
+
+record(ao, "$(Sys)$(Dev)Enrgy:FlyVelo-SP") {
+  field(DESC, "sweep velocity speed2")
+  field(DTYP, "stream")
+  field(EGU, "eV/s")
+  field(PREC, "3")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P113) $(ASYNPORT)")
+  field(FLNK,"$(Sys)$(Dev)Enrgy:FlyVelo-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Enrgy:FlyVelo-RB") {
+  field(DESC, "Sweep Velocity Speed")
+  field(DTYP, "stream")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "eV/s")
+  field(PREC, "3")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P113) $(ASYNPORT)")
+}
+
+record(bo, "$(Sys)$(Dev)Cmd:Stop-Cmd"){
+  field(DESC, "Stop Mirror and Grating")
+  field(OUT,  "$(Sys)$(Dev)Cmd:Stop-Cmd_.PROC")
+  field(HIGH, "1")
+  field(ZNAM, "OK")
+}
+
+record(seq, "$(Sys)$(Dev)Cmd:Stop-Cmd_") {
+  field(DOL1, "1")
+  field(DOL2, "1")
+  field(DOL3, "1")
+  field(LNK1, "$(Sys)$(MDev)Mtr.STOP PP")
+  field(LNK2, "$(Sys)$(GMDev)Mtr.STOP PP")
+  field(LNK3, "$(CSys)$(CDev)Cmd:Abort-Cmd PP")
+  field(SELM, "All")
+}
+
+record(busy, "$(Sys)$(Dev)Enrgy:Busy-Sts") {
+  field(TPRO, "1")
+}
+
+record(calcout, "$(Sys)$(Dev)Enrgy:Busy-Sts_") {
+  #field(INPA, "$(Sys)$(Dev)Sts:Scan-Sts PP")
+  field(INPA, "$(Sys)$(Dev)Sts:Move-Sts PP")
+  field(CALC, "!(A==0)")
+  field(OOPT, "Transition To Zero")
+  field(OUT, "$(Sys)$(Dev)Enrgy:Busy-Sts PP")
+}
+
+record(mbbi, "$(Sys)$(Dev)Sts:Scan-Sts"){
+  field(DTYP, "stream")
+  field(INP,  "@devPmacPGM.proto readSetpointInt(P119) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(ZRST, "Ready")
+  field(ONST, "Moving")
+  field(TWST, "Scanning")
+  field(ZRSV, "NO_ALARM")
+  field(ONSV, "MINOR")
+  field(TWSV, "MINOR")
+  field(FLNK, "$(Sys)$(Dev)Sts:Move-Sts_")
+}
+
+record(bi, "$(Sys)$(Dev)Sts:Move-Sts"){
+  field(ZNAM, "Idle")
+  field(ONAM, "Moving")
+  field(OSV,  "MINOR")
+  field(ZSV,  "NO_ALARM")
+  field(INP,  "$(Sys)$(Dev)Sts:Move-Sts_")
+  field(FLNK, "$(Sys)$(Dev)Enrgy:Busy-Sts_")
+}
+
+record(calc, "$(Sys)$(Dev)Sts:Move-Sts_"){
+  field(INPA, "$(Sys)$(Dev)Sts:Scan-Sts")
+  field(INPB, "SR:C23-ID:G1A{EPU:2-Ax:Gap}-Mtr.MOVN CP")
+  field(INPC, "SR:C23-ID:G1A{EPU:1-Ax:Gap}-Mtr.MOVN CP")
+  field(CALC, "(A > 0) || (B > 0) || (C > 0)")
+  field(FLNK, "$(Sys)$(Dev)Sts:Move-Sts")
+}
+
+##
+## Records for storing the grating parameters
+##
+
+# Fields C-L contain density coefficients for gratings 1-10
+
+record(seq, "$(Sys)$(Dev)Val:Density-SP_") {
+  field(DESC, "Grating Line Spacing")
+  field(SELM, "Specified")
+  field(SELL,"$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1,"$(Sys)$(GDev1)Val:Density-SP CP")
+  field(DOL2,"$(Sys)$(GDev2)Val:Density-SP CP")
+  field(DOL3,"$(Sys)$(GDev3)Val:Density-SP CP")
+  field(DOL4,"$(Sys)$(GDev4)Val:Density-SP CP")
+  field(DOL5,"$(Sys)$(GDev5)Val:Density-SP CP")
+  field(DOL6,"$(Sys)$(GDev6)Val:Density-SP CP")
+  field(DOL7,"$(Sys)$(GDev7)Val:Density-SP CP")
+  field(DOL8,"$(Sys)$(GDev8)Val:Density-SP CP")
+  field(DOL9,"$(Sys)$(GDev9)Val:Density-SP CP")
+  field(DOLA,"$(Sys)$(GDev10)Val:Density-SP CP")
+  field(LNK1,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK2,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK3,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK4,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK5,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK6,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK7,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK8,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNK9,"$(Sys)$(Dev)Val:Density-SP PP")
+  field(LNKA,"$(Sys)$(Dev)Val:Density-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:b2-SP_") {
+  field(DESC,"b2 coefficient selection")
+  field(SELM,"Specified")
+  field(SELL,"$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1,"$(Sys)$(GDev1)Val:b2-SP CP")
+  field(DOL2,"$(Sys)$(GDev2)Val:b2-SP CP")
+  field(DOL3,"$(Sys)$(GDev3)Val:b2-SP CP")
+  field(DOL4,"$(Sys)$(GDev4)Val:b2-SP CP")
+  field(DOL5,"$(Sys)$(GDev5)Val:b2-SP CP")
+  field(DOL6,"$(Sys)$(GDev6)Val:b2-SP CP")
+  field(DOL7,"$(Sys)$(GDev7)Val:b2-SP CP")
+  field(DOL8,"$(Sys)$(GDev8)Val:b2-SP CP")
+  field(DOL9,"$(Sys)$(GDev9)Val:b2-SP CP")
+  field(DOLA,"$(Sys)$(GDev10)Val:b2-SP CP")
+  field(LNK1,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK2,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK3,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK4,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK5,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK6,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK7,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK8,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNK9,"$(Sys)$(Dev)Val:b2-SP PP")
+  field(LNKA,"$(Sys)$(Dev)Val:b2-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:Tune0-SP_") {
+  field(DESC, "Tun0 coefficient selection")
+  field(SELM, "Specified")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1, "$(Sys)$(GDev1)Val:Tune0-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:Tune0-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:Tune0-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:Tune0-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:Tune0-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:Tune0-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:Tune0-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:Tune0-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:Tune0-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:Tune0-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK2, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK3, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK4, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK5, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK6, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK7, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK8, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNK9, "$(Sys)$(Dev)Val:Tune0-SP PP")
+  field(LNKA, "$(Sys)$(Dev)Val:Tune0-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:Tune1-SP_") {
+  field(DESC, "Tun0 coefficient selection")
+  field(SELM, "Specified")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1, "$(Sys)$(GDev1)Val:Tune1-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:Tune1-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:Tune1-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:Tune1-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:Tune1-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:Tune1-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:Tune1-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:Tune1-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:Tune1-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:Tune1-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK2, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK3, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK4, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK5, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK6, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK7, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK8, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNK9, "$(Sys)$(Dev)Val:Tune1-SP PP")
+  field(LNKA, "$(Sys)$(Dev)Val:Tune1-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:Tune2-SP_") {
+  field(DESC, "Tun0 coefficient selection")
+  field(SELM, "Specified")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1, "$(Sys)$(GDev1)Val:Tune2-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:Tune2-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:Tune2-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:Tune2-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:Tune2-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:Tune2-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:Tune2-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:Tune2-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:Tune2-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:Tune2-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK2, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK3, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK4, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK5, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK6, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK7, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK8, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNK9, "$(Sys)$(Dev)Val:Tune2-SP PP")
+  field(LNKA, "$(Sys)$(Dev)Val:Tune2-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:Tune3-SP_") {
+  field(DESC, "Tun0 coefficient selection")
+  field(SELM, "Specified")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(DOL1, "$(Sys)$(GDev1)Val:Tune3-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:Tune3-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:Tune3-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:Tune3-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:Tune3-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:Tune3-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:Tune3-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:Tune3-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:Tune3-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:Tune3-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK2, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK3, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK4, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK5, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK6, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK7, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK8, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNK9, "$(Sys)$(Dev)Val:Tune3-SP PP")
+  field(LNKA, "$(Sys)$(Dev)Val:Tune3-SP PP")
+}
+
+record(seq, "$(Sys)$(Dev)Val:EntArm-SP_") {
+  field(DESC, "Entrance Arm Length Select")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(SELM, "Specified")
+  field(DOL1, "$(Sys)$(GDev1)Val:EntArm-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:EntArm-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:EntArm-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:EntArm-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:EntArm-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:EntArm-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:EntArm-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:EntArm-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:EntArm-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:EntArm-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK2, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK3, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK4, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK5, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK6, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK7, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK8, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNK9, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+  field(LNKA, "$(Sys)$(Dev)Val:EntArm-SP PP NMS")
+}
+
+record(seq, "$(Sys)$(Dev)Val:ExitArm-SP_") {
+  field(DESC, "Exit Arm Length Select")
+  field(SELL, "$(Sys)$(GDev)Type-Sel CP")
+  field(SELM, "Specified")
+  field(DOL1, "$(Sys)$(GDev1)Val:ExitArm-SP CP")
+  field(DOL2, "$(Sys)$(GDev2)Val:ExitArm-SP CP")
+  field(DOL3, "$(Sys)$(GDev3)Val:ExitArm-SP CP")
+  field(DOL4, "$(Sys)$(GDev4)Val:ExitArm-SP CP")
+  field(DOL5, "$(Sys)$(GDev5)Val:ExitArm-SP CP")
+  field(DOL6, "$(Sys)$(GDev6)Val:ExitArm-SP CP")
+  field(DOL7, "$(Sys)$(GDev7)Val:ExitArm-SP CP")
+  field(DOL8, "$(Sys)$(GDev8)Val:ExitArm-SP CP")
+  field(DOL9, "$(Sys)$(GDev9)Val:ExitArm-SP CP")
+  field(DOLA, "$(Sys)$(GDev10)Val:ExitArm-SP CP")
+  field(LNK1, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK2, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK3, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK4, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK5, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK6, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK7, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK8, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNK9, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+  field(LNKA, "$(Sys)$(Dev)Val:ExitArm-SP PP NMS")
+}
+
+#
+# Write SP and RB values for calculations
+#
+
+record(ao, "$(Sys)$(Dev)Val:CFF-SP") {
+  field(DESC, "CFF Value")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P184) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Val:CFF-RB")
+  field(PREC, "10")
+}
+
+record(ai, "$(Sys)$(Dev)Val:CFF-RB"){
+  field(DTYP, "stream")
+  field(DESC, "CFF Value")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P184) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "10")
+}
+
+record(ai, "$(Sys)$(Dev)Val:C-I") {
+  field(DTYP, "stream")
+  field(DESC, "Calculated c-factor")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "10")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P146) $(ASYNPORT)")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Density-SP"){
+  field(DESC, "Grating Line Density")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P182) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Val:Density-RB")
+  field(EGU,  "l/mm")
+  field(PREC, "2")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:Density-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Grating Line Density")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P182) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "l/mm")
+  field(PREC, "2")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune0-SP") {
+  field(DESC, "Tuning coefficient 0")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P140) $(ASYNPORT)")
+  field(FLNK ,"$(Sys)$(Dev)Val:Tune0-RB")
+  field(PREC, "6")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:Tune0-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Tuning coefficient 0")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P140) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "6")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune1-SP") {
+  field(DESC, "Tuning coefficient 1")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P141) $(ASYNPORT)")
+  field(FLNK ,"$(Sys)$(Dev)Val:Tune1-RB")
+  field(PREC, "6")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:Tune1-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Tuning coefficient 1")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P141) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "6")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune2-SP") {
+  field(DESC, "Tuning coefficient 2")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P142) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Val:Tune2-RB")
+  field(PREC, "6")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:Tune2-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Tuning coefficient 2")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P142) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "6")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune3-SP") {
+  field(DESC, "Tuning coefficient 3")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P143) $(ASYNPORT)")
+  field(PREC, "6")
+  field(FLNK, "$(Sys)$(Dev)Val:Tune3-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:Tune3-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Tuning coefficient 3")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P143) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "6")
+}
+
+record(ao, "$(Sys)$(Dev)Val:EntArm-SP") {
+  field(DESC, "Entrance Arm Length")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P193) $(ASYNPORT)")
+  field(EGU,  "mm")
+  field(PREC, "1")
+  field(FLNK, "$(Sys)$(Dev)Val:EntArm-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:EntArm-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Entrance Arm Length")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P193) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "mm")
+  field(PREC, "1")
+}
+
+record(ao, "$(Sys)$(Dev)Val:ExitArm-SP") {
+  field(DESC, "Exit Arm Length")
+  field(EGU, "mm")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P194) $(ASYNPORT)")
+  field(PREC, "1")
+  field(FLNK, "$(Sys)$(Dev)Val:ExitArm-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:ExitArm-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Exit Arm Length")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P194) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "mm")
+  field(PREC, "1")
+}
+
+record(ao, "$(Sys)$(Dev)Val:b2-SP") {
+  field(DESC, "VLS Grating Parameter")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P195) $(ASYNPORT)")
+  field(PREC, "6")
+  field(FLNK, "$(Sys)$(Dev)Val:b2-RB")
+  info(autosaveFields, "VAL") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:b2-RB"){
+  field(DTYP, "stream")
+  field(DESC, "VLS Grating Parameter")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P195) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "6")
+}
+
+record(longout, "$(Sys)$(Dev)Val:Order-SP") {
+  field(DESC, "Diffraction Order")
+  field(DTYP, "stream")
+  field(OUT, "@devPmacPGM.proto sendSetpoint(P133) $(ASYNPORT)")
+  field(FLNK, "$(Sys)$(Dev)Val:Order-RB")
+  field(DRVH, "10")
+  field(DRVL, "-10")
+  field(HIGH, "10")
+  field(LOW, "-10")
+  info(autosaveFields, "VAL") 
+}
+
+record(longin, "$(Sys)$(Dev)Val:Order-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Diffraction Order")
+  field(INP,  "@devPmacPGM.proto readSetpointInt(P133) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+}
+
+record(calcout, "$(Sys)$(Dev)Val:GrtOff-Calc_") {
+  field(DESC, "Sync Grating Pitch Offset")
+  field(PINI, "YES")
+  field(OOPT, "When Zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "A")
+  field(CALC, "A=B")
+  field(INPA, "$(Sys)$(GMDev)Mtr.OFF CP NMS")
+  field(INPB, "@devPmacPGM.proto readSetpoint(P121) $(ASYNPORT)")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P121) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+}
+
+record(calcout, "$(Sys)$(Dev)Val:MirOff-Calc_") {
+  field(DESC, "Sync Mirror Pitch Offset")
+  field(PINI, "YES")
+  field(OOPT, "When Zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "A")
+  field(CALC, "A=B")
+  field(INPA, "$(Sys)$(MDev)Mtr.OFF CP NMS")
+  field(INPB, "@devPmacPGM.proto readSetpoint(P120) $(ASYNPORT)")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P120) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+}
+
+record(ai, "$(Sys)$(Dev)Val:GrtOff-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Grating Offset")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P121) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "deg")
+  field(PREC, "6")
+}
+
+record(ai, "$(Sys)$(Dev)Val:MirOff-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Mirror Offset")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P120) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(EGU,  "deg")
+  field(PREC, "6")
+}
+
+record(calcout, "$(Sys)$(Dev)Val:CtoDeg-SP_") {
+  field(DESC, "Factor for Count Into Degree Calculation")
+  field(PINI, "0")
+  field(OOPT, "When Zero")
+  field(DOPT, "Use OCAL")
+  field(OCAL, "-1/A")
+  field(CALC, "(-1/A)=B")
+  field(INPA, "$(Sys)$(MDev)Mtr.MRES CP")
+  field(INPB, "@devPmacPGM.proto readSetpoint(P180) $(ASYNPORT)")
+  field(EGU,  "cnt/deg.")
+  field(DTYP, "stream")
+  field(OUT,  "@devPmacPGM.proto sendSetpoint(P180) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)") 
+}
+
+record(ai, "$(Sys)$(Dev)Val:CtoDeg-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Factor for Count Into Degree Calculation")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P180) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+}
+
+record(ai, "$(Sys)$(Dev)Val:EtoL-RB"){
+  field(DTYP, "stream")
+  field(DESC, "Conversion Energy to Lambda")
+  field(INP,  "@devPmacPGM.proto readSetpoint(P181) $(ASYNPORT)")
+  field(SCAN, "$(SCAN)")
+  field(PREC, "10")
+}
+
+

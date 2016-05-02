@@ -1,0 +1,17 @@
+file "db/8MotorStatus.template" {
+    pattern { ASYNPORT, TMOT,   SCAN,   Sys,    Dev}
+        {   "P0",  "1",    ".2 second",  "XF:23ID2-CT", "{MC:02}"}
+}
+
+file "db/SingleMotorStatus.template" {
+    pattern {   Sys,            Dev,            MSys,   MDev,           PMAC_MTR}
+        {       "XF:23ID2-OP",  "{Mono-Ax:MirP}",               "XF:23ID2-CT",  "{MC:02}",
+              1}
+        {       "XF:23ID2-OP",  "{Mono-Ax:GrtP}",               "XF:23ID2-CT",  "{MC:02}",
+              2}
+        {       "XF:23ID2-OP",  "{Mono-Ax:MirX}",               "XF:23ID2-CT",  "{MC:02}",
+              3}
+        {       "XF:23ID2-OP",  "{Mono-Ax:GrtX}",               "XF:23ID2-CT",  "{MC:02}",
+              4}
+}
+

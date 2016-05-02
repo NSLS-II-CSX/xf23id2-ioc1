@@ -1,0 +1,78 @@
+record(stringout, "$(Sys)$(Dev)Val:Name-SP")
+{
+  field(DESC, "Grating Name")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:POffset-SP") {
+  field(DESC, "Pitch Offset")
+  field(EGU,  "deg")
+  field(PREC, "6")
+  info(autosaveFields, "VAL")
+}
+record(ao, "$(Sys)$(Dev)Val:XDef-SP"){
+  field(DESC, "Default X Position")
+  field(EGU,  "mm")
+  field(PREC, "3")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Density-SP"){
+  field(DESC, "Line Density")
+  field(EGU,  "lines/mm")
+  field(PREC, "1")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:b2-SP")
+{
+  field(DESC, "Parameter b2")
+  field(PREC, "8")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune0-SP")
+{
+  field(DESC, "Tune 0")
+  field(PREC, "8")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune1-SP")
+{
+  field(DESC, "Tune 1")
+  field(PREC, "8")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune2-SP")
+{
+  field(DESC, "Tune 2")
+  field(PREC, "8")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:Tune3-SP")
+{
+  field(DESC, "Tune 3")
+  field(PREC, "8")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:EntArm-SP")
+{
+  field(DESC, "Entrance Arm")
+  field(PREC, "1")
+  field(EGU,  "mm")
+  info(autosaveFields, "VAL")
+}
+
+record(ao, "$(Sys)$(Dev)Val:ExitArm-SP")
+{
+  field(DESC, "Exit Arm")
+  field(PREC, "1")
+  field(EGU,  "mm")
+  info(autosaveFields, "VAL")
+}
+
+

@@ -1,0 +1,8 @@
+file "db/motor_homing.template" {
+    pattern {   ASYNPORT,       TMOT,   SCAN,           PMAC_MTR,       Sys,    Dev,    EGU,    AXISSCALE,      HVEL}
+        {       "P0",        1.0,    ".2 second",    "1",            "XF:23ID2-OP","{Mono-Ax:MirP}" ,"deg",  32,             0.15    }
+        {       "P0",        1.0,    ".2 second",    "2",            "XF:23ID2-OP","{Mono-Ax:GrtP}" ,"deg",  32,             0.15    }
+        {       "P0",        1.0,    ".2 second",    "3",            "XF:23ID2-OP","{Mono-Ax:MirX}" ,"mm",   1,              3       }
+        {       "P0",        1.0,    ".2 second",    "4",            "XF:23ID2-OP","{Mono-Ax:GrtX}" ,"mm",   1,              3       }
+}
+
