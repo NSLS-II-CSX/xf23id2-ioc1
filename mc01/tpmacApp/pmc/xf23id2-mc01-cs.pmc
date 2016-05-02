@@ -1,0 +1,193 @@
+;####################################################
+; Generic program for moving any co-ordinate system
+;####################################################
+ 
+;This program defines the program needed to do a move using the motor record
+;on a CS axis
+;to do a move we need to do &{CS}R
+;to stop a move we need to do &{CS}A
+;demand values are in &{CS}Q71..79
+;The following are set by the motor record:
+;Isx87 = Acceleration
+;Isx89 = Feedrate
+i5213,15,100=10 ; segmentation time (needed for lookahead)
+i5220,15,100=50 ; lookahead length (needed to limit max velocity to max in CS)
+i5250,15,100=1  ; Enable kinematics
+
+OPEN PROG 10
+CLEAR
+LINEAR
+ABS
+FRAX(A,B,C,U,V,W,X,Y,Z)
+A(Q71)B(Q72)C(Q73)U(Q74)V(Q75)W(Q76)X(Q77)Y(Q78)Z(Q79)
+DWELL0
+CLOSE
+
+;################################################
+; Define motion for Baffle slit horizontal blades
+; Defined axes:
+;   X (addr 6) = gap
+;   Y (addr 7) = center
+; 
+; 
+;################################################
+
+; Preset some calibration parameters
+P4803 = 1
+P4903 = 0
+P4804 = 1
+P4904 = 0
+
+&2
+#4->I ; Inboard
+#3->I ; Outboard 
+
+; Define motor parameters
+#define XI_MTR_MOVE P4704
+#define XI_MTR_MRES P4804
+#define XI_MTR_OFF  P4904
+#define XO_MTR_MOVE P4703
+#define XO_MTR_MRES P4803
+#define XO_MTR_OFF  P4903
+
+#define XI_MTR_POS (XI_MTR_MRES*P4+XI_MTR_OFF)
+#define XO_MTR_POS (XO_MTR_MRES*P3+XO_MTR_OFF)
+
+#define X_GAP Q7
+#define X_CENTER Q8
+
+OPEN FORWARD CLEAR
+; Check home complete bits for each motor
+IF (M345=1 AND M445=1)
+  X_GAP = XO_MTR_POS - XI_MTR_POS
+  X_CENTER = (XO_MTR_POS + XI_MTR_POS) / 2
+ELSE
+  ; Set run-time error bit
+  M5282=1
+ENDIF
+CLOSE
+
+#define XI_MTR_POS Q228
+#define XO_MTR_POS Q229
+
+&2   
+OPEN INVERSE CLEAR
+; Calculate in EGU
+XI_MTR_POS = X_CENTER - X_GAP / 2
+XO_MTR_POS = X_CENTER + X_GAP / 2
+
+; Calculate in counts
+P4 = (XI_MTR_POS - XI_MTR_OFF)/XI_MTR_MRES
+P3 = (XO_MTR_POS - XO_MTR_OFF)/XO_MTR_MRES
+CLOSE
+
+; A PLC(sx+15) needs to be made to do position reporting
+; Readbacks should be in &{axisnum}Q81..89
+; As forward kinematic, but with Px = mx62/(Ix08*32)
+#define XI_MTR_POS (XI_MTR_MRES*M462/(I408*32)+XI_MTR_OFF)
+#define XO_MTR_POS (XO_MTR_MRES*M362/(I308*32)+XO_MTR_OFF)
+
+#define X_GAP Q87
+#define X_CENTER Q88
+
+OPEN PLC16
+CLEAR
+ADDRESS&2
+
+X_GAP = XO_MTR_POS - XI_MTR_POS
+X_CENTER = (XO_MTR_POS + XI_MTR_POS) / 2
+
+; If motor record did the last move, set demands = readbacks
+if (XO_MTR_MOVE = 1)
+or (XI_MTR_MOVE = 1)
+ XO_MTR_MOVE = 0
+ XI_MTR_MOVE = 0
+ Q77 = Q87
+ Q78 = Q88
+endif
+CLOSE
+
+;################################################
+; Define motion for Baffle slit vertical blades
+; Defined axes:
+;   X (addr 6) = gap
+;   Y (addr 7) = center
+; 
+; 
+;################################################
+
+; Preset some calibration parameters
+P4801 = 1
+P4901 = 0
+P4802 = 1
+P4902 = 0
+
+&3
+#2->I ; Bottom
+#1->I ; Top 
+
+; Define motor parameters
+#define YB_MTR_MOVE P4702
+#define YB_MTR_MRES P4802
+#define YB_MTR_OFF  P4902
+#define YT_MTR_MOVE P4701
+#define YT_MTR_MRES P4801
+#define YT_MTR_OFF  P4901
+
+#define YB_MTR_POS (YB_MTR_MRES*P2+YB_MTR_OFF)
+#define YT_MTR_POS (YT_MTR_MRES*P1+YT_MTR_OFF)
+
+#define Y_GAP Q7
+#define Y_CENTER Q8
+
+OPEN FORWARD CLEAR
+; Check home complete bits for each motor
+IF (M245=1 AND M145=1)
+  Y_GAP = YT_MTR_POS - YB_MTR_POS
+  Y_CENTER = (YT_MTR_POS + YB_MTR_POS) / 2
+ELSE
+  ; Set run-time error bit
+  M5382=1
+ENDIF
+CLOSE
+
+#define YB_MTR_POS Q228
+#define YT_MTR_POS Q229
+
+&3   
+OPEN INVERSE CLEAR
+; Calculate in EGU
+YB_MTR_POS = Y_CENTER - Y_GAP / 2
+YT_MTR_POS = Y_CENTER + Y_GAP / 2
+
+; Calculate in counts
+P2 = (YB_MTR_POS - YB_MTR_OFF)/YB_MTR_MRES
+P1 = (YT_MTR_POS - YT_MTR_OFF)/YT_MTR_MRES
+CLOSE
+
+; A PLC(sx+15) needs to be made to do position reporting
+; Readbacks should be in &{axisnum}Q81..89
+; As forward kinematic, but with Px = mx62/(Ix08*32)
+#define YB_MTR_POS (YB_MTR_MRES*M262/(I208*32)+YB_MTR_OFF)
+#define YT_MTR_POS (YT_MTR_MRES*M162/(I108*32)+YT_MTR_OFF)
+
+#define Y_GAP Q87
+#define Y_CENTER Q88
+
+OPEN PLC17
+CLEAR
+ADDRESS&3
+
+Y_GAP = YT_MTR_POS - YB_MTR_POS
+Y_CENTER = (YT_MTR_POS + YB_MTR_POS) / 2
+
+; If motor record did the last move, set demands = readbacks
+if (YT_MTR_MOVE = 1)
+or (YB_MTR_MOVE = 1)
+ YT_MTR_MOVE = 0
+ YB_MTR_MOVE = 0
+ Q77 = Q87
+ Q78 = Q88
+endif
+CLOSE
+
