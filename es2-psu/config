@@ -1,0 +1,4 @@
+NAME=es2-psu
+PORT=5016
+HOST=xf23id2-ioc1
+USER=softioc

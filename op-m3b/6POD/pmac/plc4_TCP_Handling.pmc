@@ -1,0 +1,169 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+;****************************************************************************
+;This PLC handles the TCP change on the hexapod. When the new TCP has been
+;requested, the user will need to set the NewTCP_Request = 1 and TCP_Select = x,
+;where x is a TCP set of 1 - 4. Upon completion of the TCP change, the PLC will
+;reset the NewTCP_Request = 0.
+;****************************************************************************
+
+OPEN PLC 4 CLEAR
+
+ADDRESS &1	; Set Coordinate system to be used for the Hexapod
+
+If (NewTCP_Request = True)
+
+	If (TCP_Select = 0)
+
+		;TCP_Base=3006
+		;TCPLim_Base=3112
+		
+		;Set TCP0 / Default TCP
+		NewTCPPoseAuRad = DefaultTCP_AxAuRad
+		NewTCPPoseBuRad = DefaultTCP_AxBuRad
+		NewTCPPoseCuRad = DefaultTCP_AxCuRad
+		NewTCPPoseX	=	DefaultTCP_AxX
+		NewTCPPoseY = DefaultTCP_AxY
+		NewTCPPoseZ = DefaultTCP_AxZ
+		
+		;Set TCP0 Limits
+		AxAuRad_PLim	=	DefaultTCP_AxAuRad_PLim
+		AxBuRad_PLim	=	DefaultTCP_AxBuRad_PLim
+		AxCuRad_PLim	=	DefaultTCP_AxCuRad_PLim
+		AxX_PLim	=	DefaultTCP_AxX_PLim
+		AxY_PLim	=	DefaultTCP_AxY_PLim
+		AxZ_PLim	=	DefaultTCP_AxZ_PLim
+		AxAuRad_MLim	=	DefaultTCP_AxAuRad_MLim
+		AxBuRad_MLim	=	DefaultTCP_AxBuRad_MLim
+		AxCuRad_MLim	=	DefaultTCP_AxCuRad_MLim
+		AxX_MLim	=	DefaultTCP_AxX_MLim
+		AxY_MLim	=	DefaultTCP_AxY_MLim
+		AxZ_MLim	=	DefaultTCP_AxZ_MLim
+		
+		;TCP Change Latch
+		TCP_Change_Confirm = True
+
+	EndIf
+
+	If (TCP_Select = 1)
+
+		TCP_Base=3012
+		TCPLim_Base=3124
+		
+		;Set TCP1
+		NewTCPPoseAuRad = P(TCP_Base)
+		NewTCPPoseBuRad = P(TCP_Base+1)
+		NewTCPPoseCuRad = P(TCP_Base+2)
+		NewTCPPoseX	=	P(TCP_Base+3)
+		NewTCPPoseY = P(TCP_Base+4)
+		NewTCPPoseZ = P(TCP_Base+5)
+
+		;Set TCP1 Limits		
+		AxAuRad_PLim	=	P(TCPLim_Base)
+		AxBuRad_PLim	= P(TCPLim_Base+1)
+		AxCuRad_PLim	= P(TCPLim_Base+2)
+		AxX_PLim	= P(TCPLim_Base+3)
+		AxY_PLim	= P(TCPLim_Base+4)
+		AxZ_PLim	= P(TCPLim_Base+5)
+		AxAuRad_MLim	= P(TCPLim_Base+6)
+		AxBuRad_MLim	= P(TCPLim_Base+7)
+		AxCuRad_MLim	= P(TCPLim_Base+8)
+		AxX_MLim	= P(TCPLim_Base+9)
+		AxY_MLim	= P(TCPLim_Base+10)
+		AxZ_MLim	= P(TCPLim_Base+11)
+
+		;TCP Change Latch
+		TCP_Change_Confirm = True
+
+	EndIf
+
+	If (TCP_Select = 2)
+
+		TCP_Base=3018
+		TCPLim_Base=3136
+		
+		;Set TCP2
+		NewTCPPoseAuRad = P(TCP_Base)
+		NewTCPPoseBuRad = P(TCP_Base+1)
+		NewTCPPoseCuRad = P(TCP_Base+2)
+		NewTCPPoseX	=	P(TCP_Base+3)
+		NewTCPPoseY = P(TCP_Base+4)
+		NewTCPPoseZ = P(TCP_Base+5)
+
+		;Set TCP2 Limits		
+		AxAuRad_PLim	=	P(TCPLim_Base)
+		AxBuRad_PLim	= P(TCPLim_Base+1)
+		AxCuRad_PLim	= P(TCPLim_Base+2)
+		AxX_PLim	= P(TCPLim_Base+3)
+		AxY_PLim	= P(TCPLim_Base+4)
+		AxZ_PLim	= P(TCPLim_Base+5)
+		AxAuRad_MLim	= P(TCPLim_Base+6)
+		AxBuRad_MLim	= P(TCPLim_Base+7)
+		AxCuRad_MLim	= P(TCPLim_Base+8)
+		AxX_MLim	= P(TCPLim_Base+9)
+		AxY_MLim	= P(TCPLim_Base+10)
+		AxZ_MLim	= P(TCPLim_Base+11)
+
+		;TCP Change Latch
+		TCP_Change_Confirm = True
+		
+	EndIf
+	
+	If (TCP_Select = 3)
+
+		TCP_Base=3024
+		TCPLim_Base=3148
+		
+		;Set TCP3
+		NewTCPPoseAuRad = P(TCP_Base)
+		NewTCPPoseBuRad = P(TCP_Base+1)
+		NewTCPPoseCuRad = P(TCP_Base+2)
+		NewTCPPoseX	=	P(TCP_Base+3)
+		NewTCPPoseY = P(TCP_Base+4)
+		NewTCPPoseZ = P(TCP_Base+5)
+
+		;Set TCP3 Limits		
+		AxAuRad_PLim	=	P(TCPLim_Base+0)
+		AxBuRad_PLim	= P(TCPLim_Base+1)
+		AxCuRad_PLim	= P(TCPLim_Base+2)
+		AxX_PLim	= P(TCPLim_Base+3)
+		AxY_PLim	= P(TCPLim_Base+4)
+		AxZ_PLim	= P(TCPLim_Base+5)
+		AxAuRad_MLim	= P(TCPLim_Base+6)
+		AxBuRad_MLim	= P(TCPLim_Base+7)
+		AxCuRad_MLim	= P(TCPLim_Base+8)
+		AxX_MLim	= P(TCPLim_Base+9)
+		AxY_MLim	= P(TCPLim_Base+10)
+		AxZ_MLim	= P(TCPLim_Base+11)
+
+		;TCP Change Latch
+		TCP_Change_Confirm = True
+		
+	EndIf
+	
+EndIf
+
+If (TCP_Change_Confirm = True AND NewTCP_Request = True)
+
+	TCP_Select_Old = TCP_Select	; Make a copy of the Previous TCP Select
+	newCSswitch = 2
+	DISABLE PLC7
+	CMD^A
+	Tmr1 = 500 msec 		; Wait for 500ms before continue
+	WHILE (Tmr1 > 0)
+	ENDWHILE
+	ENABLE PLC6
+	Tmr1 = 500 msec 		; Wait for 200ms before continue
+	WHILE (Tmr1 > 0)
+	ENDWHILE
+	ENABLE PLC7
+	TCP_Change_Confirm = Reset
+	NewTCP_Request = Reset
+
+EndIf
+
+Close

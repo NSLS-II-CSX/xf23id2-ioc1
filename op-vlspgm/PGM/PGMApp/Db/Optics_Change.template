@@ -1,0 +1,146 @@
+##	Database for handling an optical element including its
+##	- names
+##	- offsets (pitch rotation)
+##	- default positions (change translation)
+##	- changing and decoupling
+##
+grecord(transform,"$(P)$(R)$(AXIS):P_OFFSETS") {
+	field(DESC,"optical element offsets")
+	field(INPA,"$(P)$(R)$(AXIS)_TYPE_MON CP") # actual selected element
+	field(INPB,"0")
+#	field(INPC,"0")	# offset 1
+#	field(INPD,"0") # offset 2
+#	field(INPE,"0")	# offset 3
+#	field(INPF,"0") # offset 4
+#	field(INPG,"0") # offset 5
+#	field(INPH,"0") # offset 6
+#	field(INPI,"0") # offset 7
+#	field(INPJ,"0") # offset 8
+#	field(INPK,"0") # offset 9
+#	field(INPL,"0") # offset 10
+	field(CLCM,"A=1?C:A=2?D:A=3?E:A=4?F:A=5?G:0") # offsets 1-5
+	field(CLCN,"A=6?H:A=7?I:A=8?J:A=9?K:A=10?L:0")  # offsets 6-10
+	field(CLCP,"M+N") 
+	field(OUTP,"$(P)$(R)$(AXIS):P.OFF NPP NMS")
+	field(PREC,"$(PREC)")
+	field(EGU,"$(EGU)")	
+	info(autosaveFields, "C D E F G H I J K L") 
+}
+grecord(transform,"$(P)$(R)$(AXIS)_TYPE_CALC1") {
+	field(DESC,"calc actual optical element")
+	field(SCAN,"$(SCAN)")
+	field(INPA,"$(P)$(R)$(AXIS):X_DEF_POS.B")	# width
+	field(INPB,"$(P)$(R)$(AXIS):X.RBV NPP NMS")
+	field(INPC,"$(P)$(R)$(AXIS):X_DEF_POS.C") 
+	field(INPD,"$(P)$(R)$(AXIS):X_DEF_POS.D")
+	field(INPE,"$(P)$(R)$(AXIS):X_DEF_POS.E")
+	field(INPF,"$(P)$(R)$(AXIS):X_DEF_POS.F")
+	field(INPG,"$(P)$(R)$(AXIS):X_DEF_POS.G")
+	field(CLCH,"B<=(C+A/2)?B>=(C-A/2)?1:0:0")
+	field(CLCI,"B<=(D+A/2)?B>=(D-A/2)?2:0:0")
+	field(CLCJ,"B<=(E+A/2)?B>=(E-A/2)?3:0:0")
+	field(CLCK,"B<=(F+A/2)?B>=(F-A/2)?4:0:0")
+	field(CLCL,"B<=(G+A/2)?B>=(G-A/2)?5:0:0")
+	field(CLCP,"H>0?H:I>0?I:J>0?J:K>0?K:L>0?L:0") 
+	field(FLNK,"$(P)$(R)$(AXIS)_TYPE_CALC2")
+}
+grecord(transform,"$(P)$(R)$(AXIS)_TYPE_CALC2") {
+	field(DESC,"calc actual optical element")
+	field(INPA,"$(P)$(R)$(AXIS):X_DEF_POS.B")	# width
+	field(INPB,"$(P)$(R)$(AXIS):X.RBV NPP NMS")
+	field(INPC,"$(P)$(R)$(AXIS):X_DEF_POS.H")
+	field(INPD,"$(P)$(R)$(AXIS):X_DEF_POS.I")
+	field(INPE,"$(P)$(R)$(AXIS):X_DEF_POS.J")
+	field(INPF,"$(P)$(R)$(AXIS):X_DEF_POS.K")
+	field(INPG,"$(P)$(R)$(AXIS):X_DEF_POS.L")
+	field(INPM,"$(P)$(R)$(AXIS)_TYPE_CALC1.P")
+	field(CLCH,"B<=(C+A/2)?B>=(C-A/2)?6:0:0")
+	field(CLCI,"B<=(D+A/2)?B>=(D-A/2)?7:0:0")
+	field(CLCJ,"B<=(E+A/2)?B>=(E-A/2)?8:0:0")
+	field(CLCK,"B<=(F+A/2)?B>=(F-A/2)?9:0:0")
+	field(CLCL,"B<=(G+A/2)?B>=(G-A/2)?10:0:0")
+	field(CLCP,"M>0?M:H>0?H:I>0?I:J>0?J:K>0?K:L>0?L:0") 
+	field(OUTP,"$(P)$(R)$(AXIS)_TYPE_MON.VAL PP")
+}
+record(mbbi, "$(P)$(R)$(AXIS)_TYPE_MON") {
+  field(DESC, "actual optical element")
+  field(ZRST, "invalid")
+  field(ONST, "$(NAME1)")
+  field(TWST, "$(NAME2)")
+  field(THST, "$(NAME3)")
+  field(FRST, "$(NAME4)")
+  field(FVST, "$(NAME5)")
+  field(SXST, "$(NAME6)")
+  field(SVST, "$(NAME7)")
+  field(EIST, "$(NAME8)")
+  field(NIST, "$(NAME9)")
+  field(TEST, "$(NAME10)")
+}
+record(mbbo, "$(P)$(R)$(AXIS)_TYPE_SP") {
+  field(DESC, "select optical element")
+  field(VAL, "1")	
+  field(ZRST, "")
+  field(ONST, "$(NAME1)")
+  field(TWST, "$(NAME2)")
+  field(THST, "$(NAME3)")
+  field(FRST, "$(NAME4)")
+  field(FVST, "$(NAME5)")
+  field(SXST, "$(NAME6)")
+  field(SVST, "$(NAME7)")
+  field(EIST, "$(NAME8)")
+  field(NIST, "$(NAME9)")
+  field(TEST, "$(NAME10)")
+}
+grecord(transform,"$(P)$(R)$(AXIS):X_DEF_POS") {
+  field(DESC, "default x positions")
+  field(INPB,"5") # usable width of optical element
+#  field(INPC,"5.11") # default pos 1
+#  field(INPD,"0.26") # default pos 2
+#  field(INPE,"-10.26")# default pos 3	
+#  field(INPF,"-15.26") # default pos 4
+#  field(INPG,"-20.01") # default pos 5
+#  field(INPH,"-25.26")# default pos 6
+#  field(INPI,"-30.26") # default pos 7
+#  field(INPJ,"-44.26") # default pos 8
+#  field(INPK,"-55.26")# default pos 9
+#  field(INPL,"-65.26") # default pos 10	
+  field(EGU, "mm")
+  info(autosaveFields, "C D E F G H I J K L")  
+}
+grecord(transform,"$(P)$(R)$(AXIS):X_DCPL_CALC") {
+  field(DESC, "calc decoupled setpoint")
+  field(INPA,"$(P)$(R)$(AXIS)_TYPE_SP")
+  field(INPB,"$(P)$(R)$(AXIS):X_DEF_POS.B")	# usable width of optical element
+  field(INPC,"$(P)$(R)$(AXIS):X_DEF_POS.C")	# default pos 1
+  field(INPD,"$(P)$(R)$(AXIS):X_DEF_POS.D")	# default pos 2
+  field(INPE,"$(P)$(R)$(AXIS):X_DEF_POS.E")	# default pos 3	
+  field(INPF,"$(P)$(R)$(AXIS):X_DEF_POS.F")	# default pos 4
+  field(INPG,"$(P)$(R)$(AXIS):X_DEF_POS.G")	# default pos 5
+  field(INPH,"$(P)$(R)$(AXIS):X_DEF_POS.H")	# default pos 6
+  field(INPI,"$(P)$(R)$(AXIS):X_DEF_POS.I")	# default pos 7
+  field(INPJ,"$(P)$(R)$(AXIS):X_DEF_POS.J")	# default pos 8
+  field(INPK,"$(P)$(R)$(AXIS):X_DEF_POS.K")	# default pos 9
+  field(INPL,"$(P)$(R)$(AXIS):X_DEF_POS.L")	# default pos 10
+  field(CLCN,"A==1?C:A==2?D:A==3?E:A==4?F:A==5?G:0")
+  field(CLCO,"A==6?H:A==7?I:A==8?J:A==9?K:A==10?L:N")
+  field(OUTO,"$(P)$(R)$(AXIS):X_RAW_DCPL_SP.A PP")	
+  field(EGU, "mm")
+}
+
+grecord(calcout, "$(P)$(R)$(AXIS):X_RAW_DCPL_SP") {
+	field(DESC, "Calculate Raw Setpoint")
+	field(DTYP,"stream")
+	field(INPB,"$(P)$(R)$(AXIS):X.OFF NPP") 	# position offset
+	field(INPC,"$(P)$(R)$(AXIS):X.MRES NPP") 	# encoder ratio
+	field(CALC, "(A-B)/C")	
+	field(OUT,"@devPmacPGM.proto sendSPInt($(DCPL_VAR)) $(ASYNPORT)")
+	field(FLNK, "$(P)$(R)$(AXIS):X_DCPL_CMD")
+}
+
+grecord(stringout, "$(P)$(R)$(AXIS):X_DCPL_CMD") {
+	field(DESC, "Start Decoupling Move")
+	field(DTYP,"stream")
+	field(VAL, "&$(AXIS_NO)B$(DCPL_PROG)R")
+	field(OUT,"@devPmacPGM.proto sendCommand() $(ASYNPORT)")
+}
+

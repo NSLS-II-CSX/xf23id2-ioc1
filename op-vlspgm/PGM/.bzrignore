@@ -1,0 +1,8 @@
+bin
+PGMApp/Db/O.Common
+PGMApp/Db/O.linux-x86
+PGMApp/src/O.Common
+PGMApp/src/O.linux-x86
+configure/O.Common
+configure/O.linux-x86
+iocBoot/iocPGM/envPaths

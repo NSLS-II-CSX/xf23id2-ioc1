@@ -1,0 +1,15 @@
+file "db/motorstatus.db"
+{
+pattern
+{SYS,              DEV,                 PORT,  AXIS }
+{"XF:23ID2-BI",  "{Diag:3-Ax:Y}",        "P0",   1   }
+
+}
+
+file "db/pmacStatusAxis.db"
+{
+pattern
+{SYS,               DEV,           PORT,  AXIS }
+{"XF:23ID2-CT",  "{MC:11-Ax:1}",   "P0",   1   }
+
+}

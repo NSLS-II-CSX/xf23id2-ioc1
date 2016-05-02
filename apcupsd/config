@@ -1,0 +1,4 @@
+NAME=apcupsd
+PORT=5000
+HOST=xf23id2-ioc1
+USER=root

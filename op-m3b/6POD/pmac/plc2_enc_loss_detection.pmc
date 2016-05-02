@@ -1,0 +1,205 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+;***************************************************************************
+; Program Title: PLC1 - Encoder Loss Monitoring PLC
+; Author: Graeme Elliner (FMB)
+; Modified by: Steve Siew
+; Date: 12/10/2013
+; Version: N/A
+; Description: -
+; This PLC Monitors the A,NA,B,NB encoder lines for each channel,
+; These come into the Trbo PMAC individually on Mx23..27 or as a 4 bit word on Mx28
+; If A,NA or B,BA go High as a pair ( = 1) then there is open circuit on the encoder input and encoder loss (Mx80)
+; If Default_EncLossCheck_Axx  = 1 (in PLC1) then LatchEncLoss_Axx (Mx81) = 1 will kill the motor if it is in Closed Loop control
+; If EncLossKillsAll = 1 too, then any encoder loss will Kill all (closed loop) motors
+;
+; NOTE WILL ONLY WORK WITH DIFERENTIAL ENCODERS,
+; FOR SINGLE ENDED (Encx_TUVW = $3) and (Encx_TUVW = $C) MUST BE REMOVED
+;
+; Change Log:
+; 12/10/2013 - Added reset of home flag when encoder lost.
+; 
+;***************************************************************************
+
+OPEN PLC 2 CLEAR
+
+HeartBeat_EncLossProtect	=	HeartBeat_PMAC	;to indicate the Encoder Loss Protection PLC is active
+
+If (Enc1_TUVW = $F)		; Total encoder loss
+or (Enc1_TUVW = $C)		; B,NB Channel loss
+or (Enc1_TUVW = $3)		; A,NA channel loss
+EncLossFlg_Ax1 = ENCLOST
+If (Default_EncLossCheck_Ax1 = Enabled)
+  LatchEncLoss_Ax1 = Latched
+	HomedFlg_Ax1 = False
+EndIf
+Else
+  EncLossFlg_Ax1 = ENCNOTLOST
+EndIf
+
+If (Enc2_TUVW = $F)
+  or (Enc2_TUVW = $C)
+  or (Enc2_TUVW = $3)
+  EncLossFlg_Ax2 = ENCLOST
+  If (Default_EncLossCheck_Ax2 = Enabled)
+    LatchEncLoss_Ax2 = Latched
+	HomedFlg_Ax2 = False 
+  EndIf
+Else
+  EncLossFlg_Ax2 = ENCNOTLOST
+EndIf
+
+If (Enc3_TUVW = $F)
+  or (Enc3_TUVW = $C)
+  or (Enc3_TUVW = $3)
+  EncLossFlg_Ax3 = ENCLOST
+  If (Default_EncLossCheck_Ax3 = Enabled)
+    LatchEncLoss_Ax3 = Latched
+	HomedFlg_Ax3 = False
+  EndIf
+Else
+  EncLossFlg_Ax3 = ENCNOTLOST
+EndIf
+
+If (Enc4_TUVW = $F)
+  or (Enc4_TUVW = $C)
+  or (Enc4_TUVW = $3)
+  EncLossFlg_Ax4 = ENCLOST
+  If (Default_EncLossCheck_Ax4 = Enabled)
+    LatchEncLoss_Ax4 = Latched
+	HomedFlg_Ax4 = False
+  EndIf
+Else
+  EncLossFlg_Ax4 = ENCNOTLOST
+EndIf
+
+If (Enc5_TUVW = $F)
+  or (Enc5_TUVW = $C)
+  or (Enc5_TUVW = $3)
+  EncLossFlg_Ax5 = ENCLOST
+  If (Default_EncLossCheck_Ax5 = Enabled)
+    LatchEncLoss_Ax5 = Latched
+	HomedFlg_Ax5 = False
+  EndIf
+Else
+  EncLossFlg_Ax5 = ENCNOTLOST
+EndIf
+
+If (Enc6_TUVW = $F)
+  or (Enc6_TUVW = $C)
+  or (Enc6_TUVW = $3)
+  EncLossFlg_Ax6 = ENCLOST
+  If (Default_EncLossCheck_Ax6 = Enabled)
+    LatchEncLoss_Ax6 = Latched
+	HomedFlg_Ax6 = False
+  EndIf
+Else
+  EncLossFlg_Ax6 = ENCNOTLOST
+EndIf
+
+If (Enc7_TUVW = $F)
+  or (Enc7_TUVW = $C)
+  or (Enc7_TUVW = $3)
+  EncLossFlg_Ax7 = ENCLOST
+  If (Default_EncLossCheck_Ax7 = Enabled)
+    LatchEncLoss_Ax7 = Latched
+  EndIf
+Else
+  EncLossFlg_Ax7 = ENCNOTLOST
+EndIf
+
+If (Enc8_TUVW = $F)
+  or (Enc8_TUVW = $C)
+  or (Enc8_TUVW = $3)
+  EncLossFlg_Ax8 = ENCLOST
+  If (Default_EncLossCheck_Ax8 = Enabled)
+    LatchEncLoss_Ax8 = Latched
+  EndIf
+Else
+  EncLossFlg_Ax8 = ENCNOTLOST
+EndIf
+
+; Note LatchEncLoss_Axx (Mx80) must be cleared manually once fault has been fixed
+; if axis is enabled for Closed Loop Control and encoder loss has been detected Kill all
+If (EncLossKillsAll = True)
+  If (LatchEncLoss_Ax1 = Latched)
+    or (LatchEncLoss_Ax2 = Latched)
+    or (LatchEncLoss_Ax3 = Latched)
+    or (LatchEncLoss_Ax4 = Latched)
+    or (LatchEncLoss_Ax5 = Latched)
+    or (LatchEncLoss_Ax6 = Latched)
+    or (LatchEncLoss_Ax7 = Latched)
+    or (LatchEncLoss_Ax8 = Latched)
+    If (OLMode_Ax1 = False)
+      or (OLMode_Ax2 = False)
+      or (OLMode_Ax3 = False)
+      or (OLMode_Ax4 = False)
+      or (OLMode_Ax5 = False)
+      or (OLMode_Ax6 = False)
+      or (OLMode_Ax7 = False)
+      or (OLMode_Ax8 = False)
+      CMD^K
+    EndIf
+  EndIf
+Else
+  If (OLMode_Ax1 = False)
+    And(LatchEncLoss_Ax1 = Latched)
+    CMD"#1K"
+  EndIf
+  If (OLMode_Ax2 = False)
+    And(LatchEncLoss_Ax2 = Latched)
+    CMD"#2K"
+  EndIf
+  If (OLMode_Ax3 = False)
+    And(LatchEncLoss_Ax3 = Latched)
+    CMD"#3K"
+  EndIf
+  If (OLMode_Ax4 = False)
+    And(LatchEncLoss_Ax4 = Latched)
+    CMD"#4K"
+  EndIf
+  If (OLMode_Ax5 = False)
+    And(LatchEncLoss_Ax5 = Latched)
+    CMD"#5K"
+  EndIf
+  If (OLMode_Ax6 = False)
+    And(LatchEncLoss_Ax6 = Latched)
+    CMD"#6K"
+  EndIf
+  If (OLMode_Ax7 = False)
+    And(LatchEncLoss_Ax7 = Latched)
+    CMD"#7K"
+  EndIf
+  If (OLMode_Ax8 = False)
+    And(LatchEncLoss_Ax8 = Latched)
+    CMD"#8K"
+  EndIf
+EndIf
+
+If (ClearEcoderLossFaults = True)
+  ;attempt to clear the latch
+  ClearEcoderLossFaults = Reset
+  LatchEncLoss_Ax1 = UnLatched
+  LatchEncLoss_Ax2 = UnLatched
+  LatchEncLoss_Ax3 = UnLatched
+  LatchEncLoss_Ax4 = UnLatched
+  LatchEncLoss_Ax5 = UnLatched
+  LatchEncLoss_Ax6 = UnLatched
+  LatchEncLoss_Ax7 = UnLatched
+  LatchEncLoss_Ax8 = UnLatched
+  EncLossFlg_Ax1=ENCNOTLOST
+  EncLossFlg_Ax2=ENCNOTLOST
+  EncLossFlg_Ax3=ENCNOTLOST
+  EncLossFlg_Ax4=ENCNOTLOST
+  EncLossFlg_Ax5=ENCNOTLOST
+  EncLossFlg_Ax6=ENCNOTLOST
+  EncLossFlg_Ax7=ENCNOTLOST
+  EncLossFlg_Ax8=ENCNOTLOST
+EndIf
+
+CLOSE

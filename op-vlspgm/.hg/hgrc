@@ -1,0 +1,7 @@
+[ui]
+editor = /usr/bin/vim
+[paths]
+default = https://code.nsls2.bnl.gov/hg/xf/23id/iocs/xf23id1-ioc1/op-vlspgm
+[http_proxy]
+host = proxy:8888
+

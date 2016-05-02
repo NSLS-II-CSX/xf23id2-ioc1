@@ -1,0 +1,2026 @@
+;********************************************************
+;Macro variable and constant definitions
+;********************************************************
+;Change History:-
+;********************************************************
+; 2012/07/19 GRE Added msec in timers
+; 2012/07/19 GRE Added JogPos_Ax1..8 (Mx72)
+; 2012/07/19 GRE Added P7100..7114 for PLC19
+; 2012/07/20 GRE Version 1.1, Added JogPosAtKill_Ax*	P*11, DefaultAxOLAct_Ax*, DefaultAxKillAct_Ax*
+;                 modified PLC1x to set JogPosAtKill_Ax* on cmd kill or cmd o0
+; 2012/09/28 MKS Integrated Hexapod Software
+;
+;********************************************************
+
+;General Usage6PodSpd contants
+#define	True		1
+#define	False		0
+#define	Reset		0
+#define	Latched		1
+#define	UnLatched	0
+#define	Active		1
+#define	NotActive	0
+#define	Enabled		1
+#define	Disabled	0
+#define	BrakeOn		0
+#define	BrakeOff	1
+#define	LimitsOFF	$20001
+#define	LimitsON	$1
+#define HomingError	8
+#define	HomingComplete	4
+#define msec		*8388608/I10
+#define ENCLOST		0	; Low-true fault
+#define ENCNOTLOST	1
+#define	StablePropGain	1500
+#define	StdKVFFGain	5500
+
+;homing modes
+#define FACTORY_ZERO 0
+#define PREVIOUS_POSITION 1
+#define NOMINAL_ZERO 2
+
+;Unit Conversion Constants
+;#define	mm2CtsBend	20000	;(cts/mm - Bender) for x400 Interpolation
+;#define	mm2CtsBend	100000	;(cts/mm - Bender) for x2000 Interpolation
+
+; buffer: P-variable of base of buffer. Up to 80 points in buffer
+#define	BUFBASE_Ax1	910
+#define	BUFBASE_Ax2	920
+#define	BUFBASE_Ax3	930
+#define	BUFBASE_Ax4	940
+#define	BUFBASE_Ax5	950
+#define	BUFBASE_Ax6	960
+#define	BUFBASE_Ax7	970
+#define	BUFBASE_Ax8	980
+
+;Encoder Stall or loss protection constants
+#define	TIMEBETWEENPOINTS	56	;56 servo cycles, servo cycle length is defined by I10 variable
+;I10=1,710,933 [servo cycle length: 203.96 microsec] otherwise [servo cycle length: I10*1000/8,388,608 microsec]
+#define	BUFLEN	11			;length of each of the buffers (max 80)
+#define	BUFLENLESS1	10	;number of old points to be saved in each buffer.
+#define	DEACTIVATIONTIMEOUT	1000 	;allow 1000 servo cycles for motors to stop
+
+;*************************************************************
+;P-Variables Definitions
+;*************************************************************
+; Commanded motor positions (leg lengths) in counts,
+; relative to home positions.
+; Variables are used automatically by forward and inverse
+; kinematic routines
+#define MPosBase       0
+#define M1Pos          P1
+#define M2Pos          P2
+#define M3Pos          P3
+#define M4Pos          P4
+#define M5Pos          P5
+#define M6Pos          P6
+
+;Software version and Date
+#define	SoftwareVersion	P7
+#define	SoftwareDate	P8
+
+;P9-P99 for general calculation use and variable storage
+#define	BendsChkFreq	P9
+
+;#define	DebugPosPLC0	P10
+;#define	DebugPosPLC1	P11
+#define	DebugPosPLC2	P12
+;#define	DebugPosPLC3	P13
+;#define	DebugPosPLC4	P14
+;#define	DebugPosPLC5	P15
+;#define	DebugPosPLC6	P16
+;#define	DebugPosPLC7	P17
+;#define	DebugPosPLC8	P18
+;#define	DebugPosPLC9	P19
+#define	AccTm_Jacks	P20
+#define	SCurvTm_Jacks	P21
+#define	JogSpd_Jacks	P22
+
+#define	AccTm_Lats	P30
+#define	SCurvTm_Lats	P31
+#define	JogSpd_Lats	P32
+
+#define	BrakeActiDly		P20
+
+#define	TmOutDuration	P50
+#define	TmOutVal	P51
+#define	TmOutVal2	P52
+
+#define	MaintModeLimLatch	P60
+#define	MaintModePosMovLatch	P61
+#define	MaintModeNegMovLatch	P62
+#define	BrakeLatch		P65
+
+#define	PosDiff			P80
+#define	MinBend			P81
+#define	MaxBend			P82
+#define	Thres_Warn	P83
+#define	Thres_Stop	P84
+
+#define 6PodSettleTol	P85
+#define 6PodTolRaw	P86
+#define 6PodSpd_Prog1	P87
+#define 6Pod_Degs2UserUnit	P88
+#define 6PodThreshold	P89
+#define	6PodStableGain P90
+
+;TCP zero offsets
+#define 6PodHmPos_AxX P91
+#define 6PodHmPos_AxY P92
+#define 6PodHmPos_AxZ P93
+#define 6PodHmPos_AxA P94
+#define 6PodHmPos_AxB P95
+#define 6PodHmPos_AxC P96
+
+;Px00-Px99 for axis specific parameters
+#define	HmOffset_Ax1	P100
+#define	HmOffset_Ax2	P200
+#define	HmOffset_Ax3	P300
+#define	HmOffset_Ax4	P400
+#define	HmOffset_Ax5	P500
+#define	HmOffset_Ax6	P600
+#define	HmOffset_Ax7	P700
+#define	HmOffset_Ax8	P800
+
+#define	ScanFreq_Ax1	P101
+#define	ScanFreq_Ax2	P201
+#define	ScanFreq_Ax3	P301
+#define	ScanFreq_Ax4	P401
+#define	ScanFreq_Ax5	P501
+#define	ScanFreq_Ax6	P601
+#define	ScanFreq_Ax7	P701
+#define	ScanFreq_Ax8	P801
+
+#define	Iteration	P901
+
+#define	AxOLAct_Ax1	P102
+#define	AxOLAct_Ax2	P202
+#define	AxOLAct_Ax3	P302
+#define	AxOLAct_Ax4	P402
+#define	AxOLAct_Ax5	P502
+#define	AxOLAct_Ax6	P602
+#define	AxOLAct_Ax7	P702
+#define	AxOLAct_Ax8	P802
+
+#define	PauseAftOpen	P903
+
+#define	Latch_Ax1_1	P103
+#define	Latch_Ax2_1	P203
+#define	Latch_Ax3_1	P303
+#define	Latch_Ax4_1	P403
+#define	Latch_Ax5_1	P503
+#define	Latch_Ax6_1	P603
+#define	Latch_Ax7_1	P703
+#define	Latch_Ax8_1	P803
+
+#define	PauseAftClose	P904
+
+#define	Latch_Ax1_2	P104
+#define	Latch_Ax2_2	P204
+#define	Latch_Ax3_2	P304
+#define	Latch_Ax4_2	P404
+#define	Latch_Ax5_2	P504
+#define	Latch_Ax6_2	P604
+#define	Latch_Ax7_2	P704
+#define	Latch_Ax8_2	P804
+
+#define	Scale_Ax1	P105
+#define	Scale_Ax2	P205
+#define	Scale_Ax3	P305
+#define	Scale_Ax4	P405
+#define	Scale_Ax5	P505
+#define	Scale_Ax6	P605
+#define	Scale_Ax7	P705
+#define	Scale_Ax8	P805
+
+#define	Iteration_tmp	P902
+
+;Data Setup for Mode Change PLC
+#define	BraggAtZeroTol	P905
+#define	PerpAtPosTol	P906
+
+#define	TCP_Select_Old	P907
+#define	TCP_Base	P908
+#define	TCP_Select P909
+#define	TCPLim_Base	P910
+
+;Data Setup for PLCs (Kill motor after move)
+#define	AxKillAct_Ax1	P105
+#define	AxKillAct_Ax2	P205
+#define	AxKillAct_Ax3	P305
+#define	AxKillAct_Ax4	P405
+#define	AxKillAct_Ax5	P505
+#define	AxKillAct_Ax6	P605
+#define	AxKillAct_Ax7	P705
+#define	AxKillAct_Ax8	P805
+
+; Activate stall detection
+#define	StallProtectEna_Ax1	P106
+#define	StallProtectEna_Ax2	P206
+#define	StallProtectEna_Ax3	P306
+#define	StallProtectEna_Ax4	P406
+#define	StallProtectEna_Ax5	P506
+#define	StallProtectEna_Ax6	P606
+#define	StallProtectEna_Ax7	P706
+#define	StallProtectEna_Ax8	P806
+
+#define	StartPos_Ax1	P107
+#define	StartPos_Ax2	P207
+#define	StartPos_Ax3	P307
+#define	StartPos_Ax4	P407
+#define	StartPos_Ax5	P507
+#define	StartPos_Ax6	P607
+#define	StartPos_Ax7	P707
+#define	StartPos_Ax8	P807
+
+#define	EndPos_Ax1	P108
+#define	EndPos_Ax2	P208
+#define	EndPos_Ax3	P308
+#define	EndPos_Ax4	P408
+#define	EndPos_Ax5	P508
+#define	EndPos_Ax6	P608
+#define	EndPos_Ax7	P708
+#define	EndPos_Ax8	P808
+
+#define	CalActPos_Ax1	P109
+#define	CalActPos_Ax2	P209
+#define	CalActPos_Ax3	P309
+#define	CalActPos_Ax4	P409
+#define	CalActPos_Ax5	P509
+#define	CalActPos_Ax6	P609
+#define	CalActPos_Ax7	P709
+#define	CalActPos_Ax8	P809
+
+#define	ProgCmdPos_Ax1	P110
+#define	ProgCmdPos_Ax2	P210
+#define	ProgCmdPos_Ax3	P310
+#define	ProgCmdPos_Ax4	P410
+#define	ProgCmdPos_Ax5	P510
+#define	ProgCmdPos_Ax6	P610
+#define	ProgCmdPos_Ax7	P710
+#define	ProgCmdPos_Ax8	P810
+
+; Old DAC values
+#define	DACOld_Ax1	P111
+#define	DACOld_Ax2	P211
+#define	DACOld_Ax3	P311
+#define	DACOld_Ax4	P411
+#define	DACOld_Ax5	P511
+#define	DACOld_Ax6	P611
+#define	DACOld_Ax7	P711
+#define	DACOld_Ax8	P811
+
+; Number of old positions in buffers
+#define	OldPsnsInBuffer_Ax1	P112
+#define	OldPsnsInBuffer_Ax2	P212
+#define	OldPsnsInBuffer_Ax3	P312
+#define	OldPsnsInBuffer_Ax4	P412
+#define	OldPsnsInBuffer_Ax5	P512
+#define	OldPsnsInBuffer_Ax6	P612
+#define	OldPsnsInBuffer_Ax7	P712
+#define	OldPsnsInBuffer_Ax8	P812
+
+#define	TempSoftPLim_Ax1	P113
+#define	TempSoftPLim_Ax2	P213
+#define	TempSoftPLim_Ax3	P313
+#define	TempSoftPLim_Ax4	P413
+#define	TempSoftPLim_Ax5	P513
+#define	TempSoftPLim_Ax6	P613
+#define	TempSoftPLim_Ax7	P713
+#define	TempSoftPLim_Ax8	P813
+
+#define	TempSoftMLim_Ax1	P114
+#define	TempSoftMLim_Ax2	P214
+#define	TempSoftMLim_Ax3	P314
+#define	TempSoftMLim_Ax4	P414
+#define	TempSoftMLim_Ax5	P514
+#define	TempSoftMLim_Ax6	P614
+#define	TempSoftMLim_Ax7	P714
+#define	TempSoftMLim_Ax8	P814
+
+; Indices of present positions in buffers
+#define	PresentPsnIdx_Ax1	P115
+#define	PresentPsnIdx_Ax2	P215
+#define	PresentPsnIdx_Ax3	P315
+#define	PresentPsnIdx_Ax4	P415
+#define	PresentPsnIdx_Ax5	P515
+#define	PresentPsnIdx_Ax6	P615
+#define	PresentPsnIdx_Ax7	P715
+#define	PresentPsnIdx_Ax8	P815
+
+; Indices of oldest positions in buffers
+#define	OldestPsnIdx_Ax1	P116
+#define	OldestPsnIdx_Ax2	P216
+#define	OldestPsnIdx_Ax3	P316
+#define	OldestPsnIdx_Ax4	P416
+#define	OldestPsnIdx_Ax5	P516
+#define	OldestPsnIdx_Ax6	P616
+#define	OldestPsnIdx_Ax7	P716
+#define	OldestPsnIdx_Ax8	P816
+
+; Dac output thresholds
+#define	DACThresVal_Ax1	P117
+#define	DACThresVal_Ax2	P217
+#define	DACThresVal_Ax3	P317
+#define	DACThresVal_Ax4	P417
+#define	DACThresVal_Ax5	P517
+#define	DACThresVal_Ax6	P617
+#define	DACThresVal_Ax7	P717
+#define	DACThresVal_Ax8	P817
+
+; Movement thresholds
+#define	MovThresVal_Ax1	P118
+#define	MovThresVal_Ax2	P218
+#define	MovThresVal_Ax3	P318
+#define	MovThresVal_Ax4	P418
+#define	MovThresVal_Ax5	P518
+#define	MovThresVal_Ax6	P618
+#define	MovThresVal_Ax7	P718
+#define	MovThresVal_Ax8	P818
+
+; Activate stall detection
+#define	StallDetect_Ax1	P119
+#define	StallDetect_Ax2	P219
+#define	StallDetect_Ax3	P319
+#define	StallDetect_Ax4	P419
+#define	StallDetect_Ax5	P519
+#define	StallDetect_Ax6	P619
+#define	StallDetect_Ax7	P719
+#define	StallDetect_Ax8	P819
+
+#define	DefaultPropGain_Ax1	P130
+#define	DefaultPropGain_Ax2	P230
+#define	DefaultPropGain_Ax3	P330
+#define	DefaultPropGain_Ax4	P430
+#define	DefaultPropGain_Ax5	P530
+#define	DefaultPropGain_Ax6	P630
+#define	DefaultPropGain_Ax7	P730
+#define	DefaultPropGain_Ax8	P830
+
+#define	DefaultDervGain_Ax1	P131
+#define	DefaultDervGain_Ax2	P231
+#define	DefaultDervGain_Ax3	P331
+#define	DefaultDervGain_Ax4	P431
+#define	DefaultDervGain_Ax5	P531
+#define	DefaultDervGain_Ax6	P631
+#define	DefaultDervGain_Ax7	P731
+#define	DefaultDervGain_Ax8	P831
+
+#define	DefaultKVFFGain_Ax1	P132
+#define	DefaultKVFFGain_Ax2	P232
+#define	DefaultKVFFGain_Ax3	P332
+#define	DefaultKVFFGain_Ax4	P432
+#define	DefaultKVFFGain_Ax5	P532
+#define	DefaultKVFFGain_Ax6	P632
+#define	DefaultKVFFGain_Ax7	P732
+#define	DefaultKVFFGain_Ax8	P832
+
+#define	Latch_Ax1_3	P140
+#define	Latch_Ax2_3	P240
+#define	Latch_Ax3_3	P340
+#define	Latch_Ax4_3	P440
+#define	Latch_Ax5_3	P540
+#define	Latch_Ax6_3	P640
+#define	Latch_Ax7_3	P740
+#define	Latch_Ax8_3	P840
+
+#define JogPosAtKill_Ax1  P141
+#define JogPosAtKill_Ax2  P241
+#define JogPosAtKill_Ax3  P341
+#define JogPosAtKill_Ax4  P441
+#define JogPosAtKill_Ax5  P541
+#define JogPosAtKill_Ax6  P641
+#define JogPosAtKill_Ax7  P741
+#define JogPosAtKill_Ax8  P841
+
+#define DefaultAxOLAct_Ax1  P142
+#define DefaultAxOLAct_Ax2  P242
+#define DefaultAxOLAct_Ax3  P342
+#define DefaultAxOLAct_Ax4  P442
+#define DefaultAxOLAct_Ax5  P542
+#define DefaultAxOLAct_Ax6  P642
+#define DefaultAxOLAct_Ax7  P742
+#define DefaultAxOLAct_Ax8  P842
+
+#define DefaultAxKillAct_Ax1  P145
+#define DefaultAxKillAct_Ax2  P245
+#define DefaultAxKillAct_Ax3  P345
+#define DefaultAxKillAct_Ax4  P445
+#define DefaultAxKillAct_Ax5  P545
+#define DefaultAxKillAct_Ax6  P645
+#define DefaultAxKillAct_Ax7  P745
+#define DefaultAxKillAct_Ax8  P845
+
+;Controls if Enc Loss Kills motors
+#define Default_EncLossCheck_Ax1	P146	;Enables Latching functionality for axis
+#define Default_EncLossCheck_Ax2	P246
+#define Default_EncLossCheck_Ax3	P346
+#define Default_EncLossCheck_Ax4	P446
+#define Default_EncLossCheck_Ax5	P546
+#define Default_EncLossCheck_Ax6	P646
+#define Default_EncLossCheck_Ax7	P746
+#define Default_EncLossCheck_Ax8	P846
+
+#define	MovRange_Ax1	P185
+#define	MovRange_Ax2	P285
+#define	MovRange_Ax3	P385
+#define	MovRange_Ax4	P485
+#define	MovRange_Ax5	P585
+#define	MovRange_Ax6	P685
+#define	MovRange_Ax7	P785
+#define	MovRange_Ax8	P885
+
+#define	HmRange_Ax1	P186
+#define	HmRange_Ax2	P286
+#define	HmRange_Ax3	P386
+#define	HmRange_Ax4	P486
+#define	HmRange_Ax5	P586
+#define	HmRange_Ax6	P686
+#define	HmRange_Ax7	P786
+#define	HmRange_Ax8	P886
+
+#define	LimOffset_Ax1	P187
+#define	LimOffset_Ax2	P287
+#define	LimOffset_Ax3	P387
+#define	LimOffset_Ax4	P487
+#define	LimOffset_Ax5	P587
+#define	LimOffset_Ax6	P687
+#define	LimOffset_Ax7	P787
+#define	LimOffset_Ax8	P887
+
+;start homing positions
+#define HmStartPos_Ax1 P188
+#define HmStartPos_Ax2 P288
+#define HmStartPos_Ax3 P388
+#define HmStartPos_Ax4 P488
+#define HmStartPos_Ax5 P588
+#define HmStartPos_Ax6 P688
+
+;end homing positions
+#define HmEndPos_Ax1 P189
+#define HmEndPos_Ax2 P289
+#define HmEndPos_Ax3 P389
+#define HmEndPos_Ax4 P489
+#define HmEndPos_Ax5 P589
+#define HmEndPos_Ax6 P689
+
+#define EncLossKillsAll	P946
+
+#define	VertPos0	P2700
+#define	VertPos1	P2701
+#define	VertPos2	P2702
+#define	VertPos3	P2703
+#define	VertPos4	P2704
+#define	VertPos5	P2705
+#define	VertPos6	P2706
+#define	VertPos7	P2707
+
+#define	tmpMovTm_Ax1	P2910
+#define	tmpMovTm_Ax2	P2920
+#define	tmpMovTm_Ax3	P2930
+#define	tmpMovTm_Ax4	P2940
+#define	tmpMovTm_Ax5	P2950
+#define	tmpMovTm_Ax6	P2960
+#define	tmpMovTm_Ax7	P2970
+#define	tmpMovTm_Ax8	P2980
+
+#define	DefaultLCS_AxAuRad	P3000
+#define	DefaultLCS_AxBuRad	P3001
+#define	DefaultLCS_AxCuRad	P3002
+#define	DefaultLCS_AxX	P3003
+#define	DefaultLCS_AxY	P3004
+#define	DefaultLCS_AxZ	P3005
+
+#define	AxAuRad_TCP0	P3006
+#define	AxBuRad_TCP0	P3007
+#define	AxCuRad_TCP0	P3008
+#define	AxX_TCP0	P3009
+#define	AxY_TCP0	P3010
+#define	AxZ_TCP0	P3011
+
+#define	DefaultTCP_AxAuRad	P3006
+#define	DefaultTCP_AxBuRad	P3007
+#define	DefaultTCP_AxCuRad	P3008
+#define	DefaultTCP_AxX	P3009
+#define	DefaultTCP_AxY	P3010
+#define	DefaultTCP_AxZ	P3011
+
+#define	AxAuRad_TCP1	P3012
+#define	AxBuRad_TCP1	P3013
+#define	AxCuRad_TCP1	P3014
+#define	AxX_TCP1	P3015
+#define	AxY_TCP1	P3016
+#define	AxZ_TCP1	P3017
+
+#define	AxAuRad_TCP2	P3018
+#define	AxBuRad_TCP2	P3019
+#define	AxCuRad_TCP2	P3020
+#define	AxX_TCP2	P3021
+#define	AxY_TCP2	P3022
+#define	AxZ_TCP2	P3023
+
+#define	AxAuRad_TCP3	P3024
+#define	AxBuRad_TCP3	P3025
+#define	AxCuRad_TCP3	P3026
+#define	AxX_TCP3	P3027
+#define	AxY_TCP3	P3028
+#define	AxZ_TCP3	P3029
+
+#define	AxAuRad_TCP4	P3030
+#define	AxBuRad_TCP4	P3031
+#define	AxCuRad_TCP4	P3032
+#define	AxX_TCP4	P3033
+#define	AxY_TCP4	P3034
+#define	AxZ_TCP4	P3035
+
+#define	AxAuRad_TCP5	P3036
+#define	AxBuRad_TCP5	P3037
+#define	AxCuRad_TCP5	P3038
+#define	AxX_TCP5	P3039
+#define	AxY_TCP5	P3040
+#define	AxZ_TCP5	P3041
+
+#define	AxAuRad_TCP6	P3042
+#define	AxBuRad_TCP6	P3042
+#define	AxCuRad_TCP6	P3044
+#define	AxX_TCP6	P3045
+#define	AxY_TCP6	P3046
+#define	AxZ_TCP6	P3047
+
+#define	AxAuRad_TCP7	P3048
+#define	AxBuRad_TCP7	P3049
+#define	AxCuRad_TCP7	P3050
+#define	AxX_TCP7	P3051
+#define	AxY_TCP7	P3052
+#define	AxZ_TCP7	P3053
+
+;These are the Hexapod Limit Variables
+#define	AxAuRad_PLim	P3100
+#define	AxBuRad_PLim	P3101
+#define	AxCuRad_PLim	P3102
+#define	AxX_PLim	P3103
+#define	AxY_PLim	P3104
+#define	AxZ_PLim	P3105
+#define	AxAuRad_MLim	P3106
+#define	AxBuRad_MLim	P3107
+#define	AxCuRad_MLim	P3108
+#define	AxX_MLim	P3109
+#define	AxY_MLim	P3110
+#define	AxZ_MLim	P3111
+
+;These are the Hexapod Limit Variables for TCP0/Default TCP
+;Note: The variables are double defined purposely.
+;xxxxxx_PLim_TCP0 = DefaultTCP_xxxxxx_PLim
+#define	AxAuRad_PLim_TCP0	P3112
+#define	AxBuRad_PLim_TCP0	P3113
+#define	AxCuRad_PLim_TCP0	P3114
+#define	AxX_PLim_TCP0	P3115
+#define	AxY_PLim_TCP0	P3116
+#define	AxZ_PLim_TCP0	P3117
+#define	AxAuRad_MLim_TCP0	P3118
+#define	AxBuRad_MLim_TCP0	P3119
+#define	AxCuRad_MLim_TCP0	P3120
+#define	AxX_MLim_TCP0	P3121
+#define	AxY_MLim_TCP0	P3122
+#define	AxZ_MLim_TCP0	P3123
+
+;These are the Hexapod Limit Variables for TCP0/Default TCP
+;Note: The variables are double defined purposely.
+;xxxxxx_PLim_TCP0 = DefaultTCP_xxxxxx_PLim
+#define	DefaultTCP_AxAuRad_PLim	P3112
+#define	DefaultTCP_AxBuRad_PLim	P3113
+#define	DefaultTCP_AxCuRad_PLim	P3114
+#define	DefaultTCP_AxX_PLim	P3115
+#define	DefaultTCP_AxY_PLim	P3116
+#define	DefaultTCP_AxZ_PLim	P3117
+#define	DefaultTCP_AxAuRad_MLim	P3118
+#define	DefaultTCP_AxBuRad_MLim	P3119
+#define	DefaultTCP_AxCuRad_MLim	P3120
+#define	DefaultTCP_AxX_MLim	P3121
+#define	DefaultTCP_AxY_MLim	P3122
+#define	DefaultTCP_AxZ_MLim	P3123
+
+;These are the Hexapod Limit Variables for TCP1
+#define	AxAuRad_PLim_TCP1	P3124
+#define	AxBuRad_PLim_TCP1	P3125
+#define	AxCuRad_PLim_TCP1	P3126
+#define	AxX_PLim_TCP1	P3127
+#define	AxY_PLim_TCP1	P3128
+#define	AxZ_PLim_TCP1	P3129
+#define	AxAuRad_MLim_TCP1	P3130
+#define	AxBuRad_MLim_TCP1	P3131
+#define	AxCuRad_MLim_TCP1	P3132
+#define	AxX_MLim_TCP1	P3133
+#define	AxY_MLim_TCP1	P3134
+#define	AxZ_MLim_TCP1	P3135
+
+;These are the Hexapod Limit Variables for TCP2
+#define	AxAuRad_PLim_TCP2	P3136
+#define	AxBuRad_PLim_TCP2	P3137
+#define	AxCuRad_PLim_TCP2	P3138
+#define	AxX_PLim_TCP2	P3139
+#define	AxY_PLim_TCP2	P3140
+#define	AxZ_PLim_TCP2	P3141
+#define	AxAuRad_MLim_TCP2	P3142
+#define	AxBuRad_MLim_TCP2	P3143
+#define	AxCuRad_MLim_TCP2	P3144
+#define	AxX_MLim_TCP2	P3145
+#define	AxY_MLim_TCP2	P3146
+#define	AxZ_MLim_TCP2	P3147
+
+;These are the Hexapod Limit Variables for TCP3
+#define	AxAuRad_PLim_TCP3	P3148
+#define	AxBuRad_PLim_TCP3	P3149
+#define	AxCuRad_PLim_TCP3	P3150
+#define	AxX_PLim_TCP3	P3151
+#define	AxY_PLim_TCP3	P3152
+#define	AxZ_PLim_TCP3	P3153
+#define	AxAuRad_MLim_TCP3	P3154
+#define	AxBuRad_MLim_TCP3	P3155
+#define	AxCuRad_MLim_TCP3	P3156
+#define	AxX_MLim_TCP3	P3157
+#define	AxY_MLim_TCP3	P3158
+#define	AxZ_MLim_TCP3	P3159
+
+;These are the Hexapod Limit Variables for TCP4
+#define	AxAuRad_PLim_TCP4	P3160
+#define	AxBuRad_PLim_TCP4	P3161
+#define	AxCuRad_PLim_TCP4	P3162
+#define	AxX_PLim_TCP4	P3163
+#define	AxY_PLim_TCP4	P3164
+#define	AxZ_PLim_TCP4	P3165
+#define	AxAuRad_MLim_TCP4	P3166
+#define	AxBuRad_MLim_TCP4	P3167
+#define	AxCuRad_MLim_TCP4	P3168
+#define	AxX_MLim_TCP4	P3169
+#define	AxY_MLim_TCP4	P3170
+#define	AxZ_MLim_TCP4	P3171
+
+;These are the Hexapod Limit Variables for TCP5
+#define	AxAuRad_PLim_TCP5	P3172
+#define	AxBuRad_PLim_TCP5	P3173
+#define	AxCuRad_PLim_TCP5	P3174
+#define	AxX_PLim_TCP5	P3175
+#define	AxY_PLim_TCP5	P3176
+#define	AxZ_PLim_TCP5	P3177
+#define	AxAuRad_MLim_TCP5	P3178
+#define	AxBuRad_MLim_TCP5	P3179
+#define	AxCuRad_MLim_TCP5	P3180
+#define	AxX_MLim_TCP5	P3181
+#define	AxY_MLim_TCP5	P3182
+#define	AxZ_MLim_TCP5	P3183
+
+;These are the Hexapod Limit Variables for TCP6
+#define	AxAuRad_PLim_TCP6	P3184
+#define	AxBuRad_PLim_TCP6	P3185
+#define	AxCuRad_PLim_TCP6	P3186
+#define	AxX_PLim_TCP6	P3187
+#define	AxY_PLim_TCP6	P3188
+#define	AxZ_PLim_TCP6	P3189
+#define	AxAuRad_MLim_TCP6	P3190
+#define	AxBuRad_MLim_TCP6	P3191
+#define	AxCuRad_MLim_TCP6	P3192
+#define	AxX_MLim_TCP6	P3193
+#define	AxY_MLim_TCP6	P3194
+#define	AxZ_MLim_TCP6	P3195
+
+;These are the Hexapod Limit Variables for TCP7
+#define	AxAuRad_PLim_TCP7	P3196
+#define	AxBuRad_PLim_TCP7	P3197
+#define	AxCuRad_PLim_TCP7	P3198
+#define	AxX_PLim_TCP7	P3199
+#define	AxY_PLim_TCP7	P3200
+#define	AxZ_PLim_TCP7	P3201
+#define	AxAuRad_MLim_TCP7	P3202
+#define	AxBuRad_MLim_TCP7	P3203
+#define	AxCuRad_MLim_TCP7	P3204
+#define	AxX_MLim_TCP7	P3205
+#define	AxY_MLim_TCP7	P3206
+#define	AxZ_MLim_TCP7	P3207
+
+#define BraggMoveCorrectionState  P7100
+#define	UseBraggCorrection	P7101
+
+#define BraggAxisLastPos         P7102
+#define BraggAxisDeadBand		     P7103
+#define BraggAxisPosDiff		     P7104
+
+#define AxOLAct_Ax3_Default		   P7105
+#define AxOLAct_Ax4_Default		   P7106
+#define AxKillAct_Ax3_Default		 P7107
+#define AxKillAct_Ax4_Default     P7108
+#define FirstPassLatch           P7109
+#define LastJogPos_Ax3           P7113
+#define LastJogPos_Ax4           P7114
+
+;*************************************************************
+;Q variables definitions
+;*************************************************************
+
+; Commanded axis tool-tip positions (pose), XYZ in in/mm,
+; ABC in degrees. Variables are used automatically by
+; forward and inverse kinematic routines.
+#define PoseA          Q1
+#define PoseB          Q2
+#define PoseC          Q3
+#define PoseX          Q7
+#define PoseY          Q8
+#define PoseZ          Q9
+
+;Temporary scalar and vector quantities
+#define TempBase       180
+#define Temp           Q180
+#define Temp1          Q181
+#define Temp2          Q182
+#define Temp3          Q183
+#define Temp4          Q184
+#define Temp5          Q185
+#define Temp6          Q186
+
+;Intermediate variables
+#define ZeroLen        Q187   ; Zero leg length in user units
+#define MaxLen         Q188   ; Max leg length in user units
+#define MinLen         Q189   ; Min leg length in user units
+#define 6PodIteration  Q190   ; Time thru fwd kinematics
+#define Step           Q191   ; Matrix index
+#define Row            Q192   ; Matrix row index
+#define Col            Q193   ; Matrix col index
+#define Leg            Q194   ; Leg number index
+#define LegScale       Q195   ; Leg counts per user unit
+#define MinZ           Q196   ; Z position at full retract
+#define Angle          Q197   ; Angle index
+#define NotDone        Q198   ; Flag to continue
+#define Transfering    Q199   ; Flag set during PLC update
+
+;H is 6x6 matrix of sensitivity of leg lengths to pose changes
+#define Hbase          200
+#define H11            Q201
+#define H12            Q202
+#define H13            Q203
+#define H14            Q204
+#define H15            Q205
+#define H16            Q206
+#define H21            Q207
+#define H22            Q208
+#define H23            Q209
+#define H24            Q210
+#define H25            Q211
+#define H26            Q212
+#define H31            Q213
+#define H32            Q214
+#define H33            Q215
+#define H34            Q216
+#define H35            Q217
+#define H36            Q218
+#define H41            Q219
+#define H42            Q220
+#define H43            Q221
+#define H44            Q222
+#define H45            Q223
+#define H46            Q224
+#define H51            Q225
+#define H52            Q226
+#define H53            Q227
+#define H54            Q228
+#define H55            Q229
+#define H56            Q230
+#define H61            Q231
+#define H62            Q232
+#define H63            Q233
+#define H64            Q234
+#define H65            Q235
+#define H66            Q236
+
+; Commanded leg lengths in user units
+#define LenBase        240
+#define Len1           Q241
+#define Len2           Q242
+#define Len3           Q243
+#define Len4           Q244
+#define Len5           Q245
+#define Len6           Q246
+; R is 3x4 transformation (rotate + displace) matrix of platform
+#define Rbase          250
+#define R11            Q251
+#define R12            Q252
+#define R13            Q253
+#define R14            Q254
+#define R21            Q255
+#define R22            Q256
+#define R23            Q257
+#define R24            Q258
+#define R31            Q259
+#define R32            Q260
+#define R33            Q261
+#define R34            Q262
+
+;DeltaLen is vector of changes in the leg length in iteration
+#define DeltaLenBase   280
+#define DeltaLen1      Q281
+#define DeltaLen2      Q282
+#define DeltaLen3      Q283
+#define DeltaLen4      Q284
+#define DeltaLen5      Q285
+#define DeltaLen6      Q286
+
+;DeltaPose is vector of changes in pose coordinates in iteration
+#define DeltaPoseBase   290
+#define DeltaPoseA      Q291
+#define DeltaPoseB      Q292
+#define DeltaPoseC      Q293
+#define DeltaPoseX      Q294
+#define DeltaPoseY      Q295
+#define DeltaPoseZ      Q296
+
+; Bpos is constant matrix of base coordinates of ends of legs
+#define BposBase       300
+#define Xb1            Q301
+#define Yb1            Q302
+#define Zb1            Q303
+#define Xb2            Q304
+#define Yb2            Q305
+#define Zb2            Q306
+#define Xb3            Q307
+#define Yb3            Q308
+#define Zb3            Q309
+#define Xb4            Q310
+#define Yb4            Q311
+#define Zb4            Q312
+#define Xb5            Q313
+#define Yb5            Q314
+#define Zb5            Q315
+#define Xb6            Q316
+#define Yb6            Q317
+#define Zb6            Q318
+; Ppos is constant matrix of platform coordinates of ends of legs
+; in the platform's frame of reference
+#define PposeBase       320
+#define Xp1            Q321
+#define Yp1            Q322
+#define Zp1            Q323
+#define Xp2            Q324
+#define Yp2            Q325
+#define Zp2            Q326
+#define Xp3            Q327
+#define Yp3            Q328
+#define Zp3            Q329
+#define Xp4            Q330
+#define Yp4            Q331
+#define Zp4            Q332
+#define Xp5            Q333
+#define Yp5            Q334
+#define Zp5            Q335
+#define Xp6            Q336
+#define Yp6            Q337
+#define Zp6            Q338
+
+;Slen is matrix of leg coordinate lengths
+;(between transformed platform and base)
+#define SlenBase       340
+#define Xs1            Q341
+#define Ys1            Q342
+#define Zs1            Q343
+#define Xs2            Q344
+#define Ys2            Q345
+#define Zs2            Q346
+#define Xs3            Q347
+#define Ys3            Q348
+#define Zs3            Q349
+#define Xs4            Q350
+#define Ys4            Q351
+#define Zs4            Q352
+#define Xs5            Q353
+#define Ys5            Q354
+#define Zs5            Q355
+#define Xs6            Q356
+#define Ys6            Q357
+#define Zs6            Q358
+
+;Vector of estimated leg lengths
+#define EstLenBase     360
+#define EstLen1        Q361
+#define EstLen2        Q362
+#define EstLen3        Q363
+#define EstLen4        Q364
+#define EstLen5        Q365
+#define EstLen6        Q366
+
+;Matrix 3x3x3 of derivative of rotation matrix with respect to pose angles
+#define dRBase         370
+#define dRdA11         Q371
+#define dRdA12         Q372
+#define dRdA13         Q373
+#define dRdA21         Q374
+#define dRdA22         Q375
+#define dRdA23         Q376
+#define dRdA31         Q377
+#define dRdA32         Q378
+#define dRdA33         Q379
+
+#define dRdB11         Q380
+#define dRdB12         Q381
+#define dRdB13         Q382
+#define dRdB21         Q383
+#define dRdB22         Q384
+#define dRdB23         Q385
+#define dRdB31         Q386
+#define dRdB32         Q387
+#define dRdB33         Q388
+
+#define dRdC11         Q389
+#define dRdC12         Q390
+#define dRdC13         Q391
+#define dRdC21         Q392
+#define dRdC22         Q393
+#define dRdC23         Q394
+#define dRdC31         Q395
+#define dRdC32         Q396
+#define dRdC33         Q397
+
+;Estimation of actual pose coordinates
+#define ActPoseA       Q401
+#define ActPoseB       Q402
+#define ActPoseC       Q403
+#define ActPoseX       Q407
+#define ActPoseY       Q408
+#define ActPoseZ       Q409
+
+;Stored last pose coordinates
+#define LastPoseBase   410
+#define LastPoseA      Q411
+#define LastPoseB      Q412
+#define LastPoseC      Q413
+#define LastPoseX      Q414
+#define LastPoseY      Q415
+#define LastPoseZ      Q416
+
+;Change in estimated pose coordinates
+#define DPoseBase      420
+#define DPoseA         Q421
+#define DPoseB         Q422
+#define DPoseC         Q423
+#define DPoseX         Q424
+#define DPoseY         Q425
+#define DPoseZ         Q426
+
+;HA is 6x6 matrix of sensitivity of actual leg lengths to pose changes
+#define HAbase          430
+#define HA11            Q431
+#define HA12            Q432
+#define HA13            Q433
+#define HA14            Q434
+#define HA15            Q435
+#define HA16            Q436
+#define HA21            Q437
+#define HA22            Q438
+#define HA23            Q439
+#define HA24            Q440
+#define HA25            Q441
+#define HA26            Q442
+#define HA31            Q443
+#define HA32            Q444
+#define HA33            Q445
+#define HA34            Q446
+#define HA35            Q447
+#define HA36            Q448
+#define HA41            Q449
+#define HA42            Q450
+#define HA43            Q451
+#define HA44            Q452
+#define HA45            Q453
+#define HA46            Q454
+#define HA51            Q455
+#define HA52            Q456
+#define HA53            Q457
+#define HA54            Q458
+#define HA55            Q459
+#define HA56            Q460
+#define HA61            Q461
+#define HA62            Q462
+#define HA63            Q463
+#define HA64            Q464
+#define HA65            Q465
+#define HA66            Q466
+
+; RA is 3x4 transformation (rotate + displace) matrix of platform
+#define RAbase          470
+#define RA11            Q471
+#define RA12            Q472
+#define RA13            Q473
+#define RA14            Q474
+#define RA21            Q475
+#define RA22            Q476
+#define RA23            Q477
+#define RA24            Q478
+#define RA31            Q479
+#define RA32            Q480
+#define RA33            Q481
+#define RA34            Q482
+
+;Matrix 3x3x3 of derivative of rotation matrix with respect to pose angles
+#define dRABase         490
+#define dRAdA11         Q491
+#define dRAdA12         Q492
+#define dRAdA13         Q493
+#define dRAdA21         Q494
+#define dRAdA22         Q495
+#define dRAdA23         Q496
+#define dRAdA31         Q497
+#define dRAdA32         Q498
+#define dRAdA33         Q499
+
+#define dRAdB11         Q500
+#define dRAdB12         Q501
+#define dRAdB13         Q502
+#define dRAdB21         Q503
+#define dRAdB22         Q504
+#define dRAdB23         Q505
+#define dRAdB31         Q506
+#define dRAdB32         Q507
+#define dRAdB33         Q508
+
+#define dRAdC11         Q509
+#define dRAdC12         Q510
+#define dRAdC13         Q511
+#define dRAdC21         Q512
+#define dRAdC22         Q513
+#define dRAdC23         Q514
+#define dRAdC31         Q515
+#define dRAdC32         Q516
+#define dRAdC33         Q517
+
+;Temporary scalar and vector quantities
+#define TempABase       520
+#define TempA           Q520
+#define TempA1          Q521
+#define TempA2          Q522
+#define TempA3          Q523
+#define TempA4          Q524
+#define TempA5          Q525
+#define TempA6          Q526
+
+;Intermediate variables
+#define IterationA      Q530   ; Time thru fwd kinematics
+#define StepA           Q531   ; Matrix index
+#define RowA            Q532   ; Matrix row index
+#define ColA            Q533   ; Matrix col index
+#define LegA            Q534   ; Leg number index
+#define AngleA          Q537   ; Angle index
+#define NotDoneA        Q538   ; Flag to continue
+
+;Slen is matrix of leg coordinate lengths
+;(between transformed platform and base)
+#define SlenABase       540
+#define XsA1            Q541
+#define YsA1            Q542
+#define ZsA1            Q543
+#define XsA2            Q544
+#define YsA2            Q545
+#define ZsA2            Q546
+#define XsA3            Q547
+#define YsA3            Q548
+#define ZsA3            Q549
+#define XsA4            Q550
+#define YsA4            Q551
+#define ZsA4            Q552
+#define XsA5            Q553
+#define YsA5            Q554
+#define ZsA5            Q555
+#define XsA6            Q556
+#define YsA6            Q557
+#define ZsA6            Q558
+
+;Vector of estimated leg lengths
+#define EstLenABase     560
+#define EstLenA1        Q561
+#define EstLenA2        Q562
+#define EstLenA3        Q563
+#define EstLenA4        Q564
+#define EstLenA5        Q565
+#define EstLenA6        Q566
+
+#define Factor		Q600
+#define FactorA		Q601
+;#define 6PodThreshold	Q602
+#define Temp2A		Q603
+#define Temp1A		Q604
+#define Temp1B		Q605
+#define Temp2B		Q606
+
+#define DeltaLenABase  610
+#define DeltaLenA1     Q611
+#define DeltaLenA2     Q612
+#define DeltaLenA3     Q613
+#define DeltaLenA4     Q614
+#define DeltaLenA5     Q615
+#define DeltaLenA6     Q616
+
+#define ActLenBase     640
+#define ActLen1        Q641
+#define ActLen2        Q642
+#define ActLen3        Q643
+#define ActLen4        Q644
+#define ActLen5        Q645
+#define ActLen6        Q646
+
+#define PoseAReport      Q651
+#define PoseBReport      Q652
+#define PoseCReport      Q653
+#define PoseXReport      Q654
+#define PoseYReport      Q655
+#define PoseZReport      Q656
+
+;Position of TCP c.s. relative to PCS
+#define TCPBase            660
+#define TCPPoseAuRad       Q661
+#define TCPPoseBuRad       Q662
+#define TCPPoseCuRad       Q663
+#define TCPPoseX           Q664
+#define TCPPoseY           Q665
+#define TCPPoseZ           Q666
+
+;These are used to transform to deg.
+#define TCPPoseA           Q667
+#define TCPPoseB           Q668
+#define TCPPoseC           Q669
+
+;Position of LCS c.s. relative to BCS
+#define LCSBase            670
+#define LCSPoseAuRad       Q671
+#define LCSPoseBuRad       Q672
+#define LCSPoseCuRad       Q673
+#define LCSPoseX           Q674
+#define LCSPoseY           Q675
+#define LCSPoseZ           Q676
+
+;These are used to transform to deg.
+#define LCSPoseA           Q677
+#define LCSPoseB           Q678
+#define LCSPoseC           Q679
+
+;New Commanded Pose of the UCS
+#define UCSBase         680
+#define UCSPoseAuRad    Q681
+#define UCSPoseBuRad    Q682
+#define UCSPoseCuRad    Q683
+#define UCSPoseX        Q684
+#define UCSPoseY        Q685
+#define UCSPoseZ        Q686
+
+;These are used to transform to deg.
+#define UCSPoseA       Q687
+#define UCSPoseB       Q688
+#define UCSPoseC       Q689
+
+; RTCP is 3x4 transformation (rotate + displace)  matrix of TCP
+#define RTCPbase          690
+#define RTCP11            Q691
+#define RTCP12            Q692
+#define RTCP13            Q693
+#define RTCP14            Q694
+#define RTCP21            Q695
+#define RTCP22            Q696
+#define RTCP23            Q697
+#define RTCP24            Q698
+#define RTCP31            Q699
+#define RTCP32            Q700
+#define RTCP33            Q701
+#define RTCP34            Q702
+
+; RLCS is 3x4 transformation (rotate + displace) matrix of LCS
+#define RLCSbase          710
+#define RLCS11            Q711
+#define RLCS12            Q712
+#define RLCS13            Q713
+#define RLCS14            Q714
+#define RLCS21            Q715
+#define RLCS22            Q716
+#define RLCS23            Q717
+#define RLCS24            Q718
+#define RLCS31            Q719
+#define RLCS32            Q720
+#define RLCS33            Q721
+#define RLCS34            Q722
+
+; These definition are used when user changes the LCS or TCP
+; New TCP
+
+#define NewRTCPBase    	     810
+#define NewRTCP11     	     Q811
+#define NewRTCP12            Q812
+#define NewRTCP13            Q813
+#define NewRTCP14            Q814
+#define NewRTCP21            Q815
+#define NewRTCP22            Q816
+#define NewRTCP23            Q817
+#define NewRTCP24            Q818
+#define NewRTCP31            Q819
+#define NewRTCP32            Q820
+#define NewRTCP33            Q821
+#define NewRTCP34            Q822
+
+; New LCS
+
+#define NewRLCSBase    	     830
+#define NewRLCS11     	     Q831
+#define NewRLCS12            Q832
+#define NewRLCS13            Q833
+#define NewRLCS14            Q834
+#define NewRLCS21            Q835
+#define NewRLCS22            Q836
+#define NewRLCS23            Q837
+#define NewRLCS24            Q838
+#define NewRLCS31            Q839
+#define NewRLCS32            Q840
+#define NewRLCS33            Q841
+#define NewRLCS34            Q842
+
+;new TCP pose
+#define NewTCPBase            850
+#define NewTCPPoseAuRad       Q851
+#define NewTCPPoseBuRad       Q852
+#define NewTCPPoseCuRad       Q853
+#define NewTCPPoseX           Q854
+#define NewTCPPoseY           Q855
+#define NewTCPPoseZ           Q856
+
+;These are used to transform to deg.
+#define NewTCPPoseA           Q857
+#define NewTCPPoseB           Q858
+#define NewTCPPoseC           Q859
+
+;new LCS pose
+#define NewLCSBase            860
+#define NewLCSPoseAuRad       Q861
+#define NewLCSPoseBuRad       Q862
+#define NewLCSPoseCuRad       Q863
+#define NewLCSPoseX           Q864
+#define NewLCSPoseY           Q865
+#define NewLCSPoseZ           Q866
+
+;These are used to transform to deg.
+#define NewLCSPoseA           Q867
+#define NewLCSPoseB           Q868
+#define NewLCSPoseC           Q869
+
+;used in new CS plc for temporarly storage
+#define TempNewCS           Q870
+
+;Switch in new CS plc
+#define newCSswitch           Q871
+
+
+; 3x4 transformation (rotate + displace)  matrix of UCS
+; calculated from actual position
+#define ActRUCSBase    	     890
+#define ActRUCS11     	     Q891
+#define ActRUCS12            Q892
+#define ActRUCS13            Q893
+#define ActRUCS14            Q894
+#define ActRUCS21            Q895
+#define ActRUCS22            Q896
+#define ActRUCS23            Q897
+#define ActRUCS24            Q898
+#define ActRUCS31            Q899
+#define ActRUCS32            Q900
+#define ActRUCS33            Q901
+#define ActRUCS34            Q902
+
+;New UCS transfromation matrix
+#define newRUCS11     	     Q910
+#define newRUCS12            Q911
+#define newRUCS13            Q912
+#define newRUCS21            Q913
+#define newRUCS22            Q914
+#define newRUCS23            Q915
+#define newRUCS31            Q916
+#define newRUCS32            Q917
+#define newRUCS33            Q918
+
+;Base joints transfromed to LCS
+#define PLCSBase       920
+#define Xl1            Q921
+#define Yl1            Q922
+#define Zl1            Q923
+#define Xl2            Q924
+#define Yl2            Q925
+#define Zl2            Q926
+#define Xl3            Q927
+#define Yl3            Q928
+#define Zl3            Q929
+#define Xl4            Q930
+#define Yl4            Q931
+#define Zl4            Q932
+#define Xl5            Q933
+#define Yl5            Q934
+#define Zl5            Q935
+#define Xl6            Q936
+#define Yl6            Q937
+#define Zl6            Q938
+
+;Platform joints transformed to TCP
+#define PUCSBase       940
+#define Xu1            Q941
+#define Yu1            Q942
+#define Zu1            Q943
+#define Xu2            Q944
+#define Yu2            Q945
+#define Zu2            Q946
+#define Xu3            Q947
+#define Yu3            Q948
+#define Zu3            Q949
+#define Xu4            Q950
+#define Yu4            Q951
+#define Zu4            Q952
+#define Xu5            Q953
+#define Yu5            Q954
+#define Zu5            Q955
+#define Xu6            Q956
+#define Yu6            Q957
+#define Zu6            Q958
+
+;*************************************************************
+; I - Variables definitions
+;*************************************************************
+#define	UsrTrigFuncCtrl	i15
+;I15 controls the angle values for trigonometric functions expressed in degrees (I15=0) or radians (I15=1)
+
+#define	AxisEna_Ax1	i100
+#define	AxisEna_Ax2	i200
+#define	AxisEna_Ax3	i300
+#define	AxisEna_Ax4	i400
+#define	AxisEna_Ax5	i500
+#define	AxisEna_Ax6	i600
+#define	AxisEna_Ax7	i700
+#define	AxisEna_Ax8	i800
+
+#define	PSF_Ax1		i108
+#define	PSF_Ax2		i208
+#define	PSF_Ax3		i308
+#define	PSF_Ax4		i408
+#define	PSF_Ax5		i508
+#define	PSF_Ax6		i608
+#define	PSF_Ax7		i708
+#define	PSF_Ax8		i808
+
+#define	SoftPosLim_Ax1	I113
+#define	SoftPosLim_Ax2	I213
+#define	SoftPosLim_Ax3	I313
+#define	SoftPosLim_Ax4	I413
+#define	SoftPosLim_Ax5	I513
+#define	SoftPosLim_Ax6	I613
+#define	SoftPosLim_Ax7	I713
+#define	SoftPosLim_Ax8	I813
+
+#define	SoftNegLim_Ax1	I114
+#define	SoftNegLim_Ax2	I214
+#define	SoftNegLim_Ax3	I314
+#define	SoftNegLim_Ax4	I414
+#define	SoftNegLim_Ax5	I514
+#define	SoftNegLim_Ax6	I614
+#define	SoftNegLim_Ax7	I714
+#define	SoftNegLim_Ax8	I814
+
+#define	ProgSpdLim_Ax1	I116
+#define	ProgSpdLim_Ax2	I216
+#define	ProgSpdLim_Ax3	I316
+#define	ProgSpdLim_Ax4	I416
+#define	ProgSpdLim_Ax5	I516
+#define	ProgSpdLim_Ax6	I616
+#define	ProgSpdLim_Ax7	I716
+#define	ProgSpdLim_Ax8	I816
+
+#define	AccLim_Ax1	I119
+#define	AccLim_Ax2	I219
+#define	AccLim_Ax3	I319
+#define	AccLim_Ax4	I419
+#define	AccLim_Ax5	I519
+#define	AccLim_Ax6	I619
+#define	AccLim_Ax7	I719
+#define	AccLim_Ax8	I819
+
+#define	AccTm_Ax1	i120
+#define	AccTm_Ax2	i220
+#define	AccTm_Ax3	i320
+#define	AccTm_Ax4	i420
+#define	AccTm_Ax5	i520
+#define	AccTm_Ax6	i620
+#define	AccTm_Ax7	i720
+#define	AccTm_Ax8	i820
+
+#define	SCurvTm_Ax1	i121
+#define	SCurvTm_Ax2	i221
+#define	SCurvTm_Ax3	i321
+#define	SCurvTm_Ax4	i421
+#define	SCurvTm_Ax5	i521
+#define	SCurvTm_Ax6	i621
+#define	SCurvTm_Ax7	i721
+#define	SCurvTm_Ax8	i821
+
+#define	JogSpd_Ax1	i122
+#define	JogSpd_Ax2	i222
+#define	JogSpd_Ax3	i322
+#define	JogSpd_Ax4	i422
+#define	JogSpd_Ax5	i522
+#define	JogSpd_Ax6	i622
+#define	JogSpd_Ax7	i722
+#define	JogSpd_Ax8	i822
+
+#define	HmSpd_Ax1	I123
+#define	HmSpd_Ax2	I223
+#define	HmSpd_Ax3	I323
+#define	HmSpd_Ax4	I423
+#define	HmSpd_Ax5	I523
+#define	HmSpd_Ax6	I623
+#define	HmSpd_Ax7	I723
+#define	HmSpd_Ax8	I823
+
+#define	FlgModCtrl_Ax1	I124
+#define	FlgModCtrl_Ax2	I224
+#define	FlgModCtrl_Ax3	I324
+#define	FlgModCtrl_Ax4	I424
+#define	FlgModCtrl_Ax5	I524
+#define	FlgModCtrl_Ax6	I624
+#define	FlgModCtrl_Ax7	I724
+#define	FlgModCtrl_Ax8	I824
+#define	FlgModCtrl_Ax9	I924
+
+#define	PIDPropGain_Ax1	i130
+#define	PIDPropGain_Ax2	i230
+#define	PIDPropGain_Ax3	i330
+#define	PIDPropGain_Ax4	i430
+#define	PIDPropGain_Ax5	i530
+#define	PIDPropGain_Ax6	i630
+#define	PIDPropGain_Ax7	i730
+#define	PIDPropGain_Ax8	i830
+
+#define	PIDDervGain_Ax1	i131
+#define	PIDDervGain_Ax2	i231
+#define	PIDDervGain_Ax3	i331
+#define	PIDDervGain_Ax4	i431
+#define	PIDDervGain_Ax5	i531
+#define	PIDDervGain_Ax6	i631
+#define	PIDDervGain_Ax7	i731
+#define	PIDDervGain_Ax8	i831
+
+#define	PIDKVFFGain_Ax1	i132
+#define	PIDKVFFGain_Ax2	i232
+#define	PIDKVFFGain_Ax3	i332
+#define	PIDKVFFGain_Ax4	i432
+#define	PIDKVFFGain_Ax5	i532
+#define	PIDKVFFGain_Ax6	i632
+#define	PIDKVFFGain_Ax7	i732
+#define	PIDKVFFGain_Ax8	i832
+
+#define	TrigModCtrl_Ax1	I197
+#define	TrigModCtrl_Ax2	I297
+#define	TrigModCtrl_Ax3	I397
+#define	TrigModCtrl_Ax4	I497
+#define	TrigModCtrl_Ax5	I597
+#define	TrigModCtrl_Ax6	I697
+#define	TrigModCtrl_Ax7	I797
+#define	TrigModCtrl_Ax8	I897
+
+;Ixx97 = 0: Input trigger, hardware position capture
+;Ixx97 = 1: Input trigger, software position capture
+;Ixx97 = 2: Error trigger, hardware position capture (not useful!)
+;Ixx97 = 3: Error trigger, software position capture
+
+#define	Tmr1		i5111
+#define	Tmr2		i5112
+#define	Tmr3		i5211
+#define	Tmr4		i5212
+#define	Tmr5		i5311
+#define	Tmr6		i5312
+#define	Tmr7		i5411
+#define	Tmr8		i5412
+#define	TmOutTmr	i5511
+#define	BendsChkTmr	i5512
+#define	BrakeTmr	i5512
+#define	OpenTmr	i5611
+#define	CloseTmr	i5612
+;#define		i5711
+;#define		i5712
+;#define		i5811
+;#define		i5812
+;#define		i5911
+;#define		i5912
+
+#define	SegTm_CS1	I5113
+#define	SegTm_CS2	I5213
+#define	SegTm_CS3	I5313
+#define	SegTm_CS4	I5413
+#define	SegTm_CS5	I5513
+#define	SegTm_CS6	I5613
+#define	SegTm_CS7	I5713
+#define	SegTm_CS8	I5813
+#define	SegTm_CS9	I5913
+
+;program running bits
+#define KinematicsEna_CS1 I5150
+#define KinematicsEna_CS2 I5250
+#define KinematicsEna_CS3 I5350
+#define KinematicsEna_CS4 I5450
+#define KinematicsEna_CS5 I5550
+#define KinematicsEna_CS6 I5650
+#define KinematicsEna_CS7 I5750
+#define KinematicsEna_CS8 I5850
+#define KinematicsEna_CS9 I5950
+
+#define	Def_AccTmCS1	i5187
+#define	Def_AccTmCS2	i5287
+#define	Def_AccTmCS3	i5387
+#define	Def_AccTmCS4	i5487
+#define	Def_AccTmCS5	i5587
+#define	Def_AccTmCS6	i5687
+#define	Def_AccTmCS7	i5787
+#define	Def_AccTmCS8	i5887
+#define	Def_AccTmCS9	i5987
+
+#define	Def_SCurvTmCS1	i5188
+#define	Def_SCurvTmCS2	i5288
+#define	Def_SCurvTmCS3	i5388
+#define	Def_SCurvTmCS4	i5488
+#define	Def_SCurvTmCS5	i5588
+#define	Def_SCurvTmCS6	i5688
+#define	Def_SCurvTmCS7	i5788
+#define	Def_SCurvTmCS8	i5888
+#define	Def_SCurvTmCS9	i5988
+
+#define	Def_FRateCS1	i5189
+#define	Def_FRateCS2	i5289
+#define	Def_FRateCS3	i5389
+#define	Def_FRateCS4	i5489
+#define	Def_FRateCS5	i5589
+#define	Def_FRateCS6	i5689
+#define	Def_FRateCS7	i5789
+#define	Def_FRateCS8	i5889
+#define	Def_FRateCS9	i5989
+
+#define	FRateTmUnitCS1	i5190
+#define	FRateTmUnitCS2	i5290
+#define	FRateTmUnitCS3	i5390
+#define	FRateTmUnitCS4	i5490
+#define	FRateTmUnitCS5	i5590
+#define	FRateTmUnitCS6	i5690
+#define	FRateTmUnitCS7	i5790
+#define	FRateTmUnitCS8	i5890
+#define	FRateTmUnitCS9	i5990
+
+#define	CapCtrl_Ax1	I7012
+#define	CapCtrl_Ax2	I7022
+#define	CapCtrl_Ax3	I7032
+#define	CapCtrl_Ax4	I7042
+#define	CapCtrl_Ax5	I7112
+#define	CapCtrl_Ax6	I7122
+#define	CapCtrl_Ax7	I7132
+#define	CapCtrl_Ax8	I7142
+
+;I7mn2 = 0: Immediate capture
+;I7mn2 = 1: Capture on Index (CHCn) high
+;I7mn2 = 2: Capture on Flag n high
+;I7mn2 = 3: Capture on (Index high AND Flag n high)
+;I7mn2 = 5: Capture on Index (CHCn) low
+;I7mn2 = 7: Capture on (Index low AND Flag n high)
+;I7mn2 = 10: Capture on Flag n low
+;I7mn2 = 11: Capture on (Index high AND Flag n low)
+;I7mn2 = 15: Capture on (Index low AND Flag n low)
+
+#define	CapFlgSel_Ax1	I7013
+#define	CapFlgSel_Ax2	I7023
+#define	CapFlgSel_Ax3	I7033
+#define	CapFlgSel_Ax4	I7043
+#define	CapFlgSel_Ax5	I7113
+#define	CapFlgSel_Ax6	I7123
+#define	CapFlgSel_Ax7	I7133
+#define	CapFlgSel_Ax8	I7143
+
+;I7mn3 = 0: HOMEn (Home Flag n)
+;I7mn3 = 1: PLIMn (Positive End Limit Flag n)
+;I7mn3 = 2: MLIMn (Negative End Limit Flag n)
+;I7mn3 = 3: USERn (User Flag n)
+
+;************************************************************
+;m variables definition
+;************************************************************
+
+;Digital I/O Setting
+M0->Y:$78400,0		;Output 1
+M1->Y:$78400,1		;Output 2
+M2->Y:$78400,2		;Output 3
+M3->Y:$78400,3		;Output 4
+M4->Y:$78400,4		;Output 5
+M5->Y:$78400,5		;Output 6
+M6->Y:$78400,6		;Output 7
+M7->Y:$78400,7		;Output 8
+M16->Y:$78400,0,8	;All outputs
+
+M8->Y:$78400,8		;Input 1
+M9->Y:$78400,9		;Input 2
+M10->Y:$78400,10	;Input 3
+M11->Y:$78400,11	;Input 4
+M12->Y:$78400,12	;Input 5
+M13->Y:$78400,13	;Input 6
+M14->Y:$78400,14	;Input 7
+M15->Y:$78400,15	;Input 8
+M17->Y:$78400,8,8	;All inputs
+
+#define	All_Outx	M16
+#define	All_Inx	M17
+
+#define	ActuationTm	P8100
+#define	WaitAfterOpened	P8101
+#define	WaitAfterClosed	P8102
+
+M32->X:$78400,0,8	;Direction control register
+M33->Y:$70800,0		;Buffer direction control register
+M34->X:$78404,0,24	;IO inversion control
+M36->X:$78400,16,8	;direction control register
+M37->Y:$70800,2		;Buffer direction control register
+
+M134->Y:$0000C0,7,1  ; #1 Trigger Move
+M234->Y:$000140,7,1  ; #2 Trigger Move
+M334->Y:$0001C0,7,1  ; #3 Trigger Move
+M434->Y:$000240,7,1  ; #4 Trigger Move
+M534->Y:$0002C0,7,1  ; #5 Trigger Move
+M634->Y:$000340,7,1  ; #6 Trigger Move
+M734->Y:$0003C0,7,1  ; #7 Trigger Move
+M834->Y:$000440,7,1  ; #8 Trigger Move
+
+#define	BrakeControl		M0;Out 1
+#define	JogNegSwitch		M8;In 1
+#define	JogPosSwitch		M9;In 2
+#define	MaintSwitch		M10;In 3
+#define	All_DO_Ctrl		M16; All Digital Output Control
+
+#define	XtalProtectEna		M49
+#define	MinBendFlg 		M59
+#define	MaxBendFlg 		M64
+#define	XtalProtectWarnFlg	M65
+#define	XtalProtectStopFlg	M66
+#define	TmOutErrFlg		M67
+#define	SystemInitialised	M68
+#define				M69
+#define	ProgMovBend2RunFlg	M74
+#define	ProgAutoHmMode_Yaw	M75
+#define	ProgAutoHmRunFlg_Yaw	M76
+#define	MaintModeStarted	M77
+#define	SetupCSStarted	M78
+
+#define	HeartBeat_PMAC		M100
+
+#define	HeartBeat_EncLossProtect	M190	;plc 1
+;#define	HeartBeat_PLC1	M190	;plc 1
+#define	HeartBeat_BenderProtect	M290	;plc 2
+;#define	HeartBeat_PLC3	M390	;plc 3
+;#define	HeartBeat_PLC4	M490	;plc 4
+
+#define	AmpEnaSts_Ax1	M114
+#define	AmpEnaSts_Ax2	M214
+#define	AmpEnaSts_Ax3	M314
+#define	AmpEnaSts_Ax4	M414
+#define	AmpEnaSts_Ax5	M514
+#define	AmpEnaSts_Ax6	M614
+#define	AmpEnaSts_Ax7	M714
+#define	AmpEnaSts_Ax8	M814
+
+#define	HitPLimFlgIn_Ax1	M121
+#define	HitPLimFlgIn_Ax2	M221
+#define	HitPLimFlgIn_Ax3	M321
+#define	HitPLimFlgIn_Ax4	M421
+#define	HitPLimFlgIn_Ax5	M521
+#define	HitPLimFlgIn_Ax6	M621
+#define	HitPLimFlgIn_Ax7	M721
+#define	HitPLimFlgIn_Ax8	M821
+
+#define	HitMLimFlgIn_Ax1	M122
+#define	HitMLimFlgIn_Ax2	M222
+#define	HitMLimFlgIn_Ax3	M322
+#define	HitMLimFlgIn_Ax4	M422
+#define	HitMLimFlgIn_Ax5	M522
+#define	HitMLimFlgIn_Ax6	M622
+#define	HitMLimFlgIn_Ax7	M722
+#define	HitMLimFlgIn_Ax8	M822
+
+;Enc x A,/A,B,/B represented a 4 bits (standard Turbo Pmac Definition).
+#define Enc1_TUVW	M128	;should only be 1010, 1001, 0110, 0101
+#define Enc2_TUVW	M228
+#define Enc3_TUVW	M328
+#define Enc4_TUVW	M428
+#define Enc5_TUVW	M528
+#define Enc6_TUVW	M628
+#define Enc7_TUVW	M728
+#define Enc8_TUVW	M828
+
+#define	HomingInProgress_Ax1	M129
+#define	HomingInProgress_Ax2	M229
+#define	HomingInProgress_Ax3	M329
+#define	HomingInProgress_Ax4	M429
+#define	HomingInProgress_Ax5	M529
+#define	HomingInProgress_Ax6	M629
+#define	HomingInProgress_Ax7	M729
+#define	HomingInProgress_Ax8	M829
+
+#define	StopOnPosLimFlg_Ax1	M130	; #1 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax2	M230	; #2 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax3	M330	; #3 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax4	M430	; #4 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax5	M530	; #5 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax6	M630	; #6 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax7	M730	; #7 Stopped-on-position-limit bit
+#define	StopOnPosLimFlg_Ax8	M830	; #8 Stopped-on-position-limit bit
+
+#define	HitMLimFlg_Ax1	M132
+#define	HitMLimFlg_Ax2	M232
+#define	HitMLimFlg_Ax3	M332
+#define	HitMLimFlg_Ax4	M432
+#define	HitMLimFlg_Ax5	M532
+#define	HitMLimFlg_Ax6	M632
+#define	HitMLimFlg_Ax7	M732
+#define	HitMLimFlg_Ax8	M832
+
+#define	HitPLimFlg_Ax1	M131
+#define	HitPLimFlg_Ax2	M231
+#define	HitPLimFlg_Ax3	M331
+#define	HitPLimFlg_Ax4	M431
+#define	HitPLimFlg_Ax5	M531
+#define	HitPLimFlg_Ax6	M631
+#define	HitPLimFlg_Ax7	M731
+#define	HitPLimFlg_Ax8	M831
+
+#define	DesVel0Flg_Ax1	M133
+#define	DesVel0Flg_Ax2	M233
+#define	DesVel0Flg_Ax3	M333
+#define	DesVel0Flg_Ax4	M433
+#define	DesVel0Flg_Ax5	M533
+#define	DesVel0Flg_Ax6	M633
+#define	DesVel0Flg_Ax7	M733
+#define	DesVel0Flg_Ax8	M833
+
+#define	TrigMovFlg_Ax1	M134
+#define	TrigMovFlg_Ax2	M234
+#define	TrigMovFlg_Ax3	M334
+#define	TrigMovFlg_Ax4	M434
+#define	TrigMovFlg_Ax5	M534
+#define	TrigMovFlg_Ax6	M634
+#define	TrigMovFlg_Ax7	M734
+#define	TrigMovFlg_Ax8	M834
+
+#define	OLMode_Ax1	M138
+#define	OLMode_Ax2	M238
+#define	OLMode_Ax3	M338
+#define	OLMode_Ax4	M438
+#define	OLMode_Ax5	M538
+#define	OLMode_Ax6	M638
+#define	OLMode_Ax7	M738
+#define	OLMode_Ax8	M838
+
+#define	AmpEnaFlg_Ax1	M139
+#define	AmpEnaFlg_Ax2	M239
+#define	AmpEnaFlg_Ax3	M339
+#define	AmpEnaFlg_Ax4	M439
+#define	AmpEnaFlg_Ax5	M539
+#define	AmpEnaFlg_Ax6	M639
+#define	AmpEnaFlg_Ax7	M739
+#define	AmpEnaFlg_Ax8	M839
+
+#define	InPosFlg_Ax1	M140
+#define	InPosFlg_Ax2	M240
+#define	InPosFlg_Ax3	M340
+#define	InPosFlg_Ax4	M440
+#define	InPosFlg_Ax5	M540
+#define	InPosFlg_Ax6	M640
+#define	InPosFlg_Ax7	M740
+#define	InPosFlg_Ax8	M840
+
+#define	ForGndInPosFlg_Ax1	M144
+#define	ForGndInPosFlg_Ax2	M244
+#define	ForGndInPosFlg_Ax3	M344
+#define	ForGndInPosFlg_Ax4	M444
+#define	ForGndInPosFlg_Ax5	M544
+#define	ForGndInPosFlg_Ax6	M644
+#define	ForGndInPosFlg_Ax7	M744
+#define	ForGndInPosFlg_Ax8	M844
+
+#define	HomedFlg_Ax1	M145
+#define	HomedFlg_Ax2	M245
+#define	HomedFlg_Ax3	M345
+#define	HomedFlg_Ax4	M445
+#define	HomedFlg_Ax5	M545
+#define	HomedFlg_Ax6	M645
+#define	HomedFlg_Ax7	M745
+#define	HomedFlg_Ax8	M845
+
+#define	CmdPos_Ax1	M161
+#define	CmdPos_Ax2	M261
+#define	CmdPos_Ax3	M361
+#define	CmdPos_Ax4	M461
+#define	CmdPos_Ax5	M561
+#define	CmdPos_Ax6	M661
+#define	CmdPos_Ax7	M761
+#define	CmdPos_Ax8	M861
+
+#define	ActPos_Ax1	M162
+#define	ActPos_Ax2	M262
+#define	ActPos_Ax3	M362
+#define	ActPos_Ax4	M462
+#define	ActPos_Ax5	M562
+#define	ActPos_Ax6	M662
+#define	ActPos_Ax7	M762
+#define	ActPos_Ax8	M862
+
+#define	DACOut_Ax1	M168
+#define	DACOut_Ax2	M268
+#define	DACOut_Ax3	M368
+#define	DACOut_Ax4	M468
+#define	DACOut_Ax5	M568
+#define	DACOut_Ax6	M668
+#define	DACOut_Ax7	M768
+#define	DACOut_Ax8	M868
+
+#define JogPos_Ax1	M172
+#define JogPos_Ax2	M272
+#define JogPos_Ax3	M372
+#define JogPos_Ax4	M472
+#define JogPos_Ax5	M572
+#define JogPos_Ax6	M672
+#define JogPos_Ax7	M772
+#define JogPos_Ax8	M872
+
+#define	AvgActVel_Ax1	M174
+#define	AvgActVel_Ax2	M274
+#define	AvgActVel_Ax3	M374
+#define	AvgActVel_Ax4	M474
+#define	AvgActVel_Ax5	M574
+#define	AvgActVel_Ax6	M674
+#define	AvgActVel_Ax7	M774
+#define	AvgActVel_Ax8	M874
+
+;Enc x Lost. If Mx28=$F then Mx80=0 else Mx80=1
+#define EncLossFlg_Ax1	M180	;Encoder 1 Encoder Loss (0=Lost, 1=OK).
+#define EncLossFlg_Ax2	M280
+#define EncLossFlg_Ax3	M380
+#define EncLossFlg_Ax4	M480
+#define EncLossFlg_Ax5	M580
+#define EncLossFlg_Ax6	M680
+#define EncLossFlg_Ax7	M780
+#define EncLossFlg_Ax8	M880
+
+;EncLossLatch, If Mx80=1 AND Px46=1 then Mx81=1.   if Mx81=1 CTRL K
+#define LatchEncLoss_Ax1	M181		;Encoder 1 Enc Loss Latches to 1 if Enc1LossInput goes to 0, must be reset manually
+#define LatchEncLoss_Ax2	M281
+#define LatchEncLoss_Ax3	M381
+#define LatchEncLoss_Ax4	M481
+#define LatchEncLoss_Ax5	M581
+#define LatchEncLoss_Ax6	M681
+#define LatchEncLoss_Ax7	M781
+#define LatchEncLoss_Ax8	M881
+
+#define SystemHomed	 M900
+#define ClearEcoderLossFaults	 M901
+#define	TCP_Change_Confirm M902
+#define	NewTCP_Request M903
+
+#define	HomingStatus_Ax1	M1116
+#define HomingStatus_Ax2	M1216
+#define HomingStatus_Ax3	M1316
+#define HomingStatus_Ax4	M1416
+#define HomingStatus_Ax5	M1516
+#define HomingStatus_Ax6	M1616
+#define HomingStatus_Ax7	M1716
+#define HomingStatus_Ax8	M1816
+
+#define	HmStarted_Prog11	M2100
+#define	HmStarted_Prog12	M2200
+#define	HmStarted_Prog13	M2300
+#define	HmStarted_Prog14	M2400
+#define	HmStarted_Prog15	M2500
+#define	HmStarted_Prog16	M2600
+#define	HmStarted_Prog17	M2700
+#define	HmStarted_Prog18	M2800
+
+#define	ProgRunFlg_Prog01	M2101
+#define	ProgRunFlg_Prog02	M2201
+#define	ProgRunFlg_Prog03	M2301
+#define	ProgRunFlg_Prog04	M2401
+#define	ProgRunFlg_Prog05	M2501
+#define	ProgRunFlg_Prog06	M2601
+#define	ProgRunFlg_Prog07	M2701
+#define	ProgRunFlg_Prog08	M2801
+
+#define	HmMode_Prog11	M2102
+#define	HmMode_Prog12	M2202
+#define	HmMode_Prog13	M2302
+#define	HmMode_Prog14	M2402
+#define	HmMode_Prog15	M2502
+#define	HmMode_Prog16	M2602
+#define	HmMode_Prog17	M2702
+#define	HmMode_Prog18	M2802
+
+#define	Stall_Ax1	M3010
+#define	Stall_Ax2	M3020
+#define	Stall_Ax3	M3030
+#define	Stall_Ax4	M3040
+#define	Stall_Ax5	M3050
+#define	Stall_Ax6	M3060
+#define	Stall_Ax7	M3070
+#define	Stall_Ax8	M3080
+
+; M-variables pointing to 24 bit registers for calculating elapsed time
+#define	StartTm_Ax1	M3011
+#define	StartTm_Ax2	M3021
+#define	StartTm_Ax3	M3031
+#define	StartTm_Ax4	M3041
+#define	StartTm_Ax5	M3051
+#define	StartTm_Ax6	M3061
+#define	StartTm_Ax7	M3071
+#define	StartTm_Ax8	M3081
+
+#define	ElapsedTm_Ax1	M3012
+#define	ElapsedTm_Ax2	M3022
+#define	ElapsedTm_Ax3	M3032
+#define	ElapsedTm_Ax4	M3042
+#define	ElapsedTm_Ax5	M3052
+#define	ElapsedTm_Ax6	M3062
+#define	ElapsedTm_Ax7	M3072
+#define	ElapsedTm_Ax8	M3082
+
+#define	StartDeact_Ax1	M3013
+#define	StartDeact_Ax2	M3023
+#define	StartDeact_Ax3	M3033
+#define	StartDeact_Ax4	M3043
+#define	StartDeact_Ax5	M3053
+#define	StartDeact_Ax6	M3063
+#define	StartDeact_Ax7	M3073
+#define	StartDeact_Ax8	M3083
+
+#define	ElapsedDeact_Ax1	M3014
+#define	ElapsedDeact_Ax2	M3024
+#define	ElapsedDeact_Ax3	M3034
+#define	ElapsedDeact_Ax4	M3044
+#define	ElapsedDeact_Ax5	M3054
+#define	ElapsedDeact_Ax6	M3064
+#define	ElapsedDeact_Ax7	M3074
+#define	ElapsedDeact_Ax8	M3084
+
+#define	ProgRun_CS1	M5180
+#define	ProgRun_CS2	M5280
+#define	ProgRun_CS3	M5380
+#define	ProgRun_CS4	M5480
+#define	ProgRun_CS5	M5580
+#define	ProgRun_CS6	M5680
+#define	ProgRun_CS7	M5780
+#define	ProgRun_CS8	M5880
+#define	ProgRun_CS9	M5980
+
+; Coordinate System run-time error status/control bit
+#define	RunTmErr_CS1	M5182
+#define	RunTmErr_CS2	M5282
+#define	RunTmErr_CS3	M5382
+#define	RunTmErr_CS4	M5482
+#define	RunTmErr_CS5	M5582
+#define	RunTmErr_CS6	M5682
+#define	RunTmErr_CS7	M5782
+#define	RunTmErr_CS8	M5882
+#define	RunTmErr_CS9	M5982
+
+#define	ServoLoopCtr	M100
+; Stall-bit setup, 24bit registers used for timers
+StartTm_Ax1->X:$10f1,24
+StartTm_Ax2->Y:$10f1,24
+StartTm_Ax3->X:$10f2,24
+StartTm_Ax4->Y:$10f2,24
+StartTm_Ax5->X:$10f3,24
+StartTm_Ax6->Y:$10f3,24
+StartTm_Ax7->X:$10f4,24
+StartTm_Ax8->Y:$10f4,24
+
+ElapsedTm_Ax1->X:$10f5,24
+ElapsedTm_Ax2->Y:$10f5,24
+ElapsedTm_Ax3->X:$10f6,24
+ElapsedTm_Ax4->Y:$10f6,24
+ElapsedTm_Ax5->X:$10f7,24
+ElapsedTm_Ax6->Y:$10f7,24
+ElapsedTm_Ax7->X:$10f8,24
+ElapsedTm_Ax8->Y:$10f8,24
+
+StartDeact_Ax1->X:$10f9,24
+StartDeact_Ax2->Y:$10f9,24
+StartDeact_Ax3->X:$10fa,24
+StartDeact_Ax4->Y:$10fa,24
+StartDeact_Ax5->X:$10fb,24
+StartDeact_Ax6->Y:$10fb,24
+StartDeact_Ax7->X:$10fc,24
+StartDeact_Ax8->Y:$10fc,24
+
+ElapsedDeact_Ax1->X:$10fd,24
+ElapsedDeact_Ax2->Y:$10fd,24
+ElapsedDeact_Ax3->X:$10fe,24
+ElapsedDeact_Ax4->Y:$10fe,24
+ElapsedDeact_Ax5->X:$10ff,24
+ElapsedDeact_Ax6->Y:$10ff,24
+ElapsedDeact_Ax7->X:$1101,24
+ElapsedDeact_Ax8->Y:$1101,24
+
+
+

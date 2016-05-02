@@ -1,0 +1,45 @@
+file "db/SAI_MotorRecord.template" {
+    pattern {	ASYNPORT,	PMACPORT,	TMOT	PMAC_MTR	P,		R,		AXIS,		DESC,			MRES,		PREC,	EGU,	VEL,	TACC,	OFFS,	LSLM,	HSLM}
+        { 	"pmac1",	"PMAC1",	1.0,	1,		"CSXPCB",	"SLV01",	":TOP",	"Upper Blade",			-0.0001,	4,	"mm",	4.5,	0.05,	0.0,	-200,	200} 
+        { 	"pmac1",	"PMAC1",	1.0,	2,		"CSXPCB",	"SLV01",	":BOTTOM",	"Lower Blade",		+0.0001,	4,	"mm",	4.5,	0.05,	0.0,	-200,	200} 
+        { 	"pmac1",	"PMAC1",	1.0,	3,		"CSXPCB",	"SLH01",	":LEFT",	"Inboard/Left Blade",	-0.0001,	4,	"mm",	4.5,	0.05,	0.0,	-200,	200} 
+        { 	"pmac1",	"PMAC1",	1.0,	4,		"CSXPCB",	"SLH01",	":RIGHT",	"Outboard/Right Blade",	+0.0001,	4,	"mm",	4.5,	0.05,	0.0,	-200,	200} 
+}
+
+file "db/SAI_8MotorStatus.db" {
+    pattern {	ASYNPORT,	TMOT,		SCAN,		P,		R}
+        { 	"pmac1",	"1",		".2 second",	"CSXPCB",	"MCTR01"}
+}
+
+file "db/SAI_SingleMotorStatus.template" {
+    pattern {	P,		P1,		R,		AXIS,		PMAC_MTR}
+        { 	"CSXPCB",	"MCTR01",	"SLV01",	":TOP",	1}
+        { 	"CSXPCB",	"MCTR01",	"SLV01",	":BOTTOM",	2}
+        { 	"CSXPCB",	"MCTR01",	"SLH01",	":LEFT",	3}
+        { 	"CSXPCB",	"MCTR01",	"SLH01",	":RIGHT",	4}
+}
+
+file "db/SAI_MotorHoming.template" {
+    pattern {	ASYNPORT,	TMOT,	SCAN,		PMAC_MTR	P,		R,		AXIS,		EGU,	AXISSCALE,	HVEL}
+        { 	"pmac1",	1.0,	".5 second",	"1",		"CSXPCB",	"SLV01",	":TOP",		"mm",	1,		-4.5}
+        { 	"pmac1",	1.0,	".5 second",	"2",		"CSXPCB",	"SLV01",	":BOTTOM",	"mm",	1,		4.5}
+        { 	"pmac1",	1.0,	".5 second",	"3",		"CSXPCB",	"SLH01",	":LEFT",	"mm",	1,		-4.5}
+        { 	"pmac1",	1.0,	".5 second",	"4",		"CSXPCB",	"SLH01",	":RIGHT",	"mm",	1,		4.5}
+}
+
+file "db/SAI_EncoderLoss.template" {
+pattern {	P,		R,	AXIS,		SCAN, 		ASYNPORT, 	VARSTS, VARCLR}
+        { 	"CSXPCB",	"SLV01"	":TOP",		".2 second",	"pmac1",	"P401",	"P400"}
+        { 	"CSXPCB",	"SLV01"	":BOTTOM",	".2 second",	"pmac1",	"P402",	"P400"}
+        { 	"CSXPCB",	"SLH01"	":LEFT",	".2 second",	"pmac1",	"P403",	"P400"}
+        { 	"CSXPCB",	"SLH01"	":RIGHT",	".2 second",	"pmac1",	"P404",	"P400"}
+}
+
+
+## SlitDatabase
+file "db/Slit.db" {
+    pattern {	P,		R,		mXp,		mXn,		EGU,	PREC	}
+        { 	"CSXPCB",	"SLV01",	":TOP",		":BOTTOM",	"mm",	4	}
+        { 	"CSXPCB",	"SLH01",	":LEFT",	":RIGHT",	"mm",	4	}
+}
+

@@ -1,0 +1,7 @@
+file /epics/iocs/SorensonXG850/db/sorensonxg850-232.template
+{
+	pattern { Sys		, Dev		, PORT		, ADR	}
+		{ XF:23ID2-ES	, "{PSU:1}"	, XF23ID2_PSU1	, 1	}
+}
+
+

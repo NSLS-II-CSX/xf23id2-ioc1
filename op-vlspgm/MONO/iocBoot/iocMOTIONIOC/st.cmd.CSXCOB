@@ -1,0 +1,65 @@
+#!../../bin/linux-x86_64/MOTIONIOC
+
+< envPaths
+
+cd ${TOP}
+
+epicsEnvSet("EPICS_CA_AUTO_ADDR_LIST","NO")
+epicsEnvSet("EPICS_CA_ADDR_LIST","10.23.0.255")
+
+## Register all support components
+dbLoadDatabase "dbd/MOTIONIOC.dbd"
+MOTIONIOC_registerRecordDeviceDriver pdbbase
+
+## Configure DeltaTau PMAC motion controller(s)
+pmacAsynIPConfigure("pmac1", "xf23id1-mc03.cs.nsls2.local:1025")
+pmacAsynMotorCreate("pmac1", 0, 0, 9)
+drvAsynMotorConfigure("PMAC1", "pmacAsynMotor", 0, 9)
+pmacSetIdlePollPeriod(0,300)
+pmacSetMovingPollPeriod(0,100)
+
+pmacAsynIPConfigure("pmac2", "xf23id1-mc02.cs.nsls2.local:1025")
+pmacAsynMotorCreate("pmac2", 0, 1, 9)
+drvAsynMotorConfigure("PMAC2", "pmacAsynMotor", 1, 9)
+pmacSetIdlePollPeriod(1,300)
+pmacSetMovingPollPeriod(1,100)
+
+## configuration for stream
+epicsEnvSet ("STREAM_PROTOCOL_PATH", "$(TOP)/../SAI/SAIApp/src:$(TOP)/MOTIONIOCApp/src")
+
+## Substitutions
+dbLoadTemplate("db/CSXCOBPGMMotion.substitutions")
+dbLoadTemplate("db/CSXCOBBaffleSlitsMotion.substitutions")
+
+# Configure local IOC information
+epicsEnvSet("ENGINEER", "Daron Chabot")
+epicsEnvSet("LOCATION", "23ID-1")
+dbLoadRecords("db/iocAdminSoft.db", "IOC=XF:23ID1-CT{IOC:CSXCOBmono}")
+# Configure save/restore status info
+dbLoadRecords("db/save_restoreStatus.db", "P=XF:23ID1-CT{IOC:CSXCOBmono}")
+
+# save_restore setup
+set_savefile_path("${TOP}/as","/save")
+set_requestfile_path("${TOP}/as","/req")
+system("install -m 777 -d ${TOP}/as/save")
+system("install -m 777 -d ${TOP}/as/req")
+
+set_pass0_restoreFile("ioc_settings.sav")
+#set_pass1_restoreFile("ioc_pass1_settings.sav")
+#set_pass0_restoreFile("ioc_values.sav")
+#set_pass1_restoreFile("ioc_values.sav")
+#set_pass1_restoreFile("ioc_waveforms.sav")
+
+
+iocInit
+
+makeAutosaveFileFromDbInfo("as/req/ioc_settings.req", "autosaveFields_pass0")
+create_monitor_set("ioc_settings.req", 5, "")
+#makeAutosaveFileFromDbInfo("as/req/ioc_pass1_settings.req", "autosaveFields_pass1")
+#makeAutosaveFileFromDbInfo("as/req/mrf_settings.req", "autosaveFields_pass0")
+#makeAutosaveFileFromDbInfo("as/req/mrf_values.req", "autosaveFields")
+#makeAutosaveFileFromDbInfo("as/req/mrf_waveforms.req", "autosaveFields_pass1")
+
+## Channel Finder
+dbl("*") > ${TOP}/records.dbl
+system("cp ${TOP}/records.dbl /cf-update/xf23id1-ioc1.ct-vlspgm.dbl")

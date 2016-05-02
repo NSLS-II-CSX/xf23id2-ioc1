@@ -1,0 +1,6 @@
+epicsEnvSet("ARCH","linux-x86_64")
+epicsEnvSet("IOC","iocMOTIONIOC")
+epicsEnvSet("TOP","/epics/iocs/op-vlspgm/MONO")
+epicsEnvSet("PGM","/epics/iocs/op-vlspgm/MONO/../PGM")
+epicsEnvSet("SAI","/epics/iocs/op-vlspgm/MONO/../SAI")
+epicsEnvSet("EPICS_BASE","/usr/lib/epics")

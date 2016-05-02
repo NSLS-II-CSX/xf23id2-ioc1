@@ -1,0 +1,5 @@
+# User dchabot <dchabot@bnl.gov>
+# Date 1409767508 14400
+# Node ID d1f4de979adf70a59789a3fb9d902c353fb8464b
+# Parent e89164c9d820adfba6b0974d53adcbca8a457591
+Fix pmac_asyn_motor loading.

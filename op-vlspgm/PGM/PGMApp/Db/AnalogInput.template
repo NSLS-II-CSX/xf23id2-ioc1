@@ -1,0 +1,29 @@
+# Macro explanations
+#P		prefix of the pv name
+#R		main part of the pv name
+#NAME		PV name of the signal
+#DESC		description of the signal
+#PREC		precision
+#EGU		engineering unit
+#CH		analog input channel
+#SLOPE		conversion slope
+#OFFSET		conversion offset
+#HIGH		high limit
+#LOW		low limit
+
+record(ai, "$(P)$(R)$(NAME)_MON") {
+  field(DESC, "$(DESC)")
+  field(DTYP, "Raw Soft Channel")
+  field(INP,  "$(P)$(R)READ_AI_CH$(CH)_MON CP NMS")
+  field(EGU,  "$(EGU)")
+  field(ASLO, "$(SLOPE)")
+  field(AOFF, "$(OFFSET)")
+  field(PREC, "$(PREC)")
+  field(HSV,  "MAJOR")
+  field(LSV,  "MAJOR")
+  field(HIGH, "$(HIGH)")
+  field(LOW,  "$(LOW)")
+  field(HIHI, "10000")
+  field(LOLO, "-10000")
+  info(autosaveFields, "HIGH") 
+}

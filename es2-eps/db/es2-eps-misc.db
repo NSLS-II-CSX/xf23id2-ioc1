@@ -1,0 +1,126 @@
+## Database for Misc tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	
+
+# Limit switch status
+record(bi, "XF:23ID2-ES{APPES_LL-LSw:1}Pos-Sts")
+{
+        field(DESC, "{APPES_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[0] S 1")
+        field(ZNAM, "Open")
+        field(ONAM, "Closed")
+	field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{APPES_LL-LSw:1}Pos:Opn-Sts")
+{
+        field(DESC, "{APPES_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[1] S 1")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(OSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{APPES_LL-LSw:1}Pos:Cls-Sts")
+{
+        field(DESC, "{APPES_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[2] S 1")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Closed")
+        field(ZSV,  "MINOR")
+}
+
+
+## Database for Misc tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	
+
+# Limit switch status
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[0] S 1")
+        field(ZNAM, "Open")
+        field(ONAM, "Closed")
+	field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos:Opn-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[1] S 1")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(OSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos:Cls-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[2] S 1")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Closed")
+        field(ZSV,  "MINOR")
+}
+
+
+## Database for Misc tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	
+
+# Limit switch status
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[0] S 1")
+        field(ZNAM, "Open")
+        field(ONAM, "Closed")
+	field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos:Opn-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[1] S 1")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(OSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-ES{IOXAS_LL-LSw:1}Pos:Cls-Sts")
+{
+        field(DESC, "{IOXAS_LL-LSw:1} Pos")
+        field(DTYP, "EtherIP")
+        field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Misc_Sts[2] S 1")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Closed")
+        field(ZSV,  "MINOR")
+}
+
+

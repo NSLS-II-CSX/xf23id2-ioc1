@@ -1,0 +1,9 @@
+file "db/autohome.db"
+{
+pattern
+{SYS,            DEV,                   PLC,  PORT  }
+{"XF:23ID2-ES",  "{APPES:1-Ax:X}Mtr",     8,    P0    }
+{"XF:23ID2-ES",  "{APPES:1-Ax:Y}Mtr",     9,    P0    }
+{"XF:23ID2-ES",  "{APPES:1-Ax:Z}Mtr",    10,   P0    }
+{"XF:23ID2-ES",  "{APPES:1-Ax:R}Mtr",    11,   P0    }
+}

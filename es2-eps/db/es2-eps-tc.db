@@ -1,0 +1,36 @@
+## Database for thermocouple tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	TC
+
+# Temperature readback
+record(ai, "XF:23ID2-ES{APPES-TC:1}T-I")
+{
+        field(DESC, "{APPES-TC:1} T")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_TC_Data[0] S 1")
+	field(PREC, "2")
+	field(EGU,  "C")
+}
+
+## Database for thermocouple tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	TC
+
+# Temperature readback
+record(ai, "XF:23ID2-ES{APPES-TC:2}T-I")
+{
+        field(DESC, "{APPES-TC:2} T")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_TC_Data[1] S 1")
+	field(PREC, "2")
+	field(EGU,  "C")
+}
+

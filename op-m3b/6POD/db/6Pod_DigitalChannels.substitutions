@@ -1,0 +1,7 @@
+file db/SAI_DigitalChannels.template {
+pattern {	P,		R,		SCAN, 		ASYNPORT}
+        { 	"XF:23ID2-OP","{Mir:3B}",	"1 second",	"pmac"}
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr
+#EOF

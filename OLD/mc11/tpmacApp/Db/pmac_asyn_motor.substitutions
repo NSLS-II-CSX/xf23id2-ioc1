@@ -1,0 +1,8 @@
+file "db/pmac_asyn_motor.db"
+{
+
+pattern
+{SYS,              DEV,                 MOTOR,  SPORT,  ADDR,  DESC,        DTYP        PREC,  EGU }
+{"XF:23ID2-BI",    "{Diag:3-Ax:Y}",      "motor", "P0",    1,    "Diag:3 Y",     "asynMotor",  4,      "mm" }
+
+}

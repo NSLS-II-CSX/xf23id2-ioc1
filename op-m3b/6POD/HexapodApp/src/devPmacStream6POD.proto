@@ -1,0 +1,72 @@
+## global settings  ###########
+    OutTerminator = LF;
+##  EO-global settings ########
+
+read6Float {
+    OutTerminator = LF;
+    InTerminator = CR;
+    ExtraInput = Ignore;
+    
+    @mismatch {in "",CR,ACK};
+      
+    out "\$1,6,\$2";  ###startvar,count,step
+    in "%(A)f";
+    in "%(B)f";
+    in "%(C)f";
+    in "%(D)f";
+    in "%(E)f";
+    in "%(F)f";
+}
+
+read8Int {
+    OutTerminator = LF;
+    InTerminator = CR;
+    ExtraInput = Ignore;
+    
+    @mismatch {in "",CR,ACK};
+      
+    out "\$1,8,\$2";  ###startvar,count,step
+    in "%(A)d";
+    in "%(B)d";
+    in "%(C)d";
+    in "%(D)d";
+    in "%(E)d";
+    in "%(F)d";
+    in "%(G)d";
+    in "%(H)d";
+}
+
+getGlobalStatus {
+    OutTerminator = LF;
+    InTerminator = CR;
+    out "M2100 M5\$180 M5\$187 P87 M903 P909";
+#    out "M2100 M5\$180 M5\$187 P87 M903 P909 M5280 M5287";   
+    in "%(A)d";
+    in "%(B)d";
+    in "%(C)d";
+    in "%(D)f";
+    in "%(E)f";
+    in "%(F)f";
+#    in "%(G)d";
+#    in "%(H)d";   
+}
+
+sendSetpoint {
+    out "\$1=%f";
+    in "";
+}
+
+sendSetpointINT {
+    out "\$1=%u";
+    in "";
+}
+
+sendCommand {
+
+    InTerminator = ; #no input no terminator
+    
+    out "\$1";
+    in "";
+}
+
+#EOF

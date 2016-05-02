@@ -1,0 +1,80 @@
+CLOSE
+END GATHER
+DELETE GATHER
+DELETE TRACE
+
+#define ModeBit1 P900			; former des. vel. zero bit Motor 1
+#define ModeBit2 P901			; former des. vel. zero bit Motor 2
+#define OldModeBit1 P902			; former des. vel. zero bit Motor 1
+#define OldModeBit2 P903			; former des. vel. zero bit Motor 2
+#define TempActPosMir P904			; temporary actual position mirror (cts)
+#define TempActPosGrt P905			; temporary actual position grating (cts)
+#define DesVelZero1 M133				;P906				; desired velocity zero bit Motor 1
+;#define smallFollErr1 P907			; actual Position within in-Position-Band
+;#define inpositionbit1 P908			; combine velocity zero and small Following Err.
+#define InPosBit1 M140					; combine velocity zero and small Following Err.
+;#define FollErr1 P909						; commanded - actual Position
+#define InPosBit2 M240					; combine velocity zero and small Following Err.
+;#define FollErr2 P911						; commanded - actual Position
+#define DesVelZero2 M233				;P912				; desired velocity zero bit Motor 2
+#define multiplier1 P913				
+#define multiplier2 P914
+#define standardmultiplier1 P915
+#define standardmultiplier2 P916
+
+#define CmdPosMir M161				; commanded position mirror (cts)
+#define CmdPosGrt M261				; commanded position grating (cts)
+#define ActPosMir M162				; actual position mirror (cts)
+#define ActPosGrt M262				; actual position grating (cts)
+
+#define HomingStatusMir M1116	; homing status mirror
+#define HomingStatusGrt M1216	; homing status grating
+
+standardmultiplier1=4
+standardmultiplier2=5
+
+OPEN PLC 9 CLEAR
+ModeBit1=(InPosBit1&DesVelZero1)
+IF(ModeBit1=OldModeBit1)
+ELSE
+	IF(ModeBit1=1)
+		multiplier1=standardmultiplier1
+	ELSE
+		multiplier1=2
+	END IF
+	I130=4*multiplier1
+END IF
+; calculate vff for mirror
+TempActPosMir=(ActPosMir/3072)	; get actual position in cts
+IF (HomingStatusMir=4) 		; only calculate when motor is homed!
+	I132=INT(((-0.00000000003*(TempActPosMir*TempActPosMir))+(0.0003*TempActPosMir)+434554)/multiplier1*2)	; formula derived from measurements
+ELSE
+	I132=INT(433000/multiplier1*2)		; otherwise use standard vff value
+ENDIF
+OldModeBit1=ModeBit1
+
+ModeBit2=(InPosBit2&DesVelZero2)
+IF(ModeBit2=OldModeBit2)
+ELSE
+	IF(ModeBit2=1)
+		multiplier2=standardmultiplier2
+	ELSE
+		multiplier2=2
+	END IF
+	I230=4*multiplier2
+END IF
+
+
+; calculate vff for grating
+TempActPosGrt=(ActPosGrt/3072)	; get actual position in cts
+IF (HomingStatusGrt=4) 		; only calculate when motor is homed!
+	I232=INT(((-0.00000000003*(TempActPosGrt*TempActPosGrt))+(0.0003*TempActPosGrt)+434554)/multiplier2*2)	; formula derived from measurements
+ELSE
+	I232=INT(433000/multiplier2*2)		; otherwise use standard vff value
+ENDIF
+
+OldModeBit2=ModeBit2
+CLOSE
+
+
+; ** End of Upload **

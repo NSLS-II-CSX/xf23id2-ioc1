@@ -1,0 +1,13 @@
+Release Notes
+
+PGM
+Device Support for calculations for a Plane Grating Monochromator
+
+V0.0.0.1	11.05.2012
+- Initial Release (separate support lib created for PGM from former HPMCIOC)
+
+V1.0.0.5	21.08.2012
+- Updates originating from RSXS beamline installation / SAT
+
+V1.1.0.6	24.08.2012
+- energy scan integrated into generic scan

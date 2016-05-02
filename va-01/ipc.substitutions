@@ -1,0 +1,44 @@
+file /usr/lib/epics/db/gammampc_controller.db
+{
+  pattern { Sys , Cntl       , PORT  }
+  { XF:23ID2-CT , "{IPC:01}" , tsrv1-P9 }
+  { XF:23ID2-CT , "{IPC:02}" , tsrv1-P10  }
+  { XF:23ID2-CT , "{IPC:03}" , tsrv1-P11  }
+  { XF:23ID2-CT , "{IPC:04}" , tsrv1-P12  }
+  { XF:23ID2-CT , "{IPC:05}" , tsrv1-P13  }
+  { XF:23ID2-CT , "{IPC:07}" , tsrv1-P9 }
+}
+
+file /usr/lib/epics/db/gammampc_ip.db
+{
+  pattern { Sys , Cntl          , Dev                    , CHAN , PORT  }
+  { XF:23ID2    , "-CT{IPC:01}" , "-VA{Diag:01-IP:1}"    , 1    , tsrv1-P9 }
+  { XF:23ID2    , "-CT{IPC:01}" , "-VA{Mon-IP:1}"        , 2    , tsrv1-P9 }
+  { XF:23ID2    , "-CT{IPC:02}" , "-VA{Slt:1-IP:1}"      , 1    , tsrv1-P10 }
+  { XF:23ID2    , "-CT{IPC:02}" , "-VA{PSh-IP:1}"        , 2    , tsrv1-P10 }
+  { XF:23ID2    , "-CT{IPC:03}" , "-VA{Pmp:Inl:01-IP:1}" , 1    , tsrv1-P11 }
+  { XF:23ID2    , "-CT{IPC:03}" , "-VA{Pmp:Inl:02-IP:1}" , 2    , tsrv1-P11 }
+  { XF:23ID2    , "-CT{IPC:04}" , "-VA{Pmp:Inl:03-IP:1}" , 1    , tsrv1-P12 }
+  { XF:23ID2    , "-CT{IPC:04}" , "-VA{Diag:02-IP:1}"    , 2    , tsrv1-P12 }
+  { XF:23ID2    , "-CT{IPC:05}" , "-VA{Chop-IP:1}"       , 1    , tsrv1-P13 }
+  { XF:23ID2    , "-CT{IPC:05}" , "-VA{Slt:3-IP:1}"      , 2    , tsrv1-P13 }
+  { XF:23ID2    , "-CT{IPC:07}" , "-VA{Mir:3-IP:1}"      , 1    , tsrv2-P9 }
+  { XF:23ID2    , "-CT{IPC:07}" , "-VA{Diag:03-IP:1}"    , 2    , tsrv2-P9 }
+}
+
+file /usr/lib/epics/db/gammampc_setpoint.db
+{
+  pattern { Sys , Cntl          , Dev                    , CHAN , SPNUM , PORT  }
+  { XF:23ID2    , "-CT{IPC:01}" , "-VA{Diag:01-IP:1}"    , 1    , 1     , tsrv1-P9 }
+  { XF:23ID2    , "-CT{IPC:01}" , "-VA{Mon-IP:1}"        , 2    , 2     , tsrv1-P9 }
+  { XF:23ID2    , "-CT{IPC:02}" , "-VA{Slt:1-IP:1}"      , 1    , 1     , tsrv1-P10 }
+  { XF:23ID2    , "-CT{IPC:02}" , "-VA{PSh-IP:1}"        , 2    , 2     , tsrv1-P10 }
+  { XF:23ID2    , "-CT{IPC:03}" , "-VA{Pmp:Inl:01-IP:1}" , 1    , 1     , tsrv1-P11 }
+  { XF:23ID2    , "-CT{IPC:03}" , "-VA{Pmp:Inl:02-IP:1}" , 2    , 2     , tsrv1-P11 }
+  { XF:23ID2    , "-CT{IPC:04}" , "-VA{Pmp:Inl:03-IP:1}" , 1    , 1     , tsrv1-P12 }
+  { XF:23ID2    , "-CT{IPC:04}" , "-VA{Diag:02-IP:1}"    , 2    , 2     , tsrv1-P12 }
+  { XF:23ID2    , "-CT{IPC:05}" , "-VA{Chop-IP:1}"       , 1    , 1     , tsrv1-P13 }
+  { XF:23ID2    , "-CT{IPC:06}" , "-VA{Slt:3-IP:1}"      , 2    , 2     , tsrv1-P13 }
+  { XF:23ID2    , "-CT{IPC:05}" , "-VA{Mir:3-IP:1}"      , 1    , 1     , tsrv2-P9 }
+  { XF:23ID2    , "-CT{IPC:06}" , "-VA{Diag:03-IP:1}"    , 2    , 2     , tsrv2-P9 }
+}

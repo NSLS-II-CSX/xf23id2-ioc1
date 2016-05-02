@@ -1,0 +1,297 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 2
+y 761
+w 440
+h 160
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "Optics Change"
+endScreenProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 118
+y 122
+w 200
+h 25
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 118
+y 122
+w 200
+h 25
+fgColor index 6
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+buttonLabel "$(NAME) parameters"
+numPvs 4
+numDsps 0
+endObjectProperties
+
+endGroup
+
+visPv "$(OP_MODE_PV)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 118
+y 122
+w 200
+h 25
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 118
+y 122
+w 200
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+buttonLabel "$(NAME) parameters"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_OpticsParameter$(NAME).edl"
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(OP_MODE_PV)"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 0
+w 440
+h 25
+font "helvetica-medium-r-18.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "$(NAME) Change"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 82
+w 101
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Select $(NAME):"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 118
+y 78
+w 200
+h 24
+fgColor index 25
+bgColor index 3
+inconsistentColor index 55
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)$(AXIS)_TYPE_SP"
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 8
+y 45
+w 103
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Current $(NAME)"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 118
+y 40
+w 200
+h 25
+controlPv "$(P)$(R)$(AXIS)_TYPE_MON"
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 10
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 326
+y 122
+w 100
+h 25
+fgColor index 45
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+label "Close"
+font "helvetica-bold-r-12.0"
+3d
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 326
+y 78
+w 100
+h 24
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)$(AXIS):X_DCPL_CALC.PROC"
+pressValue "1"
+onLabel "Move"
+offLabel "Move"
+3d
+useEnumNumeric
+font "helvetica-medium-r-14.0"
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 9
+y 113
+w 418
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 9
+  1 427
+  2 427
+}
+yPoints {
+  0 113
+  1 113
+  2 113
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 326
+y 40
+w 100
+h 25
+controlPv "$(P)$(R)$(AXIS):X_DCPL_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_GRT:X_HOMED_STS"
+fill
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+endObjectProperties
+

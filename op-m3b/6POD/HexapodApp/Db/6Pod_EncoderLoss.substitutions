@@ -1,0 +1,14 @@
+file db/SAI_EncoderLoss.template {
+pattern {	P,		R,		AXIS,		SCAN, 		ASYNPORT, 	VARSTS, VARCLR}
+
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"1}Mtr",	"1 second",	"pmac",		"M181",	"M901"}
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"2}Mtr",	"1 second",	"pmac",		"M281",	"M901"}
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"3}Mtr",	"1 second",	"pmac",		"M381",	"M901"}
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"4}Mtr",	"1 second",	"pmac",		"M481",	"M901"}
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"5}Mtr",	"1 second",	"pmac",		"M581",	"M901"}
+        { 	"XF:23ID2-OP","{Mir:3B-Ax:",	"6}Mtr",	"1 second",	"pmac",		"M681",	"M901"}
+
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr
+#EOF

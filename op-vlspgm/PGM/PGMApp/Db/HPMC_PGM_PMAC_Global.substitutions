@@ -1,0 +1,11 @@
+## Macro Description:
+##
+#ASYNPORT - 	communications port
+#SCAN -		scan period
+#P - 		prefix of the pv name
+#R - 		main part of the pv name
+file db/HPMC_PGM_PMAC_Global.db {
+	pattern { ASYNPORT,	SCAN,		P,	R}
+		{"pmac1",	".2 second"	"RSXS",	"PGM01"}
+}
+#EOF

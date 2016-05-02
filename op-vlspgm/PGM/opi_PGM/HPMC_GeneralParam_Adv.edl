@@ -1,0 +1,1361 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 996
+y 117
+w 440
+h 540
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "General Parameters"
+disableScroll
+endScreenProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 2
+y 116
+w 434
+h 385
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 2
+y 116
+w 434
+h 385
+lineColor index 3
+fill
+fillColor index 3
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 129
+y 265
+w 203
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Not accessible in User Mode."
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+visPv "$(OP_MODE_PV)"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 0
+w 440
+h 25
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "Monochromator - General Parameters"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 331
+y 506
+w 100
+h 25
+fgColor index 45
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+label "Close"
+font "helvetica-bold-r-12.0"
+3d
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 39
+w 260
+h 70
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Conversion Constant (Photon Energy/Lambda)"
+  ""
+  "Minimal Energy [eV]"
+  ""
+  "Maximal Energy [eV]"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 285
+y 39
+w 147
+h 14
+controlPv "$(P)$(R)_CALC_ENERGY_CONST.F"
+format "exponential"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 10
+autoHeight
+precision 10
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 285
+y 68
+w 147
+h 14
+controlPv "$(P)$(R)_ENERGY_SP.DRVL"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 285
+y 96
+w 147
+h 14
+controlPv "$(P)$(R)_ENERGY_SP.DRVH"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 3
+y 496
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 3
+  1 430
+  2 430
+}
+yPoints {
+  0 496
+  1 496
+  2 496
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 6
+y 121
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 6
+  1 433
+  2 433
+}
+yPoints {
+  0 121
+  1 121
+  2 121
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 6
+y 132
+w 429
+h 356
+
+beginGroup
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 180
+w 70
+h 25
+fgColor index 44
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+pressValue "1"
+onLabel "Change"
+offLabel "Change"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 133
+w 70
+h 25
+fgColor index 44
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+pressValue "1"
+onLabel "Change"
+offLabel "Change"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 285
+y 179
+w 72
+h 26
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-18.0"
+invisible
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_OpticsChange.edl"
+}
+symbols {
+  0 "P=$(P),R=$(R),AXIS=GRT,NAME=Grating"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+icon
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 285
+y 132
+w 72
+h 26
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-18.0"
+invisible
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_OpticsChange.edl"
+}
+symbols {
+  0 "P=$(P),R=$(R),AXIS=MIR,NAME=Mirror"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+icon
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 7
+y 402
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 7
+  1 434
+  2 434
+}
+yPoints {
+  0 402
+  1 402
+  2 402
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 139
+w 36
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Mirror"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 186
+w 44
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Grating"
+}
+autoSize
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 58
+y 183
+w 82
+h 18
+controlPv "$(P)$(R)GRT:X_DCPL_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_GRT:X_HOMED_STS"
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 58
+y 136
+w 82
+h 18
+controlPv "$(P)$(R)MIR:X_DCPL_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_MIR:X_HOMED_STS"
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 363
+y 133
+w 70
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+xPosOffset 645
+yPosOffset -24
+buttonLabel "Configure"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_OpticsParameterMirror.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "P=$(P),R=$(R),AXIS=MIR,NAME=Mirror"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 7
+y 414
+w 157
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Backup / Restore Settings"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 148
+y 136
+w 130
+h 18
+controlPv "$(P)$(R)MIR_TYPE_MON"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 10
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 148
+y 182
+w 130
+h 18
+controlPv "$(P)$(R)GRT_TYPE_MON"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 10
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 6
+y 168
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 6
+  1 433
+  2 433
+}
+yPoints {
+  0 168
+  1 168
+  2 168
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 6
+y 218
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 6
+  1 433
+  2 433
+}
+yPoints {
+  0 218
+  1 218
+  2 218
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 363
+y 180
+w 70
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+xPosOffset 645
+yPosOffset -24
+buttonLabel "Configure"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_OpticsParameterGrating.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "P=$(P),R=$(R),AXIS=GRT,NAME=Grating"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 467
+w 34
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Status"
+}
+autoSize
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 101
+y 466
+w 114
+h 18
+controlPv "$(P)$(R)_CONF_FILE_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 331
+y 463
+w 100
+h 25
+fgColor index 25
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Save Settings"
+numCmds 1
+command {
+  0 "/opt/epics/modules/PGM/PGMApp/src/saveConfigPGM.sh $(P)$(R)"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 224
+y 463
+w 100
+h 25
+fgColor index 25
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Load Settings"
+numCmds 1
+command {
+  0 "/opt/epics/modules/PGM/PGMApp/src/loadConfig.sh $(P)$(R)"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 101
+y 442
+w 329
+h 14
+controlPv "$(P)$(R)_CONF_FILE_SP"
+format "string"
+font "helvetica-medium-r-12.0"
+fgColor index 15
+bgColor index 10
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useKp
+file
+defDir "/opt/epics/userconfig"
+pattern "*.cfg"
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 441
+w 79
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Parameter file:"
+}
+autoSize
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 224
+y 411
+w 207
+h 25
+fgColor index 25
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Load Factory Default Settings"
+password "ntmdt"
+numCmds 1
+command {
+  0 "/opt/epics/modules/PGM/PGMApp/src/loadConfigFile.sh $(P)$(R) /opt/epics/userconfig/PESPGMFactoryDefaults.cfg"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 323
+w 70
+h 25
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R):COMP_TABLE_CMD.A"
+pressValue "0"
+onLabel "Disable"
+offLabel "Disable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R):COMP_STS"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 286
+y 366
+w 70
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Monitor"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_Temperature.edl"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 363
+y 230
+w 70
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Configure"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_EnergyCalib.edl"
+}
+symbols {
+  0 "P=$(P),R=$(R)"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 287
+y 275
+w 70
+h 26
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)_VAR_CFF_STS"
+pressValue "0"
+onLabel "Disable"
+offLabel "Disable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R)_VAR_CFF_STS"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 287
+y 275
+w 70
+h 26
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)_VAR_CFF_STS"
+pressValue "1"
+onLabel "Enable"
+offLabel "Enable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R)_VAR_CFF_STS"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 323
+w 70
+h 25
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R):COMP_TABLE_CMD.A"
+pressValue "1"
+onLabel "Enable"
+offLabel "Enable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R):COMP_STS"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 230
+w 70
+h 25
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)_POS_CORRECT_STS"
+pressValue "0"
+onLabel "Disable"
+offLabel "Disable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R)_POS_CORRECT_STS"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 286
+y 230
+w 70
+h 25
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 0
+botShadowColor index 11
+controlPv "$(P)$(R)_POS_CORRECT_STS"
+pressValue "1"
+onLabel "Enable"
+offLabel "Enable"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+visPv "$(P)$(R)_POS_CORRECT_STS"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 236
+w 108
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Energy Calibration"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 372
+w 83
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Temperatures"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 330
+w 126
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Compensation Tables"
+}
+autoSize
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 148
+y 327
+w 130
+h 18
+controlPv "$(P)$(R):COMP_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_COMP_STS"
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 362
+y 366
+w 70
+h 25
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Limits"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_TempLimits.edl"
+}
+symbols {
+  0 "P=$(P),R=$(R)"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 6
+y 311
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 6
+  1 433
+  2 433
+}
+yPoints {
+  0 311
+  1 311
+  2 311
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 8
+y 358
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 8
+  1 435
+  2 435
+}
+yPoints {
+  0 358
+  1 358
+  2 358
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 147
+y 233
+w 130
+h 18
+controlPv "$(P)$(R)_POS_CORRECT_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_POS_CORRECT_STS"
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 148
+y 370
+w 127
+h 18
+controlPv "$(P)$(R)_TEMP_ERR_STS"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 10
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 7
+y 281
+w 68
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Variable cff"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 364
+y 275
+w 70
+h 26
+fgColor index 44
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Configure"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "opi_PGM/HPMC_VariableCff.edl"
+}
+symbols {
+  0 "P=$(P),R=$(R)"
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 7
+y 265
+w 427
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 7
+  1 434
+  2 434
+}
+yPoints {
+  0 265
+  1 265
+  2 265
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 148
+y 278
+w 130
+h 19
+controlPv "$(P)$(R)_VAR_CFF_STS"
+fgColor index 15
+fgAlarm
+bgColor index 10
+colorPv "$(P)$(R)_POS_CORRECT_STS"
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+endGroup
+
+visPv "$(OP_MODE_PV)"
+visInvert
+visMin "0"
+visMax "1"
+endObjectProperties
+

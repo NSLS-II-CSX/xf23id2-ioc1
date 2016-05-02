@@ -1,0 +1,1582 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 559
+y 592
+w 500
+h 350
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+title "Grating Parameters"
+disableScroll
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 107
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 109
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.E"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 109
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.E"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 0
+w 500
+h 25
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "Monochromator - $(NAME) Parameters"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 225
+y 37
+w 84
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Offset (pitch)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 97
+y 37
+w 34
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Name"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 15
+y 55
+w 467
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 15
+  1 482
+  2 482
+}
+yPoints {
+  0 55
+  1 55
+  2 55
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 345
+y 32
+w 0
+h 260
+lineColor index 14
+fillColor index 0
+numPoints 2
+xPoints {
+  0 345
+  1 345
+}
+yPoints {
+  0 32
+  1 292
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 352
+y 37
+w 120
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Default pos. (horiz.)"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 61
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.C"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 61
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 16
+y 37
+w 20
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "No."
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 61
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.C"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 84
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.D"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 61
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 84
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 109
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 131
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.F"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 155
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.G"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 180
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.H"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 131
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 155
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 180
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 276
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.L"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 276
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 252
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 252
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.K"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 228
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.J"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 228
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 312
+y 204
+w 24
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "deg"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 211
+y 204
+w 98
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):P_OFFSETS.I"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 84
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.D"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 84
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 131
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.F"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 131
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 155
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.G"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 155
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 228
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 228
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.J"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 180
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.H"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 180
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 204
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.I"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 204
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 252
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.K"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 252
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 361
+y 276
+w 92
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS):X_DEF_POS.L"
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 25
+bgColor index 52
+useDisplayBg
+editable
+autoHeight
+precision 1
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 459
+y 276
+w 22
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "mm"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 61
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.ONST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 84
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.TWST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 131
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.FRST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 109
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.THST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 155
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.FVST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 180
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.SXST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 228
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.EIST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 204
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.SVST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 276
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.TEST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 62
+y 252
+w 121
+h 16
+controlPv "$(PV_PREFIX)$(DEVICE)$(AXIS)_TYPE_SP.NIST"
+font "helvetica-medium-r-14.0"
+fgColor index 15
+bgColor index 10
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 199
+y 32
+w 0
+h 260
+lineColor index 14
+fillColor index 0
+numPoints 2
+xPoints {
+  0 199
+  1 199
+}
+yPoints {
+  0 32
+  1 292
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 43
+y 32
+w 0
+h 260
+lineColor index 14
+fillColor index 0
+numPoints 2
+xPoints {
+  0 43
+  1 43
+}
+yPoints {
+  0 32
+  1 292
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 61
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 276
+w 16
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "10"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 252
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "9"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 228
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "8"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 204
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "7"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 180
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 155
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 131
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 109
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 18
+y 84
+w 8
+h 16
+font "helvetica-medium-r-14.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2"
+}
+autoSize
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 389
+y 319
+w 100
+h 25
+fgColor index 45
+bgColor index 3
+topShadowColor index 0
+botShadowColor index 11
+label "Close"
+font "helvetica-bold-r-12.0"
+3d
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 7
+y 312
+w 481
+h 0
+lineColor index 14
+fillColor index 0
+numPoints 3
+xPoints {
+  0 7
+  1 488
+  2 488
+}
+yPoints {
+  0 312
+  1 312
+  2 312
+}
+endObjectProperties
+

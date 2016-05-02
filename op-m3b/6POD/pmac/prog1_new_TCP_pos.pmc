@@ -1,0 +1,129 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+#define	ToDefaultGain	100
+#define	ToStableGain	200
+&1
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+; Motion program - starts move
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+;***************************************************************************
+; Program Title: PROG1 - Hexapod Move
+; Author: Delta Tau
+; Modified by: Steve Siew
+; Date: 12/10/2013
+; Version: N/A
+; Description: -
+; This PPROG position the hexapod in 6 degrees of freedom
+;
+; Change Log:
+; 12/10/2013 - Added check for home status of jacks before positioning the hexapod.
+;
+;***************************************************************************
+OPEN PROG 1 CLEAR
+
+ProgRunFlg_Prog01 = True
+FRateTmUnitCS1	=	1000
+
+TA(AccTm_Ax1)	; Set Acceleration Time
+TS(SCurvTm_Ax1)	; Set S-Curve Time
+
+LINEAR	; Linear Interpolation
+ABS	; Move absolute Positioning Mode
+
+;Transform from uRad to deg.
+
+UCSPoseA = UCSPoseAuRad/6Pod_Degs2UserUnit
+UCSPoseB = UCSPoseBuRad/6Pod_Degs2UserUnit
+UCSPoseC = UCSPoseCuRad/6Pod_Degs2UserUnit
+
+If (ABS(PoseA+PoseB+PoseC-UCSPoseA-UCSPoseB-UCSPoseC) < 0.01)
+  FRAX(X,Y,Z) F(6PodSpd_Prog1)
+Else
+  FRAX(X,Y,Z,A,B,C) F(6PodSpd_Prog1/4)
+EndIf
+
+;Restore Stable Gains
+GoSub ToStableGain
+DWELL 0
+
+If (HomedFlg_Ax1 = True And HomedFlg_Ax2 = True And HomedFlg_Ax3 = True And HomedFlg_Ax4 = True And HomedFlg_Ax5 = True AND HomedFlg_Ax6 = True)
+	X(UCSPoseX)Y(UCSPoseY)Z(UCSPoseZ)A(UCSPoseA)B(UCSPoseB)C(UCSPoseC)
+	DWELL 500
+EndIf
+;Restore Default Gains
+GoSub ToDefaultGain
+
+DWELL 50
+
+ProgRunFlg_Prog01 = False
+
+RETURN
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	Start of Subroutines
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;Restore Default Gain
+N100	;ToDefaultGain
+If (6PodStableGain = True)
+    
+  PIDPropGain_Ax1	=	DefaultPropGain_Ax1
+  PIDPropGain_Ax2	=	DefaultPropGain_Ax2
+  PIDPropGain_Ax3	=	DefaultPropGain_Ax3
+  PIDPropGain_Ax4	=	DefaultPropGain_Ax4
+  PIDPropGain_Ax5	=	DefaultPropGain_Ax5
+  PIDPropGain_Ax6	=	DefaultPropGain_Ax6
+  
+  ;PIDDervGain_Ax1 = DefaultDervGain
+  ;PIDDervGain_Ax2 = DefaultDervGain
+  ;PIDDervGain_Ax3 = DefaultDervGain
+  ;PIDDervGain_Ax4 = DefaultDervGain
+  ;PIDDervGain_Ax5 = DefaultDervGain
+  ;PIDDervGain_Ax6 = DefaultDervGain
+  
+  PIDKVFFGain_Ax1	=	DefaultKVFFGain_Ax1
+  PIDKVFFGain_Ax2	=	DefaultKVFFGain_Ax2
+  PIDKVFFGain_Ax3	=	DefaultKVFFGain_Ax3
+  PIDKVFFGain_Ax4	=	DefaultKVFFGain_Ax4
+  PIDKVFFGain_Ax5	=	DefaultKVFFGain_Ax5
+  PIDKVFFGain_Ax6	=	DefaultKVFFGain_Ax6
+EndIf
+
+RETURN
+
+
+;Restore Stable Gain
+N200	;ToStableGain
+If (6PodStableGain = True)
+  
+  PIDPropGain_Ax1 = StablePropGain
+  PIDPropGain_Ax2 = StablePropGain
+  PIDPropGain_Ax3 = StablePropGain
+  PIDPropGain_Ax4 = StablePropGain
+  PIDPropGain_Ax5 = StablePropGain
+  PIDPropGain_Ax6 = StablePropGain
+  
+  ;PIDDervGain_Ax1 = StableDervGain
+  ;PIDDervGain_Ax2 = StableDervGain
+  ;PIDDervGain_Ax3 = StableDervGain
+  ;PIDDervGain_Ax4 = StableDervGain
+  ;PIDDervGain_Ax5 = StableDervGain
+  ;PIDDervGain_Ax6 = StableDervGain
+  
+  PIDKVFFGain_Ax1 = 0
+  PIDKVFFGain_Ax2 = 0
+  PIDKVFFGain_Ax3 = 0
+  PIDKVFFGain_Ax4 = 0
+  PIDKVFFGain_Ax5 = 0
+  PIDKVFFGain_Ax6 = 0
+EndIf
+
+RETURN
+
+CLOSE	;close buffer - end of program
+

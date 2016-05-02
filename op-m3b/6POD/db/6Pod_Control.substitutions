@@ -1,0 +1,5 @@
+file db/6Pod_Control.db {
+    pattern {	P,		R,		T,		ASYNPORT,	SCAN,		TMOT,	PREC,	CS,	SPEED_DRVH, 	NAME, 				RXPV,		RYPV,		RZPV,		TXPV,	TYPV,	TZPV, 	RXNAM,	RYNAM,	RZNAM, 	TXNAM,		TYNAM, 		TZNAM,		LEG1,		LEG2,		LEG3,		LEG4,		LEG5,		LEG6}
+        {	"XF:23ID2-OP","{Mir:3B-Ax:",	"{Mir:3B}",	"pmac",		".2 second",	1,	4,	"1",	"0.8",		"NSLS-II CSX Hexapod - M3-B",	"Pit}Mtr",	"Yaw}Mtr",	"Rol}Mtr",	"X}Mtr","Y}Mtr","Z}Mtr","Pitch","Yaw",	"Roll",	"Lateral",	"Vertical",	"Longitudinal",	"1}Mtr",	"2}Mtr",	"3}Mtr",	"4}Mtr",	"5}Mtr",	"6}Mtr"}
+}
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr

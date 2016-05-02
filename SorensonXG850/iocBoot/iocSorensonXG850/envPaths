@@ -1,0 +1,4 @@
+epicsEnvSet("ARCH","linux-x86")
+epicsEnvSet("IOC","iocSorensonXG850")
+epicsEnvSet("TOP","/epics/iocs/SorensonXG850")
+epicsEnvSet("EPICS_BASE","/usr/lib/epics")

@@ -1,0 +1,7 @@
+file plc1-tc-ai.template
+{
+        pattern { Sys		, Dev			, PLC		, Indx	}
+		{ XF:23ID2-ES	, "{APPES-TC:1}"	, XF23ID2_EPS	, 0	}
+		{ XF:23ID2-ES	, "{APPES-TC:2}"	, XF23ID2_EPS	, 1	}
+}
+   

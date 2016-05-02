@@ -1,0 +1,8 @@
+file plc1-misc-di.template
+{
+        pattern { Sys		, Dev			, PLC		}
+		{ XF:23ID2-ES	, "{APPES_LL-LSw:1}"	, XF23ID2_EPS	}
+		{ XF:23ID2-ES	, "{IOXAS_LL-LSw:1}"	, XF23ID2_EPS	}
+		{ XF:23ID2-ES   , "{IOXAS_LL-LSw:1}"	, XF23ID2_EPS   }
+}
+   

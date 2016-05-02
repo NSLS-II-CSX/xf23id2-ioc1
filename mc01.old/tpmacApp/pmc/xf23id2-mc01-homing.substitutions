@@ -1,0 +1,9 @@
+file "home_to_enc_ref_template.pmc" 
+{
+
+pattern
+{ AXIS,   PLC,  SERVO,  TIMER }
+{ 1,      8,    701,    5511  }
+#{ 2,      9,    702,    5512  }
+
+}

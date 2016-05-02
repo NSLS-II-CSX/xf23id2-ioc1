@@ -1,0 +1,59 @@
+Puse:
+sset state Pause:		
+Continue:
+sset state 
+
+stop immediately:
+sset state Abort:
+sval
+
+
+
+
+filament
+lput F1 1 0
+lput F2 1 0
+
+
+local environment
+sset env emission 200 electron-energy 60 
+
+check local/global environment
+
+
+add sequence command
+sset row 2
+
+Autozero function
+sset settings Zero:
+
+Serial port: TTY
+pset assgined-IP 10 0 132 100
+save
+
+Comm. Utility
+
+DHCP server
+pset assigned-IP 0 0 0 0 
+save
+
+LED status
+lget run-LED run-F1 run-F2 run-Emission run-Fault
+
+temperature protection
+overtemp
+
+filament status
+filok
+
+demanded emission is acceptable
+emok
+
+reads back pressure trip in RF head
+ptrip
+
+unlimited cycle:
+lput cycles 0
+
+Return result of Bar and Prof mode is like
+[/ xxx/{}

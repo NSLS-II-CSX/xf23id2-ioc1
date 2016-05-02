@@ -1,0 +1,13 @@
+syntax: glob
+
+O\.linux-x86$
+O\.Common$
+html$
+as$
+O.*
+bin/
+db/*
+dbd/*
+envPaths
+records.dbl
+*~

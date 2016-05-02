@@ -1,0 +1,8 @@
+file db/6Pod_CSSetpoints.template {
+    pattern { 	ASYNPORT, P,		R,		S,	T,		CS,	QVAR,	PVAR,	PREC, 	RXPV,		RYPV,		RZPV,		TXPV,	TYPV,	TZPV,	RXDRVH,	RXDRVL,	RYDRVH,	RYDRVL,	RZDRVH,	RZDRVL,	TXDRVH,	TXDRVL,	TYDRVH,	TYDRVL,	TZDRVH,	TZDRVL,	EGU1,	EGU2,	EGU3,	EGU4,	EGU5,	EGU6,	SLO1,	SLO2,	SLO3,	SLO4,	SLO5,	SLO6}
+        { 	"pmac"	  "XF:23ID2-OP","{Mir:3B-Ax:","",	"{Mir:3B}",	"1",	"Q68",	"P3012",3,	"Pit}Mtr",	"Yaw}Mtr",	"Rol}Mtr",	"X}Mtr","Y}Mtr","Z}Mtr",20,	-20,	20,	-20,	20,	-20,	5,	-5,	5,	-5,	5,	-5,	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	-1,	1,	1}
+        { 	"pmac",   "XF:23ID2-OP","{Mir:3B-Ax:","LCS_",	"{Mir:3B}",	"1",	"Q86",	"P3000",3,	"Pit}Mtr",	"Yaw}Mtr",	"Rol}Mtr",	"X}Mtr","Y}Mtr","Z}Mtr",0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1174,	1174, 	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	-1,	1,	1}
+#        { 	"pmac",   "XF:23ID2-OP","{Mir:3B-Ax:","TCP_",	"{Mir:3B}",	"1",	"Q85",	"P3006",3,	"Pit}Mtr",	"Yaw}Mtr",	"Rol}Mtr",	"X}Mtr","Y}Mtr","Z}Mtr",0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	416.26,	416.26, "mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	-1,	1,	1}
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr

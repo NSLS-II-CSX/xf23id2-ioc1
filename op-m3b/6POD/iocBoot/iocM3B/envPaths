@@ -1,0 +1,6 @@
+epicsEnvSet("ARCH","linux-x86_64")
+epicsEnvSet("IOC","iocM3B")
+epicsEnvSet("TOP","/epics/iocs/op-m3b/6POD")
+epicsEnvSet("SAI","/epics/iocs/op-m3b/6POD/../SAI")
+epicsEnvSet("SNCSEQ","/usr/lib/epics")
+epicsEnvSet("EPICS_BASE","/usr/lib/epics")

@@ -1,0 +1,177 @@
+;
+;The following are PLC programs...........................................
+;
+;M-variable definitions for actual position registers
+M162->D:$8B			;Motor 1 actual position
+M262->D:$10B			;Motor 2 actual position
+M164->D:$CC		;Motor 1 Position Bias
+M264->D:$14C	;Motor 2 Position Bias
+
+
+;initial values
+#include "PGM_macro_substitutions.pmc"
+
+; Forward Kinematic PLC Programm Buffer for Energy from Angle reporting
+OPEN PLC 10 CLEAR
+
+IF (Mot1HomCmplt=1 AND Mot2HomCmplt=1 )        ; Properly position referenced ? 
+	PLCMirAng=(M1ActPosCts+Mot1PosBias)/(i108*32*(-Cts2Deg))-MirrOffset	;Mirror Angle in Degree
+	PLCGrtAng=(M2ActPosCts+Mot2PosBias)/(i208*32*(-Cts2Deg))-GrtOffset	;Grating Angle in Degree
+	GrtConst=GrtConst1	;grating constant on the fly scan ; Gitterkonstante n [linien/mm] 
+	CalcPhotonEnergy=PhE2WaLng*GrtConst*DiffOrd/(sin(2*(90+PLCMirAng)+(-PLCGrtAng-90))+sin(-PLCGrtAng-90))
+			;Photon-energy [eV] with these angles [deg]new formula
+
+	IF (M138=0 AND M238=0)	;motors not Open loop;
+		Ready2Sweep=1	; signaling ready to sweep
+	else
+		Ready2Sweep=0	; not ready to energy sweep
+	endif
+Else
+	Ready2Sweep=0	; not ready to energy sweep
+ENDIF
+CLOSE
+
+
+; forward kinematic to calculate photon Energy from Mirror and grating angle
+; modified example from turbo pmac user manual
+
+
+; Setup for program 
+
+Mot1HomCmplt->Y:$0000C0,10,1          ; Motor 1 home complete bit 
+Mot2HomCmplt->Y:$000140,10,1          ; Motor 2 home complete bit 
+CS1runtimeErr->Y:$00203F,22,1         ; CS 1 run-time error bit 
+
+; Forward-kinematic program buffer for repeated execution 
+&1 OPEN FORWARD               ; Forward kinematics for CS 1 
+CLEAR                         ; Erase existing contents 
+IF (Mot1HomCmplt=1 AND Mot2HomCmplt=1)        ; Properly position referenced? 
+	FwKinMirAng=MirPos/(-Cts2Deg)-MirrOffset			;Mirror Angle in Degree
+	FwKinGratAng=GrtPos/(-Cts2Deg)-GrtOffset			;Grating Angle in Degree		
+	PhE=PhE2WaLng*GrtConst*DiffOrd/(sin(2*(90+FwKinMirAng)+(-FwKinGratAng-90))+sin(-FwKinGratAng-90))
+ELSE                          ; Not valid; halt operation 
+  CS1runtimeErr=1                     ; Set run-time error bit 
+ENDIF 
+CLOSE
+
+; if error Message "no room in buffer..." occurs on downloading
+; type DEL GAT to clear the Gather Buffer
+
+; inverse kinematic to calculate Mirror and grating angle from photon Energy 
+;modified example from turbo pmac user manual
+
+
+; Setup for program 
+
+&1 				         	; Address CS 1 
+#1->I						; motor 1 asigned to inverse kinematic axis in CS1
+#2->I						; motor 2 asigned to inverse kinematic axis in CS1
+Mot1HomCmplt->Y:$0000C0,10,1          ; Motor 1 home complete bit 
+Mot2HomCmplt->Y:$000140,10,1          ; Motor 2 home complete bit 
+CS1runtimeErr->Y:$00203F,22,1         ; CS 1 run-time error bit 
+
+; Inverse-kinematic algorithm to be executed repeatedly
+&1 OPEN INVERSE               ; Forward kinematics for CS 1 
+CLEAR                         ; Erase existing contents 
+IF (Mot1HomCmplt=1 AND Mot2HomCmplt=1)        ; Properly position referenced? 
+	Lambda=PhE2WaLng/PhE;						; lambda(P195) = PhE (Photon Energy) in [eV]
+	L1=GrtConst*DiffOrd*Lambda				; l1(P196)=1000*n*k*lambda
+	IF (B2_coeff!=0)								; VLS grating present use variable on factor C
+		A0=GrtConst*Lambda
+		A2=A0*dExitArm*B2_coeff
+		ArmRatio=dExitArm/dEntrArm	; r=rb/ra moved to inverse kinematic for constant recalculation
+		CC=SQRT((2*A2+4*(A2/A0)*(A2/A0)+(4+2*A2-A0*A0)*ArmRatio-4*A2/A0*SQRT(((1+ArmRatio)*(1+ArmRatio)+2*A2*(1+ArmRatio))-A0*A0*ArmRatio))/(-4+A0*A0-4*A2+4*(A2/A0)*(A2/A0)))
+		; large formula from reininger castro deuchler
+		CTUN=CC+Tun0+Tun1*PhE+Tun2*PhE*PhE+Tun3*PhE*PhE*PhE	;correction from ideal VLS value
+		CFACTOR=CTUN	; variable CFACTOR
+	ElSE			; as usual CFF constant
+		CFACTOR=CFF;
+	ENDIF
+	BofE=(L1*CFACTOR)/(1-(CFACTOR*CFACTOR))	;P197(b1)=(l1*CFACTOR)/(1-(CFACTOR*CFACTOR))
+	beta=asin((-1)*BofE*CFACTOR-SQRT(BofE*BofE+1))
+  													;beta(P198)= asin(-1*b1*CFACTOR-SQRT(CFACTOR*CFACTOR+1))
+	alpha=ACOS(COS(beta)/CFACTOR)			;alpha(P199)=ACOS(COS(beta)/CFACTOR)
+	theta=(alpha-beta)/2						;teta(P1100)=(alpha-beta)/2
+	MirrAng=90-(theta)								; Mirror position in deg
+	GrtAng=90+(beta)  								; Grating position in deg
+	MirPos=(-Cts2Deg)*(MirrAng+MirrOffset)						; deg to cts
+	GrtPos=((-1)*Cts2Deg)*(GrtAng+GrtOffset)						; deg to cts
+ELSE                          ; Not valid; halt operation 
+	CS1runtimeErr=1                     ; Set run-time error bit 
+ENDIF 
+CLOSE
+
+; if error Message "no room in buffer..." occours on downloading
+; type DEL GAT to clear the Gather Buffer
+
+;******************** Set-up and Definitions ********************
+DEL GAT		; erase any defined Gather Buffer
+&1		; Coordinate System 1
+CLOSE		; Close all Buffers
+;#1->51200X		;assign Motor 2 to y-Axis, 1 unit(1°) in the program
+;#2->51200Y	 	;equals 51200 motor counts
+
+;******************** Motion Program Text ***********************
+
+OPEN Prog 1	;open buffer for Programm entry
+CLEAR
+
+ABS
+TM3000
+
+Cts2Deg=Cts2Deg1	;signed counts to degree conversion factor inverted for same sign as EPICS MRES
+PhE2WaLng=PhE2WaLng1	;PhotEnrg[eV]->wavelenght[m] constant on the fly scan; [eV*m]conversion factor lambda=q91/E
+GrtConst=GrtConst1	;grating constant on the fly scan ; Gitterkonstante n [linien/mm] 
+DiffOrd=DiffOrd1	;first order constant on the fly scan; Beugungsordnung k
+;CFACTOR=CFF	;constant fixed focus on the fly scan; constant fixed focus cff
+ScanStartEngy=ScanStartEngy1	; Start Photon Energy value [eV]
+ScanEndEngy=ScanEndEngy1	; Photon Energy End value	[eV]
+ScanSpeed=ScanSpeed1	; Energy Scan speed [eV/s]
+MirrOffset=(abs(Cts2Deg)/Cts2Deg)*MirrOffset1	;Use the sign of the Cts2Deg on the offset mirror #1
+GrtOffset=(abs(Cts2Deg)/Cts2Deg)*GrtOffset1	;Use the sign of the Cts2Deg on the offset grating #2
+
+IF (Mot1HomCmplt=1 AND Mot2HomCmplt=1)        ; Properly position referenced? 
+;	IF (M1ActPosCts>-1 OR M2ActPosCts>-1)        				; Mirror or Grating in negative or zero Position 
+;		CMD"#1j=-112000+(MirrOffset*51200)"			; Jog to Start position  1500eV
+;		CMD"#2j=-150000+(GrtOffset*51200)"			; Jog to Start position, zero is not good
+;	ENDIF	
+
+	CMD"DEF GAT"
+	CMD"GAT"
+	CountEnrgVar=ScanStartEngy		;counting variable Start energy
+	ActEngyMotProg=CalcPhotonEnergy		; actual Energy from PLC calculation
+	ScanSpeedDiv5=ScanSpeed		; Speed in eV/s 
+	ScanSpeedDiv5=ScanSpeedDiv5/5		;eV/s/5
+	ScanEndEngyMot=ScanEndEngy		; Endvalue
+	ScanTimeStep=200		;time per Step [ms]
+	StepsPerSweep=ABS(ScanStartEngy-ScanEndEngy)/ScanSpeed/(ScanTimeStep/1000)+2						;steps per Sweep
+	ScanStepSize=(ScanStartEngy-ScanEndEngy)/StepsPerSweep	;	Stepsize
+	DWELL200		; stop prog for 0.2 seconds
+	RAPID
+	ScanStartEngyMinus10=ScanStartEngy+ScanStepSize
+	ScanStatus=1	; flag for scan preparation
+	&1 X(ScanStartEngyMinus10) ; to ´first Energy minus 1% of the distance
+	DWELL200	; stop prog for 0.2 seconds
+	spline1	;
+	TM(ScanTimeStep)
+	WHILE(StepsPerSweep>0)	; exec as long as Q114 bigger 0
+	    &1 X(CountEnrgVar)	;TM(q116)	;(ABS(1000*(ActEngyMotProg-CountEnrgVar)/ScanSpeedDiv5));  F(ABS(ActEngyMotProg-CountEnrgVar)/5)		;move Time 5s 
+	    ScanStatus=2			;inside sweep area
+	    ActEngyMotProg=CountEnrgVar					;save old position for distance calculation
+	    StepsPerSweep=StepsPerSweep-1	;count steps down
+	    CountEnrgVar=CountEnrgVar-ScanStepSize	;	CountEnrgVar/1.16812084713476	; decrement counting variable
+	ENDWHILE	; end of the while loop;P1=1500		;counting variable
+	&1 X(CountEnrgVar) ;last move to final position
+	ScanStatus=0			;end of sweep area
+	;rapid
+	&1 X(ScanEndEngyMot) ; to ´first Energy minus 1% of the distance
+ENDIF
+dwell2000
+CMD"ENDG"	; send online command to stop data gathering
+CLOSE		; close buffer - end of programm
+
+;To run this program:
+;DEF GAT <CR>
+;GAT &1 B1 R <CR>
+
+; ** End of Upload **

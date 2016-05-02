@@ -1,0 +1,9 @@
+file "$(EPICS_BASE)/db/autohome.db"
+{
+
+pattern
+{SYS,              DEV,                 PLC,  PORT  }
+{"XF:23ID2-OP",  "{Slt:2-Ax:Y}",      8     P0    }
+{"XF:23ID2-OP",  "{Slt:3-Ax:X}",      9     P0    }
+{"XF:23ID2-BI",  "{Diag:2-Ax:Y}",      10     P0    }
+}

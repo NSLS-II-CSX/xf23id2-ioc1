@@ -1,0 +1,307 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+&1	;Address C.S.
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+; Homing program
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+#define	ToDefaultGain	100
+#define	ToStableGain	200
+#define	ToTriggerCheck	300
+
+OPEN PROG 11 CLEAR
+
+6PodTolRaw=6PodSettleTol*PSF_Ax1*32
+HmStarted_Prog11 = True
+SystemHomed = False
+
+RAPID	; Rapid Mode
+
+TA(AccTm_Ax1)	; Set Acceleration Time
+TS(SCurvTm_Ax1)	; Set S-Curve Time
+F(HmSpd_Ax1)	; Set Feedrate (velocity)
+
+HomingStatus_Ax1 = 2
+HomingStatus_Ax2 = 2
+HomingStatus_Ax3 = 2
+HomingStatus_Ax4 = 2
+HomingStatus_Ax5 = 2
+HomingStatus_Ax6 = 2
+
+;assign motors from kinematic assignment to axes
+CMD"&1#1->X #2->Y #3->Z #4->A #5->B #6->C"
+
+HmStartPos_Ax1 = CmdPos_Ax1/(PSF_Ax1*32) ; remember capture position
+HmStartPos_Ax2 = CmdPos_Ax2/(PSF_Ax2*32) ; remember capture position
+HmStartPos_Ax3 = CmdPos_Ax3/(PSF_Ax3*32) ; remember capture position
+HmStartPos_Ax4 = CmdPos_Ax4/(PSF_Ax4*32) ; remember capture position
+HmStartPos_Ax5 = CmdPos_Ax5/(PSF_Ax5*32) ; remember capture position
+HmStartPos_Ax6 = CmdPos_Ax6/(PSF_Ax6*32) ; remember capture position
+
+CapCtrl_Ax1 = 2	; capture home on rising edge of a flag
+CapCtrl_Ax2 = 2
+CapCtrl_Ax3 = 2
+CapCtrl_Ax4 = 2
+CapCtrl_Ax5 = 2
+CapCtrl_Ax6 = 2
+
+CapFlgSel_Ax1 = 2	; use -limit as a flag
+CapFlgSel_Ax2 = 2
+CapFlgSel_Ax3 = 2
+CapFlgSel_Ax4 = 2
+CapFlgSel_Ax5 = 2
+CapFlgSel_Ax6 = 2
+
+FlgModCtrl_Ax1 = LimitsOFF		; disable +/- limits
+FlgModCtrl_Ax2 = LimitsOFF
+FlgModCtrl_Ax3 = LimitsOFF
+FlgModCtrl_Ax4 = LimitsOFF
+FlgModCtrl_Ax5 = LimitsOFF
+FlgModCtrl_Ax6 = LimitsOFF
+
+;Restore Stable Gain
+GoSub ToStableGain
+
+INC	; Set Incremental Positioning Mode
+DWELL 0
+
+;move until trigger should be as large as the whole motor
+;move range to ensure that -limit switch is found
+X(-MovRange_Ax1)^0 Y(-MovRange_Ax2)^0 Z(-MovRange_Ax3)^0 A(-MovRange_Ax4)^0 B(-MovRange_Ax5)^0 C(-MovRange_Ax6)^0
+DWELL 0
+
+IF (TrigMovFlg_Ax1 = True Or TrigMovFlg_Ax2 = True Or TrigMovFlg_Ax3 = True Or TrigMovFlg_Ax4 = True Or TrigMovFlg_Ax5 = True Or TrigMovFlg_Ax6 = True)
+  
+  ;Trigger Check
+  GoSub ToTriggerCheck
+  
+  Goto 999	; Skip
+  
+ENDIF
+
+X(LimOffset_Ax1) Y(LimOffset_Ax2) Z(LimOffset_Ax3) A(LimOffset_Ax4) B(LimOffset_Ax5) C(LimOffset_Ax6)
+DWELL 0
+
+FlgModCtrl_Ax1 = LimitsON			; reenable +/-limits
+FlgModCtrl_Ax2 = LimitsON
+FlgModCtrl_Ax3 = LimitsON
+FlgModCtrl_Ax4 = LimitsON
+FlgModCtrl_Ax5 = LimitsON
+FlgModCtrl_Ax6 = LimitsON
+
+CapCtrl_Ax1 = 1	; capture on marker pulse
+CapCtrl_Ax2 = 1
+CapCtrl_Ax3 = 1
+CapCtrl_Ax4 = 1
+CapCtrl_Ax5 = 1
+CapCtrl_Ax6 = 1
+
+CapFlgSel_Ax1 = 0	; use home switch as a flag
+CapFlgSel_Ax2 = 0
+CapFlgSel_Ax3 = 0
+CapFlgSel_Ax4 = 0
+CapFlgSel_Ax5 = 0
+CapFlgSel_Ax6 = 0
+
+HomingStatus_Ax1 = 3
+HomingStatus_Ax2 = 3
+HomingStatus_Ax3 = 3
+HomingStatus_Ax4 = 3
+HomingStatus_Ax5 = 3
+HomingStatus_Ax6 = 3
+
+DWELL 0
+
+X(MovRange_Ax1)^0 Y(MovRange_Ax2)^0 Z(MovRange_Ax3)^0 A(MovRange_Ax4)^0 B(MovRange_Ax5)^0 C(MovRange_Ax6)^0
+DWELL 0
+
+If (TrigMovFlg_Ax1 = True Or TrigMovFlg_Ax2 = True Or TrigMovFlg_Ax3 = True Or TrigMovFlg_Ax4 = True Or TrigMovFlg_Ax5 = True Or TrigMovFlg_Ax6 = True)
+  
+  ;Trigger Check
+  GoSub ToTriggerCheck
+  
+  Goto 999	; Skip
+  
+ENDIF
+
+X(HmOffset_Ax1) Y(HmOffset_Ax2) Z(HmOffset_Ax3) A(HmOffset_Ax4) B(HmOffset_Ax5) C(HmOffset_Ax6)
+DWELL 200
+
+;Restore Default Gains
+GoSub ToDefaultGain
+
+DWELL 1000
+
+IF (HmMode_Prog11 = FACTORY_ZERO)
+  
+  While (abs(CmdPos_Ax1-ActPos_Ax1)>6PodTolRaw Or abs(CmdPos_Ax2-ActPos_Ax2)>6PodTolRaw Or abs(CmdPos_Ax3-ActPos_Ax3)>6PodTolRaw Or abs(CmdPos_Ax4-ActPos_Ax4)>6PodTolRaw Or abs(CmdPos_Ax5-ActPos_Ax5)>6PodTolRaw Or abs(CmdPos_Ax6-ActPos_Ax6)>6PodTolRaw)
+  EndWhile
+  
+  HOMEZ1,2,3,4,5,6
+  DWELL 10
+  
+ENDIF
+
+IF (HmMode_Prog11 = PREVIOUS_POSITION)
+
+  HmEndPos_Ax1 = CmdPos_Ax1/(PSF_Ax1*32) ; remember capture position
+  HmEndPos_Ax2 = CmdPos_Ax2/(PSF_Ax2*32) ; remember capture position
+  HmEndPos_Ax3 = CmdPos_Ax3/(PSF_Ax3*32) ; remember capture position
+  HmEndPos_Ax4 = CmdPos_Ax4/(PSF_Ax4*32) ; remember capture position
+  HmEndPos_Ax5 = CmdPos_Ax5/(PSF_Ax5*32) ; remember capture position
+  HmEndPos_Ax6 = CmdPos_Ax6/(PSF_Ax6*32) ; remember capture position
+
+  While (abs(CmdPos_Ax1-ActPos_Ax1)>6PodTolRaw Or abs(CmdPos_Ax2-ActPos_Ax2)>6PodTolRaw Or abs(CmdPos_Ax3-ActPos_Ax3)>6PodTolRaw Or abs(CmdPos_Ax4-ActPos_Ax4)>6PodTolRaw Or abs(CmdPos_Ax5-ActPos_Ax5)>6PodTolRaw Or abs(CmdPos_Ax6-ActPos_Ax6)>6PodTolRaw)
+  EndWhile
+
+  HOMEZ1,2,3,4,5,6
+  DWELL 10
+  
+  ;move to pre-home position
+  X(HmStartPos_Ax1 - HmEndPos_Ax1) Y(HmStartPos_Ax2 - HmEndPos_Ax2) Z(HmStartPos_Ax3 - HmEndPos_Ax3) A(HmStartPos_Ax4 - HmEndPos_Ax4) B(HmStartPos_Ax5 - HmEndPos_Ax5) C(HmStartPos_Ax6 - HmEndPos_Ax6)
+  DWELL 0
+  
+EndIf
+
+If (HmMode_Prog11 = NOMINAL_ZERO)
+  
+  While (abs(CmdPos_Ax1-ActPos_Ax1)>6PodTolRaw Or abs(CmdPos_Ax2-ActPos_Ax2)>6PodTolRaw Or abs(CmdPos_Ax3-ActPos_Ax3)>6PodTolRaw Or abs(CmdPos_Ax4-ActPos_Ax4)>6PodTolRaw Or abs(CmdPos_Ax5-ActPos_Ax5)>6PodTolRaw Or abs(CmdPos_Ax6-ActPos_Ax6)>6PodTolRaw)
+  EndWhile
+
+  HOMEZ1,2,3,4,5,6
+  DWELL 10
+
+	;Restore Stable Gains
+	GoSub ToStableGain 
+
+	DWELL	0
+	
+  X(6PodHmPos_AxX) Y(6PodHmPos_AxY) Z(6PodHmPos_AxZ) A(6PodHmPos_AxA) B(6PodHmPos_AxB) C(6PodHmPos_AxC)
+  DWELL 100
+
+	;Restore Default Gains
+	GoSub ToDefaultGain
+
+EndIf
+
+;reassign motors to kinematic assignment
+CMD"&1#1->I #2->I #3->I #4->I #5->I #6->I"
+
+ABS	; Set Absolute Positioning Mode
+LINEAR	; Linear Interpolation
+KinematicsEna_CS1 = Enabled
+SystemHomed = True
+
+HomingStatus_Ax1 = 4
+HomingStatus_Ax2 = 4
+HomingStatus_Ax3 = 4
+HomingStatus_Ax4 = 4
+HomingStatus_Ax5 = 4
+HomingStatus_Ax6 = 4
+
+N999
+
+HmStarted_Prog11 = False
+DWELL 0
+
+RETURN
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	Start of Subroutines
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;Restore Default Gain
+N100	;ToDefaultGain
+If (6PodStableGain = True)
+	
+	PIDPropGain_Ax1	=	DefaultPropGain_Ax1
+	PIDPropGain_Ax2	=	DefaultPropGain_Ax2
+	PIDPropGain_Ax3	=	DefaultPropGain_Ax3
+	PIDPropGain_Ax4	=	DefaultPropGain_Ax4
+	PIDPropGain_Ax5	=	DefaultPropGain_Ax5
+	PIDPropGain_Ax6	=	DefaultPropGain_Ax6
+
+	;PIDDervGain_Ax1 = DefaultDervGain
+	;PIDDervGain_Ax2 = DefaultDervGain
+	;PIDDervGain_Ax3 = DefaultDervGain
+	;PIDDervGain_Ax4 = DefaultDervGain
+	;PIDDervGain_Ax5 = DefaultDervGain
+	;PIDDervGain_Ax6 = DefaultDervGain
+			
+	PIDKVFFGain_Ax1	=	DefaultKVFFGain_Ax1
+	PIDKVFFGain_Ax2	=	DefaultKVFFGain_Ax2
+	PIDKVFFGain_Ax3	=	DefaultKVFFGain_Ax3
+	PIDKVFFGain_Ax4	=	DefaultKVFFGain_Ax4
+	PIDKVFFGain_Ax5	=	DefaultKVFFGain_Ax5
+	PIDKVFFGain_Ax6	=	DefaultKVFFGain_Ax6
+EndIfRETURN
+
+
+;Restore Stable Gain
+N200	;ToStableGain
+If (6PodStableGain = True)
+
+	PIDPropGain_Ax1 = StablePropGain
+	PIDPropGain_Ax2 = StablePropGain
+	PIDPropGain_Ax3 = StablePropGain
+	PIDPropGain_Ax4 = StablePropGain
+	PIDPropGain_Ax5 = StablePropGain
+	PIDPropGain_Ax6 = StablePropGain
+	
+	;PIDDervGain_Ax1 = StableDervGain
+	;PIDDervGain_Ax2 = StableDervGain
+	;PIDDervGain_Ax3 = StableDervGain
+	;PIDDervGain_Ax4 = StableDervGain
+	;PIDDervGain_Ax5 = StableDervGain
+	;PIDDervGain_Ax6 = StableDervGain
+
+	PIDKVFFGain_Ax1 = 0
+	PIDKVFFGain_Ax2 = 0
+	PIDKVFFGain_Ax3 = 0
+	PIDKVFFGain_Ax4 = 0
+	PIDKVFFGain_Ax5 = 0
+	PIDKVFFGain_Ax6 = 0
+EndIfRETURN
+
+
+;Trigger Check
+N300	;ToTriggerCheck
+
+If (TrigMovFlg_Ax1 = True)
+	HomingStatus_Ax1=HomingError
+Else
+	HomingStatus_Ax1=Reset
+EndIf
+If (TrigMovFlg_Ax2 = True)
+	HomingStatus_Ax2=HomingError
+Else
+	HomingStatus_Ax2=Reset
+EndIf
+If (TrigMovFlg_Ax3 = True)
+	HomingStatus_Ax3=HomingError
+Else
+	HomingStatus_Ax3=Reset
+EndIf
+If (TrigMovFlg_Ax4 = True)
+	HomingStatus_Ax4=HomingError
+Else
+	HomingStatus_Ax4=Reset
+EndIf
+If (TrigMovFlg_Ax5 = True)
+	HomingStatus_Ax5=HomingError
+Else
+	HomingStatus_Ax5=Reset
+EndIf
+If (TrigMovFlg_Ax6 = True)
+HomingStatus_Ax6=HomingError
+Else
+	HomingStatus_Ax6=Reset
+EndIf
+  
+RETURN
+
+CLOSE

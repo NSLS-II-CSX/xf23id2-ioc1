@@ -1,0 +1,40 @@
+file plc1-va-gv.template
+{
+        pattern { Sys           , Dev                   , PLC           , Indx	}
+                { XF:23ID2-VA   , "{APPES-GV:1}"	, XF23ID2_EPS	, 1	}
+                { XF:23ID2-VA   , "{APPES-GV:2}"	, XF23ID2_EPS	, 2	}
+                { XF:23ID2-VA   , "{APPES-GV:3}"	, XF23ID2_EPS	, 3	}
+                { XF:23ID2-VA   , "{APPES-GV:4}"	, XF23ID2_EPS	, M	}
+                { XF:23ID2-VA   , "{APPES-GV:5}"	, XF23ID2_EPS	, L	}
+		{ XF:23ID2-VA	, "{IOXAS-GV:1}"	, XF23ID2_EPS	, I1	}
+                { XF:23ID2-VA   , "{IOXAS-GV:2}"	, XF23ID2_EPS	, I2	}
+                { XF:23ID2-VA   , "{IOXAS-GV:3}"	, XF23ID2_EPS	, I3	}
+		{ XF:23ID2-VA   , "{XMCD-GV:1}"		, XF23ID2_EPS	, X	}
+		{ XF:23ID2-VA	, "{IOXAS-GV:4}"	, XF23ID2_EPS	, I4	}
+}
+
+file plc1-va-di.template
+{
+        pattern { Sys		, Dev			, PLC		, Indx	}
+		{ XF:23ID2-VA	, "{IOXAS_LL-CCG:1}"	, XF23ID2_EPS	, 0	}
+		{ XF:23ID2-VA	, "{IOXAS-CCG:1}"	, XF23ID2_EPS	, 1	}
+		{ XF:23ID2-VA	, "{IOXAS_LL-TCG:1}"	, XF23ID2_EPS	, 2	}
+		{ XF:23ID2-VA	, "{IOXAS-TCG:1}"	, XF23ID2_EPS	, 3	}
+		{ XF:23ID2-VA	, "{APPES-HCG:1}"	, XF23ID2_EPS	, 4	}
+		{ XF:23ID2-VA	, "{APPES_LL-HCG:2}"	, XF23ID2_EPS	, 5	}
+		{ XF:23ID2-VA	, "{APPES-TCG:1}"	, XF23ID2_EPS	, 6	}
+		{ XF:23ID2-VA	, "{APPES_LL-TCG:2}"	, XF23ID2_EPS	, 7	}
+		{ XF:23ID2-VA	, "{APPES_B-TCG:3}"	, XF23ID2_EPS	, 8	}
+		{ XF:23ID2-VA	, "{APPES_B-TCG:4}"	, XF23ID2_EPS	, 9	}  
+}
+
+file plc1-va-ai.template
+{
+        pattern { Sys		, Dev			, PLC		, Indx	}
+		{ XF:23ID2-VA	, "{APPES-FG:1}"	, XF23ID2_EPS	, 1	}
+		{ XF:23ID2-VA	, "{APPES-FG:2}"	, XF23ID2_EPS	, 2	}
+		{ XF:23ID2-VA	, "{APPES-FG:3}"	, XF23ID2_EPS	, 3	}
+		{ XF:23ID2-VA	, "{APPES-FG:4}"	, XF23ID2_EPS	, 0	}
+		{ XF:23ID2-VA	, "{APPES-FG:5}"	, XF23ID2_EPS	, 4	}
+}
+   

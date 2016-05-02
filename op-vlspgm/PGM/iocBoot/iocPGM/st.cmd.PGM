@@ -1,0 +1,58 @@
+#!./bin/linux-x86/PGM
+
+## You may have to change PGM to something else
+## everywhere it appears in this file
+
+#< iocBoot/iocPGM/envPaths
+
+## Register all support components
+dbLoadDatabase("dbd/PGM.dbd",0,0)
+PGM_registerRecordDeviceDriver(pdbbase) 
+
+## User defined ENV variables
+epicsEnvSet(HOSTNAME,"PGMIOC")
+epicsEnvSet(P,"FMB")
+# the following is done due to a limitation of 
+# the autosave status PV name (max. length=9)
+epicsEnvSet(AS_PV_PREFIX,"AS_IOC01:")
+epicsEnvSet(AS_PATH,"/epics/iocs/CSXCOB/iocoutput/autosave")
+epicsEnvSet(AS_DB_PATH,"/usr/lib/epics/")
+
+## Configure DeltaTau PMAC motion controller(s)
+pmacAsynIPConfigure("pmac", "192.6.94.5:1025")
+pmacAsynMotorCreate("pmac", 0, 0, 9)
+drvAsynMotorConfigure("PMAC", "pmacAsynMotor", 0, 9)
+pmacSetIdlePollPeriod(0,300)
+pmacSetMovingPollPeriod(0,100)
+
+## configuration for stream
+epicsEnvSet ("STREAM_PROTOCOL_PATH", "/epics/iocs/CSXCOB/PGM/PGMApp/src")
+
+
+## Load record instances
+#dbLoadRecords("./db/PGM.db","user=iocuser")
+
+## Substitutions
+#dbLoadTemplate("iocBoot/iocMOTIONIOC/Motion.subst")
+
+#PGM
+dbLoadTemplate("PGM/db/HPMC_PGM_PMAC_Global.substitutions")
+dbLoadTemplate("PGM/db/HPMC_PGM.substitutions")
+dbLoadTemplate("PGM/db/Optics_Change.substitutions")
+
+# save_restore setup
+< ${TOP}/iocBoot/${IOC}/save_restore.cmd
+
+cd ${TOP}/iocBoot/${IOC}
+iocInit()
+
+dbl ("*") > /epics/pgm/iocoutput/dbl/PVList.${HOSTNAME}
+
+## Start any sequence programs
+#seq sncPGM,"user=iocuser"
+
+## Start autosave
+makeAutosaveFileFromDbInfo("${HOSTNAME}.req","autosaveFields")
+create_monitor_set("${HOSTNAME}.req", 5, "P=")
+
+#EOF

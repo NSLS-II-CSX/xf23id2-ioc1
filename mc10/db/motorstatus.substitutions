@@ -1,0 +1,21 @@
+file "db/motorstatus.db"
+{
+pattern
+{SYS,              DEV,                 PORT,  AXIS }
+{"XF:33ID1-OP",  "{Slt:1-Ax:T}",        "P0",   1   }
+{"XF:33ID1-OP",  "{Slt:1-Ax:B}",        "P0",   2   }
+{"XF:33ID1-OP",  "{Slt:1-Ax:O}",        "P0",   3   }
+{"XF:33ID1-OP",  "{Slt:1-Ax:I}",        "P0",   4   }
+
+}
+
+file "db/pmacStatusAxis.db"
+{
+pattern
+{SYS,               DEV,           PORT,  AXIS }
+{"XF:33ID1-CT",  "{MC:03-Ax:1}",   "P0",   1   }
+{"XF:33ID1-CT",  "{MC:03-Ax:2}",   "P0",   2   }
+{"XF:33ID1-CT",  "{MC:03-Ax:3}",   "P0",   3   }
+{"XF:33ID1-CT",  "{MC:03-Ax:4}",   "P0",   4   }
+
+}

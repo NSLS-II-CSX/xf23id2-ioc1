@@ -1,0 +1,15 @@
+record(ai, "$(P)$(R)CX_RBV")
+{
+	field(DTYP, "asynFloat64")
+	field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))CENTROIDX_VALUE")
+	field(PREC, "1")
+	field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)CY_RBV")
+{
+	field(DTYP, "asynFloat64")
+	field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))CENTROIDY_VALUE")
+	field(PREC, "1")
+	field(SCAN, "I/O Intr")
+}

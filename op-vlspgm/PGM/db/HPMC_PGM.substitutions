@@ -1,0 +1,14 @@
+## Macro Description:
+##
+## $(P)			PV prefix
+## $(R)			main part of PV name
+## $(MIR)		PV name of mirror motor record
+## $(GRT)		PV name of grating motor record
+## $(E_LOW)		photon energy low limit
+## $(E_HIGH)	photon energy high limit
+
+file db/HPMC_PGM.db {
+pattern {	P,	R,	MIR,	GRT,	E_LOW,	E_HIGH, ASYNPORT, SCAN}
+       	{ 	"29id","mono",	"MIR:P","GRT:P","50",	"3000", 	"pmac",	".2 second"}
+}
+#EOF

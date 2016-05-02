@@ -1,0 +1,63 @@
+record(stringout, "$(P)$(R)READ_AI_IEOS") {
+  field(VAL,  "\006")
+  field(OUT,  "$(P)$(R)READ_AI_CMD.IEOS")
+  field(PINI,"YES")
+}
+
+record(asyn,"$(P)$(R)READ_AI_CMD")
+{
+    field(DTYP,"asynRecordDevice")
+    field(SCAN,"$(SCAN)")
+    field(PORT,"$(ASYNPORT)")
+    field(ADDR,"-1")
+    field(OMAX,"400")
+    field(IMAX,"400")
+    field(TMOD,"Write/Read")
+    field(IFMT,"Hybrid")
+    field(OFMT,"ASCII")
+    field(TMOT,"$(TMOT)")
+    field(NRRD,"400")
+    field(AOUT,"M7080M7081M7082M7083M7084M7085")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH1_MON") {
+  field(DESC, "Analog input ch 1")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%f'))")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH2_MON") {
+  field(DESC, "Analog input ch 2")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%*s%f'))")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH3_MON") {
+  field(DESC, "Analog input ch 3")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%*s%*s%f'))")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH4_MON") {
+  field(DESC, "Analog input ch 4")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%*s%*s%*s%f'))")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH5_MON") {
+  field(DESC, "Analog input ch 5")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%*s%*s%*s%*s%f'))")
+}
+
+record(scalcout, "$(P)$(R)READ_AI_CH6_MON") {
+  field(DESC, "Analog input ch 6")
+  field(SCAN, "Passive")
+  field(INAA, "$(P)$(R)READ_AI_CMD.BINP CP MS")
+  field(CALC, "($S($T(AA),'%*s%*s%*s%*s%*s%f'))")
+}

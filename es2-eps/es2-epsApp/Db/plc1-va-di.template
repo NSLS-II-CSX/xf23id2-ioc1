@@ -1,0 +1,19 @@
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "$(Sys)$(Dev)Sts:Rly1PLC-Sts")
+{
+        field(DESC, "$(Dev) Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@$(PLC) EPICS_Gauge_Sts[$(Indx)] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+

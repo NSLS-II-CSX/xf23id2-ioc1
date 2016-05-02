@@ -1,0 +1,6 @@
+file /usr/lib/epics/db/asynRecord.db
+{
+	pattern { P   , R              		, PORT      , ADDR , IMAX , OMAX }
+	{ XF:23ID2-CT , "{APPES-RGAC:1}Asyn" 	, tsrv2-P7  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{Mir:3-RGAC:1}Asyn" 	, tsrv1-P7  , 0    , 80   , 80 }
+}

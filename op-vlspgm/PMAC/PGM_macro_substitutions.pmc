@@ -1,0 +1,82 @@
+#define PhE Q7			; Photon Energy in [eV]
+
+#define MirPos	P1		; Mirror position in Counts
+#define GrtPos  P2		; Grating position in Counts
+
+#define CountEnrgVar P101	;counting variable Start energy
+#define ActEngyMotProg P102	; actual Energy from PLC calculation
+#define ScanSpeedDiv5 P103	; Speed / 5
+#define ScanEndEngyMot P104	; end energy in motion program
+
+
+#define ScanStartEngy1 P111		;start energy value for energy scan
+#define ScanEndEngy1 P112		;end energy value for energy scan
+#define ScanSpeed1 P113			;energy scan speed value for energy scan
+#define StepsPerSweep P114		;amount of steps for whole energy scan
+#define ScanStepSize P115		;Size of a scan step
+#define ScanTimeStep P116		;constant timespan from one point to the next
+#define ScanStartEngyMinus10 P117	;Start position for accelleration
+#define Ready2Sweep P118		;motors ready to sweep status
+#define ScanStatus P119			;energy scan Status reporting value
+#define MirrOffset1 P120		;Mirror offset from horizontal position in [deg]
+#define GrtOffset1 P121			;Grating offset from horizontal position in [deg]
+#define CalcPhotonEnergy P127	;Calculated Photon-energy [eV] (PLC 10)
+
+#define Cts2Deg P130		; Latched value from P180
+#define PhE2WaLng P131		; conversion factor photon energy E to wavelength lambda [mm/eV]
+#define GrtConst P132		; grating constant n [lines/mm]
+#define DiffOrd P133		; Diffraction order (usually=1)
+#define CFACTOR P134		; fixed focus factor
+
+#define ScanStartEngy P135 	;copy of ScanStartEngy1=1000	; Start Photon Energy value [eV]
+#define ScanEndEngy P136	;copy of ScanEndEngy1=1500		; Photon Energy End value	[eV]
+#define ScanSpeed P137		;copy of ScanSpeed1=100			; Energy Scan speed [eV/s]
+#define MirrOffset P138		;copy of MirrOffSet1=0			;offset from reference to 0 degree angle on mirror #1
+#define GrtOffset P139		;copy of GrtOffSet1=0			;offset from reference to 0 degree angle on grating #2
+
+#define Tun0 P140			; c-factor tuning coefficient 0
+#define Tun1 P141			; c-factor tuning coefficient 1
+#define Tun2 P142			; c-factor tuning coefficient 2
+#define Tun3 P143			; c-factor tuning coefficient 3
+#define A0 P144				; A0 
+#define A2 P145				; A2 
+#define CC P146				; calculated c-factor (reininger, castro)
+#define CTUN P147			; corrected or "tuned" c-factor (viefhaus, deuchler)
+#define possibleSpeed P148	; calculated maximum photon energy change rate depending on photon enrgy and max angular speed of  grating
+#define CheckEnergy	P149	; Energy setpoint to check for max Speed
+#define Enrg_by_ang_Spd P150; energy change rate by angular speed and photon energy position
+#define FwKinMirAng P151	; calculated mirror angle in forward kinematic
+#define FwKinGratAng P152	; calculated grating angle in forward kinematic
+#define d_beta P153			; gratings angular change rate in °/s degree per second
+#define L1_Spd_Chk P154		; L1 factor 
+#define BofE_Spd_Chk P155	; B function of Photon Energy for speed Check
+#define beta_Spd_Chk P156	; beta perpendicular grating angle for speed Check
+#define alpha_Spd_Chk P157	; alpha incidence beam angle  for speed Check
+#define PLCMirAng P161		; calculated mirror angle in position reporting PLC
+#define PLCGrtAng P162		; calculated grating angle in position reporting PLC
+
+#define Cts2Deg1 P180		; signed counts to degree conversion factor
+#define PhE2WaLng1 P181		; PhotEnrg[eV]->wavelenght[mm] conversion factor
+#define GrtConst1 P182		; grating constant on the fly scan ; Gitterkonstante n [linien/mm] 
+#define DiffOrd1 P183		; first order constant on the fly scan; Beugungsordnung k
+#define CFF P184			; cff value set from EPICS
+#define Lambda P185			; Wavelength Lambda in [m]
+#define L1 P186				; L1 factor
+#define BofE P187			; B function of Photon Energy
+#define beta P188			; beta perpendicular grating angle
+#define alpha P189			; alpha incidence beam angle
+#define theta P190			; theta mirror perpendicular axis angle
+#define MirrAng p191		; Mirror angle
+#define GrtAng	P192		; Grating angle
+#define dEntrArm P193		; entrance arm length (distance from source)[mm]
+#define dExitArm P194		; exit arm length (distance to exit slit)[mm]
+#define B2_coeff P195		; VLS line density equation coefficient b2
+#define ArmRatio P196		; R=dExitArm/dEntrArm
+
+#define M1ActPosCts M162	;Motor 1 actual position
+#define M2ActPosCts M262	;Motor 2 actual position
+#define Mot1HomCmplt M145 	; Motor 1 home complete bit 
+#define Mot2HomCmplt M245 	; Motor 2 home complete bit 
+#define CS1runtimeErr M5182	; CS 1 run-time error bit 
+#define Mot1PosBias M164	;Motor 1 Position Bias
+#define Mot2PosBias M264	;Motor 2 Position Bias

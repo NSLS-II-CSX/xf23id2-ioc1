@@ -1,0 +1,220 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+; Real-time position reporting FORWARD kinematics PLC
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+OPEN PLC 7 CLEAR	; position reporting FORWARD kinematics PLC
+
+ADR&1	;Address C.S.
+
+IF (HomedFlg_Ax1 =  True And HomedFlg_Ax2 =  True And HomedFlg_Ax3 =  True And HomedFlg_Ax4 =  True And HomedFlg_Ax5 =  True And HomedFlg_Ax6 =  True)
+  ; Preparation: sacle & offset motor values that are read in counts
+  ActLen1 = ActPos_Ax1/LegScale/i108/32+ZeroLen
+  ActLen2 = ActPos_Ax2/LegScale/i108/32+ZeroLen
+  ActLen3 = ActPos_Ax3/LegScale/i108/32+ZeroLen
+  ActLen4 = ActPos_Ax4/LegScale/i108/32+ZeroLen
+  ActLen5 = ActPos_Ax5/LegScale/i108/32+ZeroLen
+  ActLen6 = ActPos_Ax6/LegScale/i108/32+ZeroLen
+  
+  ;StepA 1: Select initial guess of pose (use last values)
+  IF ((ActLen1+ActLen2+ActLen3+ActLen4+ActLen5+ActLen6)/ZeroLen/6 < 1.00000005 And (ActLen1+ActLen2+ActLen3+ActLen4+ActLen5+ActLen6)/ZeroLen/6 > 0.99999995)
+    ActPoseA = 0
+    ActPoseB = 0
+    ActPoseC = 0
+    ActPoseX = 0
+    ActPoseY = 0
+    ActPoseZ = 0
+  ELSE
+    ActPoseA = LastPoseA
+    ActPoseB = LastPoseB
+    ActPoseC = LastPoseC
+    ActPoseX = LastPoseX
+    ActPoseY = LastPoseY
+    ActPoseZ = LastPoseZ
+  ENDIF
+  
+  NotDoneA = True
+  IterationA = 1
+  WHILE (NotDoneA =  True And IterationA < 100)
+    
+    ;StepA 2: Calculate R 3x4 transformation (rotation + displacement) matrix
+    RA11 = cos(ActPoseA)*cos(ActPoseB)
+    RA12 = cos(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)-sin(ActPoseA)*cos(ActPoseC)
+    RA13 = cos(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)+sin(ActPoseA)*sin(ActPoseC)
+    RA14 = ActPoseX
+    RA21 = sin(ActPoseA)*cos(ActPoseB)
+    RA22 = sin(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)+cos(ActPoseA)*cos(ActPoseC)
+    RA23 = sin(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)-cos(ActPoseA)*sin(ActPoseC)
+    RA24 = ActPoseY
+    RA31 = -sin(ActPoseB)
+    RA32 = cos(ActPoseB)*sin(ActPoseC)
+    RA33 = cos(ActPoseB)*cos(ActPoseC)
+    RA34 = ActPoseZ
+
+    ;StepA 3: Compute resulting LegA lengths and errors from the pose guess
+    Temp2A = 0 ; TempA2 is vector mag of LegA length errors
+    LegA = 1
+
+    WHILE (LegA !> 6)       ; For each LegA
+      RowA = 1
+      Temp1A = 0     ; TempA1 holds LegA length
+      WHILE (RowA < 4)     ; Each matrix RowA computes 1 coordinate of LegA
+        ; TempA holds xformed platform coord, then LegA coord extent
+        ; Rotate platform points: + = R[RowA,ColA]*P[LegA,ColA]
+        TempA = Q(RAbase+(RowA-1)*4+1)*Q(PUCSBase+(LegA-1)*3+1)
+        TempA = TempA+Q(RAbase+(RowA-1)*4+2)*Q(PUCSBase+(LegA-1)*3+2)
+        TempA = TempA+Q(RAbase+(RowA-1)*4+3)*Q(PUCSBase+(LegA-1)*3+3)
+        TempA = TempA+Q(RAbase+(RowA-1)*4+4)
+        ; Subtract base coordinate from transformed platform coordinate
+        TempA = TempA-Q(PLCSBase+(LegA-1)*3+RowA)
+        Q(SlenABase+(LegA-1)*3+RowA) = TempA
+        Temp1A = Temp1A+TempA*TempA     ; Add in to LegA length calcs
+        RowA = RowA+1
+      ENDWHILE     ; WHILE (RowA !> 3)
+
+      Q(EstLenABase+LegA) = sqrt(Temp1A)     ; LegA length in user units
+      Q(DeltaLenABase+LegA) = Q(EstLenABase+LegA)-Q(ActLenBase+LegA)
+      Temp2A = Temp2A+Q(DeltaLenABase+LegA)*Q(DeltaLenABase+LegA)
+      LegA = LegA+1
+    ENDWHILE		; WHILE (LegA !> 6)
+      
+    ;StepA 6: check length error
+    IF (Temp2A < 6PodThreshold)
+      NotDoneA = False
+    ENDIF
+      
+    IF (NotDoneA = True)
+      ;StepA 7: Calculate H matrix as dG/dS*dR/dQ*P
+      ;Only non-zero element of dR/dX matrix is dRdX[1,4] = 1
+      ;Only non-zero element of dR/dY matrix is dRdY[2,4] = 1
+      ;Only non-zero element of dR/dZ matrix is dRdZ[3,4] = 1
+      ;Calculate dR/dA, dR/dB, dR/dC matrices
+        
+      dRAdA11 = -sin(ActPoseA)*cos(ActPoseB);
+      dRAdA12 = -sin(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)-cos(ActPoseA)*cos(ActPoseC);
+      dRAdA13 = -sin(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)+cos(ActPoseA)*sin(ActPoseC);
+      dRAdA21 = cos(ActPoseA)*cos(ActPoseB);
+      dRAdA22 = cos(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)-sin(ActPoseA)*cos(ActPoseC);
+      dRAdA23 = cos(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)+sin(ActPoseA)*sin(ActPoseC);
+      dRAdB11 = -cos(ActPoseA)*sin(ActPoseB);
+      dRAdB12 = cos(ActPoseA)*cos(ActPoseB)*sin(ActPoseC);
+      dRAdB13 = cos(ActPoseA)*cos(ActPoseB)*cos(ActPoseC);
+      dRAdB21 = -sin(ActPoseA)*sin(ActPoseB);
+      dRAdB22 = sin(ActPoseA)*cos(ActPoseB)*sin(ActPoseC);
+      dRAdB23 = sin(ActPoseA)*cos(ActPoseB)*cos(ActPoseC);
+      dRAdB31 = -cos(ActPoseB);
+      dRAdB32 = -sin(ActPoseB)*sin(ActPoseC);
+      dRAdB33 = -sin(ActPoseB)*cos(ActPoseC);
+      dRAdC12 = cos(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)+sin(ActPoseA)*sin(ActPoseC);
+      dRAdC13 = -cos(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)+sin(ActPoseA)*cos(ActPoseC);
+      dRAdC22 = sin(ActPoseA)*sin(ActPoseB)*cos(ActPoseC)-cos(ActPoseA)*sin(ActPoseC);
+      dRAdC23 = -sin(ActPoseA)*sin(ActPoseB)*sin(ActPoseC)-cos(ActPoseA)*cos(ActPoseC);
+      dRAdC32 = cos(ActPoseB)*cos(ActPoseC);
+      dRAdC33 = -cos(ActPoseB)*sin(ActPoseC);
+        
+      LegA = 1
+      WHILE (LegA !> 6)
+        ; H[i,j] = dG/dS[i]*dR/dQ[j]*P[i];j = 1,2,3
+        ; First compute TempA vector = dR/dA,B,C*P[i]
+        AngleA = 1
+        WHILE (AngleA !> 3)
+          RowA = 1
+          WHILE (RowA !> 3)
+            Q(TempABase+RowA) = 0
+            ColA = 1
+            WHILE (ColA !> 3)
+              Q(TempABase+RowA) = Q(TempABase+RowA)+Q(dRABase+(AngleA-1)*9+(RowA-1)*3+ColA)*Q(PUCSBase+(LegA-1)*3+ColA)
+              ColA = ColA+1
+            ENDWHILE
+            RowA = RowA+1
+          ENDWHILE
+          ;Compute H[LegA,AngleA] = Len[LegA]*TempA[LegA]
+          Q(HAbase+(LegA-1)*6+AngleA) = 0
+          RowA = 1
+          WHILE (RowA !> 3)
+            Q(HAbase+(LegA-1)*6+AngleA) = Q(HAbase+(LegA-1)*6+AngleA)+Q(SlenABase+(LegA-1)*3+RowA)*Q(TempABase+RowA)
+            RowA = RowA+1
+          ENDWHILE
+          Q(HAbase+(LegA-1)*6+AngleA) = Q(HAbase+(LegA-1)*6+AngleA)/Q(EstLenABase+LegA)
+          AngleA = AngleA+1
+        ENDWHILE
+        ; H[i,4] = Xs[i]/L[i]
+        Q(HAbase+(LegA-1)*6+4) = Q(SlenABase+(LegA-1)*3+1)/Q(EstLenABase+LegA)
+        ; H[i,5] = Ys[i]/L[i]
+        Q(HAbase+(LegA-1)*6+5) = Q(SlenABase+(LegA-1)*3+2)/Q(EstLenABase+LegA)
+        ; H[i,6] = Zs[i]/L[i]
+        Q(HAbase+(LegA-1)*6+6) = Q(SlenABase+(LegA-1)*3+3)/Q(EstLenABase+LegA)
+        LegA = LegA+1
+      ENDWHILE
+
+      ; StepA 8: Solve for DeltaPose
+      ;Perform Gauss elimination of H matrix and Len vector
+      StepA = 1  ;StepA is RowA to use to eliminate terms of lower RowAs below diagonal
+      WHILE (StepA < 6)  ;
+        RowA = StepA+1   ;
+        WHILE (RowA !> 6)
+          ; FactorA will zero H[RowA, StepA]
+          FactorA = Q(HAbase+(RowA-1)*6+StepA)/Q(HAbase+(StepA-1)*6+StepA) ;
+          Q(HAbase+(RowA-1)*6+StepA) = 0
+          ColA = StepA+1
+          WHILE (ColA !> 6)
+            Q(HAbase+(RowA-1)*6+ColA) = Q(HAbase+(RowA-1)*6+ColA)-FactorA*Q(HAbase+(StepA-1)*6+ColA)
+            ColA = ColA+1
+          ENDWHILE
+          
+          Q(DeltaLenABase+RowA) = Q(DeltaLenABase+RowA)-FactorA*Q(DeltaLenABase+StepA)
+          RowA = RowA+1
+        ENDWHILE
+        StepA = StepA+1
+      ENDWHILE
+      ;solve Gauss-eliminated H Matrix for DeltaPose
+      ;H*DeltaPose = DeltaLen
+      RowA = 6
+      WHILE (RowA > 0)
+        TempA = Q(DeltaLenABase+RowA)
+        ColA = 6
+        WHILE (ColA > RowA)
+          TempA = TempA-Q(HAbase+(RowA-1)*6+ColA)*Q(DPoseBase+ColA)
+          ColA = ColA-1
+        ENDWHILE
+        Q(DPoseBase+RowA) = TempA/Q(HAbase+(RowA-1)*6+ColA)
+        RowA = RowA-1
+      ENDWHILE
+      ;StepA 9: Update pose estimate
+      ActPoseA = (ActPoseA/57.3-DPoseA)*57.3
+      ActPoseB = (ActPoseB/57.3-DPoseB)*57.3
+      ActPoseC = (ActPoseC/57.3-DPoseC)*57.3
+      ActPoseX = ActPoseX-DPoseX
+      ActPoseY = ActPoseY-DPoseY
+      ActPoseZ = ActPoseZ-DPoseZ  
+    ENDIF
+    
+    LastPoseA = ActPoseA
+    LastPoseB = ActPoseB
+    LastPoseC = ActPoseC
+    LastPoseX = ActPoseX
+    LastPoseY = ActPoseY
+    LastPoseZ = ActPoseZ
+    
+    IterationA = IterationA+1
+    
+  ENDWHILE
+
+  PoseAReport = ActPoseA*6Pod_Degs2UserUnit
+  PoseBReport = ActPoseB*6Pod_Degs2UserUnit
+  PoseCReport = ActPoseC*6Pod_Degs2UserUnit
+  PoseXReport = ActPoseX
+  PoseYReport = ActPoseY
+  PoseZReport = ActPoseZ
+ELSE
+  ;Outcommented by gjansa
+  ;RunTmErr_CS1 = True     ; Not homed -- stop
+ENDIF
+  
+CLOSE

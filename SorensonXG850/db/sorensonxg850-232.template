@@ -1,0 +1,167 @@
+## Database for Sorenson XG850
+## Nov 12, 2015, BNL
+
+## Substitutions:
+## Sys	-	System
+## Dev	-	Gauge name
+## ADR	- 	Device address
+## PORT	-	IP or Serial port name
+
+# Measure Voltage
+record(ai, "$(Sys)$(Dev)E-I")
+{
+	field(DESC, "Volt")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto measVolt($(ADR)) $(PORT)")
+	field(SCAN, "1 second")
+	field(EGU,  "V")
+	field(FLNK, "$(Sys)$(Dev)I-I")
+}
+
+# Measure current
+record(ai, "$(Sys)$(Dev)I-I")
+{
+	field(DESC, "Current")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto measCurr($(ADR)) $(PORT)")
+	field(EGU,  "A")
+	field(FLNK, "$(Sys)$(Dev)Enbl:OutMain-Sts")
+}
+
+# Set/get output main voltage
+record(ao, "$(Sys)$(Dev)E:OutMain-SP")
+{
+	field(DESC, "Set Output Main Volt")
+	field(DTYP, "stream")
+	field(OUT,  "@sorensonxg850-232.proto setOutpVolt($(ADR)) $(PORT)")
+	field(FLNK, "$(Sys)$(Dev)E:OutMain-RB")
+	field(EGU,  "V")
+}
+
+record(ai, "$(Sys)$(Dev)E:OutMain-RB")
+{
+	field(DESC, "Get Output Main Volt")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto getOutpVolt($(ADR)) $(PORT)")
+	field(EGU,  "V")
+	field(PINI, "1")
+}
+
+# Set/get output main current
+record(ao, "$(Sys)$(Dev)I:OutMain-SP")
+{
+	field(DESC, "Set Output Main I")
+	field(DTYP, "stream")
+	field(OUT,  "@sorensonxg850-232.proto setOutpCurr($(ADR)) $(PORT)")
+	field(FLNK, "$(Sys)$(Dev)I:OutMain-RB")
+	field(EGU,  "A")
+}
+
+record(ai, "$(Sys)$(Dev)I:OutMain-RB")
+{
+	field(DESC, "Get Output Main I")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto getOutpCurr($(ADR)) $(PORT)")
+	field(EGU,  "A")
+	field(PINI, "1")
+}
+
+# Enable/disable output power main
+record(bo, "$(Sys)$(Dev)Enbl:OutMain-Cmd")
+{
+	field(DESC, "Set Output Main")
+	field(DTYP, "stream")
+	field(OUT,  "@sorensonxg850-232.proto setOutpMain($(ADR)) $(PORT)")
+	field(FLNK, "$(Sys)$(Dev)Enbl:OutMain-Sts")
+	field(ZNAM, "Off")
+	field(ONAM, "On")
+}
+
+record(bi, "$(Sys)$(Dev)Enbl:OutMain-Sts")
+{
+	field(DESC, "Get Output Main")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto getOutpMain($(ADR)) $(PORT)")
+	field(ZNAM, "Off")
+	field(ONAM, "On")
+	field(FLNK, "$(Sys)$(Dev)Sts:Opr-Sts")
+}
+
+# Switch between None, CC and CV mode
+record(mbbo, "$(Sys)$(Dev)Mode:Fold-Sel")
+{
+	field(DESC, "Set Foldback Mode")
+	field(DTYP, "stream")
+	field(OUT,  "@sorensonxg850-232.proto setFoldMode($(ADR)) $(PORT)")
+	field(FLNK, "$(Sys)$(Dev)Mode:Fold-Sts")
+	field(ZRST, "None")
+	field(ONST, "CV")
+	field(TWST, "CC")
+}
+
+record(mbbi, "$(Sys)$(Dev)Mode:Fold-Sts")
+{
+	field(DESC, "Foldback Mode")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto getFoldMode($(ADR)) $(PORT)")
+	field(ZRST, "None")
+	field(ONST, "CV")
+	field(TWST, "CC")
+}
+
+# enable/disable local lockout
+record(bo, "$(Sys)$(Dev)Enbl:Lock-Cmd")
+{
+	field(DESC, "Set Local Lockout")
+	field(DTYP, "stream")
+	field(OUT,  "@sorensonxg850-232.proto setLocalLock($(ADR)) $(PORT)")
+	field(FLNK, "$(Sys)$(Dev)Enbl:Lock-Sts")
+	field(ZNAM, "Local")
+	field(ONAM, "Remote")
+}
+
+record(bi, "$(Sys)$(Dev)Enbl:Lock-Sts")
+{
+	field(DESC, "Local Lockout")
+	field(DTYP, "stream")
+	field(INP,  "@sorensonxg850-232.proto getLocalLock($(ADR)) $(PORT)")
+	field(ZNAM, "Local")
+	field(ONAM, "Remote")
+	field(PINI, "1") 
+}
+
+# Set/get OVP 
+record(ao, "$(Sys)$(Dev)E:OverProt-SP")
+{
+        field(DESC, "Set Over Volt Protect Val")
+        field(DTYP, "stream")
+        field(OUT,  "@sorensonxg850-232.proto setOVPSP($(ADR)) $(PORT)")
+        field(FLNK, "$(Sys)$(Dev)E:OverProt-RB")
+        field(EGU,  "V")
+}
+
+record(ai, "$(Sys)$(Dev)E:OverProt-RB")
+{
+        field(DESC, "Get Output Main Volt")
+        field(DTYP, "stream")
+        field(INP,  "@sorensonxg850-232.proto getOVPSP($(ADR)) $(PORT)")
+        field(EGU,  "V")
+	field(PINI, "1")
+}
+
+# reset activated foldback protection          
+record(bo, "$(Sys)$(Dev)Reset:FoldProt-Cmd")
+{
+        field(DESC, "Reset Foldback Protection")
+        field(DTYP, "stream")
+        field(OUT,  "@sorensonxg850-232.proto resetFoldProt($(ADR)) $(PORT)")
+}
+
+# Get operation status
+record(mbbiDirect, "$(Sys)$(Dev)Sts:Opr-Sts")
+{
+        field(DESC, "Get Operation Status")
+        field(DTYP, "stream")
+        field(INP,  "@sorensonxg850-232.proto getOprSts($(ADR)) $(PORT)")
+}
+

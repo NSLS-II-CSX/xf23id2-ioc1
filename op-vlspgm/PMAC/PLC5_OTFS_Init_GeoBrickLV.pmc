@@ -1,0 +1,96 @@
+;
+;The following are PLC programs...........................................c
+;
+; Initial Values
+#include "PGM_macro_substitutions.pmc"
+
+
+OPEN PLC 5 CLEAR
+
+;ENABLE PLC2	;	collission protection and recovery
+ENABLE PLC4	; start Encoder Loss detection
+ENABLE PLC9	; change PID parameter for motor Standstill
+ENABLE PLC10	; calculates photon energy from mirror and grating ;position
+
+ENABLE PLC11	;HOMING  for axis 1 mirror
+;ENABLE PLC12	;HOMING  for axis 2 grating now merged with PLC11
+ENABLE PLC13	;HOMING  for axis 3 mirror translation
+ENABLE PLC14	;HOMING  for axis 4 grating translation
+
+ENABLE PLC21	; ENDAT referencing for axis 1 mirror
+ENABLE PLC22	; ENDAT referencing for axis 2 grating
+;ENABLE PLC23	; overtravel PLC for axis 3 mirror
+;ENABLE PLC24	; overtravel PLC for axis 4 mirror
+
+M148=0	;reset phasing search error #1
+M248=0	;reset phasing search error #2
+M348=0	;reset phasing search error #3
+M448=0	;reset phasing search error #4
+
+M1116=0	;homing start and status variable motor 1
+M1216=0	;homing start and status variable motor 2
+M1316=0	;homing start and status variable motor 3
+M1416=0	;homing start and status variable motor 4
+
+M39=0		;i/o direction
+;P2198=0	;overtravel recovery for axis 1
+;P2298=0	;overtravel recovery for axis 2
+;P2398=0	;overtravel recovery for axis 3
+;P2498=0	;overtravel recovery for axis 4
+
+;P298=0	;collision recovery status
+
+I15=0			; trigonometric calculation in degree
+
+; variables for the on the fly scan
+Cts2Deg1=-1638400					;signed counts to degree conversion factor GBLV with EnDAT
+PhE2WaLng1=0.0012398419	;0.0012395609568		;PhotEnrg[eV]->wavelenght[m] constant on the fly scan; [eV*mm]conversion factor lambda=q91/E
+GrtConst1=1200					;grating constant on the fly scan ; Gitterkonstante n [linien/mm] 
+DiffOrd1=1						;first order constant on the fly scan; Beugungsordnung k
+CFF=2							;constant fixed focus on the fly scan; constant fixed focus cff
+I5150=1							;enable kinematic calculations in first coordinate ;system
+ScanStartEngy1=1000				; Start Photon Energy value [eV]
+ScanEndEngy1=1500				; Photon Energy End value	[eV]
+ScanSpeed1=100					; Energy Scan speed [eV/s]
+ScanStatus=0					; ScanStatus=1 ; flag for scan preparation, ScanStatus=2 ;inside sweep area, ScanStatus=0;end of sweep area
+MirrOffset=0					;offset from reference to 0 degree angle on mirror #1
+GrtOffset=0						;offset from reference to 0 degree angle on grating #2
+Ready2Sweep=0					; signaling not ready to energy sweep
+
+CalcPhotonEnergy=0	;Photon-energy [eV] with these angles [deg]new formula calculated by PLC 10
+
+;second set of variables mirrored from those above at the beginning of the OTFS cycle
+Cts2Deg=1638400					;copy of P180=51200	;signed counts to degree conversion factor
+PhE2WaLng=0.0012398419	;0.0012395609568		;copy of PhE2WaLng1=0.0000012398419	;PhotEnrg[eV]->wavelenght[m] constant on the fly scan; [eV*m]conversion factor lambda=q91/E
+
+; used this new factor [eV/1000]->wavelenght[m] and removed factor 1000 in further calculations
+GrtConst=1200		;copy GrtConst1=1200					;grating constant on the fly scan ; Gitterkonstante n [linien/mm] 
+DiffOrd=1			;copy of DiffOrd1=1				;first order constant on the fly scan; Beugungsordnung k
+CFACTOR=2			;copy of CFF=2					;constant fixed focus on the fly scan; constant fixed focus CFF1
+ScanStartEngy=1000	;copy of ScanStartEngy1=1000	; Start Photon Energy value [eV]
+ScanEndEngy=1500	;copy of ScanEndEngy1=1500		; Photon Energy End value	[eV]
+ScanSpeed=100		;copy of ScanSpeed1=100			; Energy Scan speed [eV/s]
+MirrOffset=0		;copy of MirrOffSet=0			;offset from reference to 0 degree angle on mirror #1
+GrtOffset=0			;copy of GrtOffSet=0			;offset from reference to 0 degree angle on grating #2
+
+; added parameters for VLS (variable line spacing) gratings
+dEntrArm=39700				; entrance arm lenght ra [mm]
+dExitArm=20000				; exit arm length rb	[mm]
+B2_coeff= -0.000110008851942911	; VLS line density equation coefficient b2
+ArmRatio=dExitArm/dEntrArm	; r=rb/ra
+Tun0=0						; tuning coefficient tun0=0.0156
+Tun1=0						; tuning coefficient tun1=0.00002 
+Tun2=0						; tuning coefficient tun2=-0.000000008 
+Tun3=0						; tuning coefficient tun3=0.0000000000009
+
+
+ 
+
+DISABLE PLC5
+CLOSE
+END GATHER
+DELETE GATHER
+DELETE TRACE
+
+
+; ** End of Upload **

@@ -1,0 +1,6 @@
+# global config file for softioc start script
+NAME=op-m3b
+PORT=4003
+USER=op-m3b
+HOST=xf23id2-ioc1
+EXEC=/epics/iocs/op-m3b/st.cmd

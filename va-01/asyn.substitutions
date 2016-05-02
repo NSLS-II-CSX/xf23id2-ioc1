@@ -1,0 +1,19 @@
+file /usr/lib/epics/db/asynRecord.db
+{
+	pattern { P   , R              , PORT      , ADDR , IMAX , OMAX }
+	{ XF:23ID2-CT , "{VGC:01}Asyn" , tsrv1-P1  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:01}Asyn" , tsrv1-P9  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{VGC:02}Asyn" , tsrv1-P2  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:02}Asyn" , tsrv1-P10 , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{VGC:03}Asyn" , tsrv1-P3  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:03}Asyn" , tsrv1-P11 , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{VGC:04}Asyn" , tsrv1-P4  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:04}Asyn" , tsrv1-P12 , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{VGC:05}Asyn" , tsrv1-P5  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:05}Asyn" , tsrv1-P13 , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{VGC:06}Asyn" , tsrv1-P6  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:06}Asyn" , tsrv1-P14 , 0    , 80   , 80 }
+        { XF:23ID2-CT , "{VGC:07}Asyn" , tsrv2-P1  , 0    , 80   , 80 }
+ 	{ XF:23ID2-CT , "{VGC:11}Asyn" , tsrv2-P5  , 0    , 80   , 80 }
+	{ XF:23ID2-CT , "{IPC:07}Asyn" , tsrv2-P9  , 0    , 80   , 80 }
+}

@@ -1,0 +1,6 @@
+# global config file for softioc start script
+NAME=PGM
+PORT=7002
+USER=iocuser
+EXEC=./iocBoot/iocPGM/st.cmd.PGM
+

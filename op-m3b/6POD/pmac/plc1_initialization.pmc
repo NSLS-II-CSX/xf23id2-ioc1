@@ -1,0 +1,458 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+#define	SoftDate	20131012
+#define	SoftVer	2.1
+
+; Few Tasks for the first time Setup
+; Download Standard Macro Definition for M-variable from Pewin
+;	Clear the M-variables Definition...  M900..8191->*
+;	Clear the Q-variables Definition...  Q0..8191->*
+
+;***************************************************************************
+; Program Title: PLC1 - Startup & Hexapod Initialization Plc
+; Original Author(s): Delta Tau / CosyLab
+; Modified By: Steve Siew (FMB Oxford)
+; Date: 26/03/2013
+; Version: 1.0
+; Description: -
+;
+; Startup PLC to intialize variables, flags & limits, and PLC Activation Control
+; This is the PLC is executed once only at startup and then disables itself.
+;
+;***************************************************************************
+
+OPEN PLC 1 CLEAR
+;ADR&1	;Address C.S.
+
+SoftwareDate=SoftDate
+SoftwareVersion=SoftVer
+
+DISABLE PLC 2..31	; Disable ALL PLCs apart from Start Up PLC and Encoder Loss Protection PLC
+
+ENABLE PLC 2	; Enable Encoder Loss Protection PLC
+ENABLE PLC 3	; Enable Program End Task PLC
+
+;Setup all I/O
+M32=$FF ;BITS 0-7 are assigned as output
+M33=$0 ;BITS 8-15 are assigned as input
+M34=$FFFF ;I/O Inversion
+
+;***********************
+
+;PMAC Variables/Memory Initialization
+COMMAND"M129->X:$B0,10 M229->X:$130,10 M329->X:$1B0,10 M429->X:$230,10"
+COMMAND"M529->X:$2B0,10 M629->X:$330,10 M729->X:$3B0,10 M829->X:$430,10"
+
+COMMAND"M134->Y:$0000C0,7,1 M234->Y:$000140,7,1 M334->Y:$0001C0,7,1 M434->Y:$000240,7,1"
+COMMAND"M534->Y:$0002C0,7,1 M634->Y:$000340,7,1 M734->Y:$0003C0,7,1 M834->Y:$000440,7,1"
+
+COMMAND"M900..5000->* i5190,9,100=1 P102,8,100=0 P105,8,100=0"
+COMMAND"P113,8,100=0 P114,8,100=0 M180,8,100->*"
+
+CMD"&1Q0..8191=0"	; Clear All Q-variables entry to ensure a clean startup
+Tmr1 = 500 msec 		; Wait for 500ms before continue
+While (Tmr1 > 0)
+EndWhile
+
+CMD"M180,8,100=1"	; Clear Encoder Loss
+
+;Enable Limits by default
+FlgModCtrl_Ax1 = LimitsON
+FlgModCtrl_Ax2 = LimitsON
+FlgModCtrl_Ax3 = LimitsON
+FlgModCtrl_Ax4 = LimitsON
+FlgModCtrl_Ax5 = LimitsON
+FlgModCtrl_Ax6 = LimitsON
+;FlgModCtrl_Ax7 = LimitsON
+;FlgModCtrl_Ax8 = LimitsON
+
+;Setup for TCPs Handling PLC 4
+TCP_Select = Reset
+TCP_Select_Old = Reset
+TCP_Change_Confirm = Reset
+NewTCP_Request = Reset
+
+;Setup for Encoder Loss Detection
+EncLossKillsAll = Enabled	; if disabled, only the specific axis affected will be killed.
+Default_EncLossCheck_Ax1 = Enabled
+Default_EncLossCheck_Ax2 = Enabled
+Default_EncLossCheck_Ax3 = Enabled
+Default_EncLossCheck_Ax4 = Enabled
+Default_EncLossCheck_Ax5 = Enabled
+Default_EncLossCheck_Ax6 = Enabled
+Default_EncLossCheck_Ax7 = Disabled	; Axis 7 not used
+Default_EncLossCheck_Ax8 = Disabled	; Axis 8 not used
+
+;Reset Encloder Loss Flag.  EncLossFlg_Axn	= 1 for No Encoder Loss
+EncLossFlg_Ax1	= 1
+EncLossFlg_Ax2	= 1
+EncLossFlg_Ax3	= 1
+EncLossFlg_Ax4	= 1
+EncLossFlg_Ax5	= 1
+EncLossFlg_Ax6	= 1
+EncLossFlg_Ax7	= 1
+EncLossFlg_Ax8	= 1
+
+;Reset Encoder Lost Latch
+LatchEncLoss_Ax1	= Reset
+LatchEncLoss_Ax2	= Reset
+LatchEncLoss_Ax3	= Reset
+LatchEncLoss_Ax4	= Reset
+LatchEncLoss_Ax5	= Reset
+LatchEncLoss_Ax6	= Reset
+LatchEncLoss_Ax7	= Reset
+LatchEncLoss_Ax8	= Reset
+
+Def_FRateCS1	=	0.5
+Def_FRateCS2	=	0.5
+Def_FRateCS3	=	0.5
+Def_FRateCS4	=	0.5
+Def_FRateCS5	=	0.5
+Def_FRateCS6	=	0.5
+Def_FRateCS7	=	0.5
+Def_FRateCS8	=	0.5
+Def_FRateCS9	=	0.5
+
+FRateTmUnitCS1	=	1000
+FRateTmUnitCS2	=	1000
+FRateTmUnitCS3	=	1000
+FRateTmUnitCS4	=	1000
+FRateTmUnitCS5	=	1000
+FRateTmUnitCS6	=	1000
+FRateTmUnitCS7	=	1000
+FRateTmUnitCS8	=	1000
+FRateTmUnitCS9	=	1000
+
+Def_AccTmCS1	=	100
+Def_AccTmCS2	=	100
+Def_AccTmCS3	=	100
+Def_AccTmCS4	=	100
+Def_AccTmCS5	=	100
+Def_AccTmCS6	=	100
+Def_AccTmCS7	=	100
+Def_AccTmCS8	=	100
+Def_AccTmCS9	=	100
+
+Def_SCurvTmCS1	=	0
+Def_SCurvTmCS2	=	0
+Def_SCurvTmCS3	=	0
+Def_SCurvTmCS4	=	0
+Def_SCurvTmCS5	=	0
+Def_SCurvTmCS6	=	0
+Def_SCurvTmCS7	=	0
+Def_SCurvTmCS8	=	0
+Def_SCurvTmCS9	=	0
+
+;Force Capture on reference Pulse
+CapCtrl_Ax1 = 1	; capture on marker pulse
+CapCtrl_Ax2 = 1
+CapCtrl_Ax3 = 1
+CapCtrl_Ax4 = 1
+CapCtrl_Ax5 = 1
+CapCtrl_Ax6 = 1
+
+CapFlgSel_Ax1 = 0	; use home switch as a flag
+CapFlgSel_Ax2 = 0
+CapFlgSel_Ax3 = 0
+CapFlgSel_Ax4 = 0
+CapFlgSel_Ax5 = 0
+CapFlgSel_Ax6 = 0
+
+;Setup Limit Offset
+LimOffset_Ax1 = 20000
+LimOffset_Ax2 = 20000
+LimOffset_Ax3 = 20000
+LimOffset_Ax4 = 20000
+LimOffset_Ax5 = 20000
+LimOffset_Ax6 = 20000
+LimOffset_Ax7 = 20000
+LimOffset_Ax8 = 20000
+
+;Setup Home Offset
+HmOffset_Ax1	=	-2106
+HmOffset_Ax2	=	7017
+HmOffset_Ax3	=	-3202
+HmOffset_Ax4	=	-9523
+HmOffset_Ax5	=	11220
+HmOffset_Ax6	=	-2422
+HmOffset_Ax7	=	0
+HmOffset_Ax8	=	0
+
+;Setup Total Move Range of the Hexapod Jacks
+MovRange_Ax1 = 900000
+MovRange_Ax2 = 900000
+MovRange_Ax3 = 900000
+MovRange_Ax4 = 900000
+MovRange_Ax5 = 900000
+MovRange_Ax6 = 900000
+MovRange_Ax7 = 900000
+MovRange_Ax8 = 900000
+
+;Setup Hexapod Nominal Home Position if different from 0
+6PodHmPos_AxX = 0
+6PodHmPos_AxY = 0
+6PodHmPos_AxZ = 0
+6PodHmPos_AxA = 0
+6PodHmPos_AxB = 0
+6PodHmPos_AxC = 0
+
+;Clear All Hexapod Jacks Home Complete Bits
+HomedFlg_Ax1 = Reset
+HomedFlg_Ax2 = Reset
+HomedFlg_Ax3 = Reset
+HomedFlg_Ax4 = Reset
+HomedFlg_Ax5 = Reset
+HomedFlg_Ax6 = Reset
+
+;6Pod_Degs2UserUnit = 17453292.519943295769	; Convert Rotation Degrees to Nano Radian
+6Pod_Degs2UserUnit = 17453.292519943295769	; Convert Rotation Degrees to Micro Radian
+;6Pod_Degs2UserUnit = 17.453292519943295769	; Convert Rotation Degrees to Milli Radian
+
+6PodSpd_Prog1 = 0.5						; Hexapod Move Speed
+6PodThreshold = 0.0000002		; Convergence criterion
+6PodSettleTol = 1.5					; Settling Criteria for Homing
+6PodStableGain = 1					; Use a reduced PID gain set to prevent Hexapod vibration during homing
+
+ADDRESS &1	; Set Coordinate system to be used for the Hexapod
+
+; This will store a default LCS parameter for this hexapod
+DefaultLCS_AxAuRad	=	0		;units in urad - rotation around Z
+DefaultLCS_AxBuRad	=	0		;units in urad - rotation around Y
+DefaultLCS_AxCuRad	=	0		;units in urad - rotation around X
+DefaultLCS_AxX	=	0		;units in mm
+DefaultLCS_AxY	=	0		;units in mm
+DefaultLCS_AxZ	=	1159		;units in mm
+
+; This will store a default TCP (TCP0) parameter for this hexapod
+DefaultTCP_AxAuRad	=	0		;units in urad - rotation around Z
+DefaultTCP_AxBuRad	=	0		;units in urad - rotation around Y
+DefaultTCP_AxCuRad	=	0		;units in urad - rotation around X
+DefaultTCP_AxX	=	0		;units in mm
+DefaultTCP_AxY	=	0		;units in mm
+DefaultTCP_AxZ	=	401.26		;units in mm
+
+; This will store TCP1 parameter for this hexapod
+AxAuRad_TCP1	=	DefaultTCP_AxAuRad
+AxBuRad_TCP1	=	DefaultTCP_AxBuRad
+AxCuRad_TCP1	=	DefaultTCP_AxCuRad
+AxX_TCP1	=	DefaultTCP_AxX
+AxY_TCP1	=	DefaultTCP_AxY
+AxZ_TCP1	=	DefaultTCP_AxZ
+
+;; This will store TCP2 parameter for this hexapod
+AxAuRad_TCP2	=	DefaultTCP_AxAuRad
+AxBuRad_TCP2	=	DefaultTCP_AxBuRad
+AxCuRad_TCP2	=	DefaultTCP_AxCuRad
+AxX_TCP2	=	DefaultTCP_AxX
+AxY_TCP2	=	DefaultTCP_AxY
+AxZ_TCP2	=	DefaultTCP_AxZ
+
+;; This will store TCP3 parameter for this hexapod
+AxAuRad_TCP3	=	DefaultTCP_AxAuRad
+AxBuRad_TCP3	=	DefaultTCP_AxBuRad
+AxCuRad_TCP3	=	DefaultTCP_AxCuRad
+AxX_TCP3	=	DefaultTCP_AxX
+AxY_TCP3	=	DefaultTCP_AxY
+AxZ_TCP3	=	DefaultTCP_AxZ
+
+;These are the Hexapod Limit Variables for TCP
+DefaultTCP_AxAuRad_PLim	=	20000		;units in urad - rotation around Z
+DefaultTCP_AxBuRad_PLim	=	20000		;units in urad - rotation around Y
+DefaultTCP_AxCuRad_PLim	=	20000		;units in urad - rotation around X
+DefaultTCP_AxX_PLim	=	5		;units in mm - Lateral
+DefaultTCP_AxY_PLim	=	5		;units in mm - Longitudinal
+DefaultTCP_AxZ_PLim	=	5	;units in mm - Vertical
+DefaultTCP_AxAuRad_MLim	=	-20000		;units in urad - rotation around Z
+DefaultTCP_AxBuRad_MLim	=	-20000		;units in urad - rotation around Y
+DefaultTCP_AxCuRad_MLim	=	-20000		;units in urad - rotation around X
+DefaultTCP_AxX_MLim	=	-5		;units in mm - Lateral
+DefaultTCP_AxY_MLim	=	-5		;units in mm - Longitudinal
+DefaultTCP_AxZ_MLim	=	-5		;units in mm - Vertical
+
+;These are the Hexapod Limit Variables for TCP1
+AxAuRad_PLim_TCP1	=	DefaultTCP_AxAuRad_PLim
+AxBuRad_PLim_TCP1	=	DefaultTCP_AxBuRad_PLim
+AxCuRad_PLim_TCP1	=	DefaultTCP_AxCuRad_PLim
+AxX_PLim_TCP1	=	DefaultTCP_AxX_PLim
+AxY_PLim_TCP1	=	DefaultTCP_AxY_PLim
+AxZ_PLim_TCP1	=	DefaultTCP_AxZ_PLim
+AxAuRad_MLim_TCP1	=	DefaultTCP_AxAuRad_MLim
+AxBuRad_MLim_TCP1	=	DefaultTCP_AxBuRad_MLim
+AxCuRad_MLim_TCP1	=	DefaultTCP_AxCuRad_MLim
+AxX_MLim_TCP1	=	DefaultTCP_AxX_MLim
+AxY_MLim_TCP1	=	DefaultTCP_AxY_MLim
+AxZ_MLim_TCP1	=	DefaultTCP_AxZ_MLim
+
+;These are the Hexapod Limit Variables for TCP2
+AxAuRad_PLim_TCP2	=	DefaultTCP_AxAuRad_PLim
+AxBuRad_PLim_TCP2	=	DefaultTCP_AxBuRad_PLim
+AxCuRad_PLim_TCP2	=	DefaultTCP_AxCuRad_PLim
+AxX_PLim_TCP2	=	DefaultTCP_AxX_PLim
+AxY_PLim_TCP2	=	DefaultTCP_AxY_PLim
+AxZ_PLim_TCP2	=	DefaultTCP_AxZ_PLim
+AxAuRad_MLim_TCP2	=	DefaultTCP_AxAuRad_MLim
+AxBuRad_MLim_TCP2	=	DefaultTCP_AxBuRad_MLim
+AxCuRad_MLim_TCP2	=	DefaultTCP_AxCuRad_MLim
+AxX_MLim_TCP2	=	DefaultTCP_AxX_MLim
+AxY_MLim_TCP2	=	DefaultTCP_AxY_MLim
+AxZ_MLim_TCP2	=	DefaultTCP_AxZ_MLim
+
+;These are the Hexapod Limit Variables for TCP3
+AxAuRad_PLim_TCP3	=	DefaultTCP_AxAuRad_PLim
+AxBuRad_PLim_TCP3	=	DefaultTCP_AxBuRad_PLim
+AxCuRad_PLim_TCP3	=	DefaultTCP_AxCuRad_PLim
+AxX_PLim_TCP3	=	DefaultTCP_AxX_PLim
+AxY_PLim_TCP3	=	DefaultTCP_AxY_PLim
+AxZ_PLim_TCP3	=	DefaultTCP_AxZ_PLim
+AxAuRad_MLim_TCP3	=	DefaultTCP_AxAuRad_MLim
+AxBuRad_MLim_TCP3	=	DefaultTCP_AxBuRad_MLim
+AxCuRad_MLim_TCP3	=	DefaultTCP_AxCuRad_MLim
+AxX_MLim_TCP3	=	DefaultTCP_AxX_MLim
+AxY_MLim_TCP3	=	DefaultTCP_AxY_MLim
+AxZ_MLim_TCP3	=	DefaultTCP_AxZ_MLim
+
+; This will set the Software Limits parameter for this hexapod
+AxAuRad_PLim	=	DefaultTCP_AxAuRad_PLim	;units in urad - rotation around Z
+AxBuRad_PLim	=	DefaultTCP_AxBuRad_PLim	;units in urad - rotation around Y
+AxCuRad_PLim	=	DefaultTCP_AxCuRad_PLim	;units in urad - rotation around X
+AxX_PLim	=	DefaultTCP_AxX_PLim
+AxY_PLim	=	DefaultTCP_AxY_PLim
+AxZ_PLim	=	DefaultTCP_AxZ_PLim
+AxAuRad_MLim	=	DefaultTCP_AxAuRad_MLim	;units in urad - rotation around Z
+AxBuRad_MLim	=	DefaultTCP_AxBuRad_MLim	;units in urad - rotation around Y
+AxCuRad_MLim	=	DefaultTCP_AxCuRad_MLim	;units in urad - rotation around X
+AxX_MLim	=	DefaultTCP_AxX_MLim
+AxY_MLim	=	DefaultTCP_AxY_MLim
+AxZ_MLim	=	DefaultTCP_AxZ_MLim
+
+;////////////////////////////////////////////////////////////////////////
+; Important Hexapod Leg Parameters
+;////////////////////////////////////////////////////////////////////////
+; Dimensions of Hexapod stage
+; Coordinates of base leg ends
+Xb1=270		Yb1=-225.17		Zb1=0
+Xb2=330		Yb2=-121.24		Zb2=0
+Xb3=60			Yb3=346.41		  Zb3=0
+Xb4=-60			Yb4=346.41		Zb4=0
+Xb5=-330	Yb5=-121.24		Zb5=0
+Xb6=-270	Yb6=-225.17		Zb6=0
+
+; Coordinates of platform leg ends (untransformed)
+Xp1=63.95		Yp1=-301.93		Zp1=0
+Xp2=293.45	Yp2=95.58			Zp2=0
+Xp3=229.5		Yp3=206.34	 	Zp3=0
+Xp4=-229.5	Yp4=206.34	 	Zp4=0
+Xp5=-293.45	Yp5=95.58			Zp5=0
+Xp6=-63.95	Yp6=-301.93		Zp6=0
+
+ZeroLen=789; Leg length at 0 pos of motor (mm)
+MinLen=739	; Minimum leg length (mm)
+MaxLen=839	; Maximum leg length (mm)
+MinZ=757.74  ;Position of Platform over Base when motors are at zero mm (mm)
+
+;scale factor
+LegScale = 10000;  cts/mm
+
+;////////////////////////////////////////////////////////////////////////
+; Setup TCP Parameters - Position of TCP c.s. relative to PCS
+;////////////////////////////////////////////////////////////////////////
+
+TCPPoseA	=	DefaultTCP_AxAuRad
+TCPPoseB	=	DefaultTCP_AxBuRad
+TCPPoseC	=	DefaultTCP_AxCuRad
+TCPPoseX	=	DefaultTCP_AxX
+TCPPoseY	=	DefaultTCP_AxY
+TCPPoseZ	=	DefaultTCP_AxZ
+
+NewTCPPoseAuRad	=	TCPPoseA
+NewTCPPoseBuRad	=	TCPPoseB
+NewTCPPoseCuRad	=	TCPPoseC
+NewTCPPoseX	=	TCPPoseX
+NewTCPPoseY	=	TCPPoseY
+NewTCPPoseZ	=	TCPPoseZ
+
+;////////////////////////////////////////////////////////////////////////
+; Setup LCS Parameters - Position of LCS c.s. relative to BCS
+;////////////////////////////////////////////////////////////////////////
+
+LCSPoseA	=	DefaultLCS_AxAuRad
+LCSPoseB	=	DefaultLCS_AxBuRad
+LCSPoseC	=	DefaultLCS_AxCuRad
+LCSPoseX	=	DefaultLCS_AxX
+LCSPoseY	=	DefaultLCS_AxY
+LCSPoseZ	=	DefaultLCS_AxZ
+
+NewLCSPoseAuRad	=	LCSPoseA
+NewLCSPoseBuRad	=	LCSPoseB
+NewLCSPoseCuRad	=	LCSPoseC
+NewLCSPoseX	=	LCSPoseX
+NewLCSPoseY	=	LCSPoseY
+NewLCSPoseZ	=	LCSPoseZ
+
+;////////////////////////////////////////////////////////////////////////
+;Other initialization (do not change)
+;////////////////////////////////////////////////////////////////////////
+
+;Zero terms of R and RA derivative matrices
+dRdA31 = Reset
+dRdA32 = Reset
+dRdA33 = Reset
+dRdC11 = Reset
+dRdC21 = Reset
+dRdC31 = Reset
+dRAdA31 = Reset
+dRAdA32 = Reset
+dRAdA33 = Reset
+dRAdC11 = Reset
+dRAdC21 = Reset
+dRAdC31 = Reset
+
+;#Initalize last position to zero
+LastPoseA = Reset
+LastPoseB = Reset
+LastPoseC = Reset
+LastPoseX = Reset
+LastPoseY = Reset
+LastPoseZ = Reset
+
+CMD"&1#1->I #2->I #3->I #4->I #5->I #6->I"	; Assign all legs as Inverse kinematic axis
+
+UsrTrigFuncCtrl = 0		; Trig calculation in degrees
+
+KinematicsEna_CS1 = Enabled	;Kinematics enabled
+SegTm_CS1 = 10   ; Segment time of 10 msec
+
+CMD"&1a" 	; Enable All motors in coordinate system 2
+
+; Establish Laboratory Coordinate System (LCS)
+newCSswitch = 1
+ENABLE PLC 6
+
+Tmr1 = 500 msec ; Wait for 500 msec
+While (Tmr1 > 0 Or SetupCSStarted = True)
+EndWhile
+
+; Establish Tooling Centre Point (TCP)
+newCSswitch = 2
+ENABLE PLC 6
+
+Tmr1 = 500 msec ; Wait for 500 msec
+While (Tmr1 > 0 Or SetupCSStarted = True)
+EndWhile
+
+ENABLE PLC 4	; Enable TCPs Handling PLC
+
+CMD"&1"
+
+DISABLE PLC 1
+CLOSE
+
+
+
+
+

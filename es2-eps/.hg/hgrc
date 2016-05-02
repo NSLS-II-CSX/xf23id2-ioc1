@@ -1,0 +1,7 @@
+[paths]
+default = https://code.nsls2.bnl.gov/hg/xf/23id/iocs/xf23id2-ioc1/es2-eps/
+
+[web]
+contact = Huijuan Xu <hxu@bnl.gov>
+description = 23ID (CSX) ES2 EPS PLC IOC
+

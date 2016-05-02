@@ -1,0 +1,79 @@
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "$(Sys)$(Dev)P-I")
+{
+        field(DESC, "$(Dev) Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@$(PLC) EPICS_P_Data[$(Indx)] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "$(Sys)$(Dev)P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@$(PLC) EPICS_P_High[$(Indx)] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "$(Sys)$(Dev)P:High-RB")
+}
+
+record(ai, "$(Sys)$(Dev)P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@$(PLC) EPICS_P_High[$(Indx)] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "$(Sys)$(Dev)P:High-ao_")
+}
+
+record(ao, "$(Sys)$(Dev)P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "$(Sys)$(Dev)P:High-RB PP")
+    field(OUT,  "$(Sys)$(Dev)P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "$(Sys)$(Dev)P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@$(PLC) EPICS_P_HiHi[$(Indx)] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "$(Sys)$(Dev)P:HiHi-RB")
+}
+
+record(ai, "$(Sys)$(Dev)P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@$(PLC) EPICS_P_HiHi[$(Indx)] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "$(Sys)$(Dev)P:HiHi-ao_")
+}
+
+record(ao, "$(Sys)$(Dev)P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "$(Sys)$(Dev)P:HiHi-RB PP")
+    field(OUT,  "$(Sys)$(Dev)P-I.HIGH")
+}
+

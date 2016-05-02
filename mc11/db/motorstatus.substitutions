@@ -1,0 +1,19 @@
+file "db/motorstatus.db"
+{
+pattern
+{SYS,              DEV,                 PORT,  AXIS }
+{"XF:23ID2-BI",  "{Diag:3-Ax:Y}",        "P0",   1   }
+{"XF:23ID2-BI",  "{Diag:4-Ax:Y}",        "P0",   2   }
+{"XF:23ID2-BI",  "{IOXAS:1-Ax:X}",        "P0",   3   }
+{"XF:23ID2-BI",  "{Vortex:1-Ax:X}",        "P0",   4   }
+}
+
+file "db/pmacStatusAxis.db"
+{
+pattern
+{SYS,               DEV,           PORT,  AXIS }
+{"XF:23ID2-CT",  "{MC:11-Ax:1}",   "P0",   1   }
+{"XF:23ID2-CT",  "{MC:11-Ax:2}",   "P0",   2   }
+{"XF:23ID2-CT",  "{MC:11-Ax:3}",   "P0",   3   }
+{"XF:23ID2-CT",  "{MC:11-Ax:4}",   "P0",   4   }
+}

@@ -1,0 +1,123 @@
+file /usr/lib/epics/db/mks937b_controller.db
+{
+ pattern
+ { Sys	, Cntl	, 	PORT	, ADR	}
+ { XF:23ID2-CT, "{VGC:01}", tsrv1-P1, 253 }
+ { XF:23ID2-CT, "{VGC:02}", tsrv1-P2, 253 }
+ { XF:23ID2-CT, "{VGC:03}", tsrv1-P3, 253 }
+ { XF:23ID2-CT, "{VGC:04}", tsrv1-P4, 253 }
+ { XF:23ID2-CT, "{VGC:05}", tsrv1-P5, 253 }
+ { XF:23ID2-CT, "{VGC:06}", tsrv1-P6, 253 }
+ { XF:23ID2-CT, "{VGC:07}", tsrv2-P1, 253 }
+ { XF:23ID2-CT, "{VGC:08}", tsrv2-P2, 253 }
+ { XF:23ID2-CT, "{VGC:09}", tsrv2-P3, 253 }
+ { XF:23ID2-CT, "{VGC:10}", tsrv2-P4, 253 }
+ { XF:23ID2-CT, "{VGC:11}", tsrv2-P5, 253 }
+}
+
+file /usr/lib/epics/db/mks937b_ccg.db
+{
+ pattern
+ { Sys      , Dev                        , CHAN , PORT     , ADR , Cntl , HIGH, HIHI}
+ { XF:23ID2 , "-VA{Diag:01-CCG:1}"       , 1    , tsrv1-P1 , 253 , "-CT{VGC:01}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Mon-CCG:1}"           , 3    , tsrv1-P1 , 253 , "-CT{VGC:01}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Slt:1-CCG:1}"         , 1    , tsrv1-P2 , 253 , "-CT{VGC:02}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{PSh-CCG:1}"           , 3    , tsrv1-P2 , 253 , "-CT{VGC:02}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Pmp:Inl:01-CCG:1}"    , 1    , tsrv1-P3 , 253 , "-CT{VGC:03}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Pmp:Inl:02-CCG:1}"    , 3    , tsrv1-P3 , 253 , "-CT{VGC:03}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Pmp:Inl:03-CCG:1}"    , 1    , tsrv1-P4 , 253 , "-CT{VGC:04}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Diag:02-CCG:1}"       , 3    , tsrv1-P4 , 253 , "-CT{VGC:04}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Slt:2-CCG:1}"         , 1    , tsrv1-P5 , 253 , "-CT{VGC:05}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Chop-CCG:1}"          , 3    , tsrv1-P5 , 253 , "-CT{VGC:05}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Slt:3-CCG:1}"         , 1    , tsrv1-P6 , 253 , "-CT{VGC:06}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{GC-CCG:1}"            , 3    , tsrv1-P6 , 253 , "-CT{VGC:06}" , 1.0E-7, 1.0E-6 }
+ { XF:23ID2 , "-VA{Mir:3-CCG:1}"         , 1    , tsrv2-P1 , 253 , "-CT{VGC:07}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{Diag:03-CCG:1}"       , 3    , tsrv2-P1 , 253 , "-CT{VGC:07}" , 1.0E-8, 1.0E-7 }
+ { XF:23ID2 , "-VA{XMCD-CCG:1}"          , 1    , tsrv2-P2 , 253 , "-CT{VGC:08}" , 1.0E-7, 1.0E-6 }
+ { XF:23ID2 , "-VA{IOXAS-CCG:1}"         , 3    , tsrv2-P2 , 253 , "-CT{VGC:08}" , 1.0E-7, 1.0E-6 }
+ { XF:23ID2 , "-VA{APPES-HCG:1}"         , 1    , tsrv2-P3 , 253 , "-CT{VGC:09}" , 1.0E-7, 1.0E-6 }
+ { XF:23ID2 , "-VA{APPES_LL-HCG:2}"      , 3    , tsrv2-P3 , 253 , "-CT{VGC:09}" , 1.0E-7, 1.0E-6 }
+}
+
+file /usr/lib/epics/db/mks937b_relay_ccg.db
+{
+ pattern
+  { Sys         , Dev                  , SPNUM , PORT     , ADR , Cntl   }
+  { XF:23ID2 , "-VA{Diag:01-CCG:1}"    , 1     , tsrv1-P1 , 253 , "-CT{VGC:01}" }
+  { XF:23ID2 , "-VA{Mon-CCG:1}"        , 5     , tsrv1-P1 , 253 , "-CT{VGC:01}" }
+  { XF:23ID2 , "-VA{Slt:1-CCG:1}"      , 1     , tsrv1-P2 , 253 , "-CT{VGC:02}" }
+  { XF:23ID2 , "-VA{PSh-CCG:1}"        , 5     , tsrv1-P2 , 253 , "-CT{VGC:02}" }
+  { XF:23ID2 , "-VA{Pmp:Inl:01-CCG:1}" , 1     , tsrv1-P3 , 253 , "-CT{VGC:03}" }
+  { XF:23ID2 , "-VA{Pmp:Inl:02-CCG:1}" , 5     , tsrv1-P3 , 253 , "-CT{VGC:03}" }
+  { XF:23ID2 , "-VA{Pmp:Inl:03-CCG:1}" , 1     , tsrv1-P4 , 253 , "-CT{VGC:04}" }
+  { XF:23ID2 , "-VA{Diag:02-CCG:1}"    , 5     , tsrv1-P4 , 253 , "-CT{VGC:04}" }
+  { XF:23ID2 , "-VA{Slt:2-CCG:1}"      , 1     , tsrv1-P5 , 253 , "-CT{VGC:05}" }
+  { XF:23ID2 , "-VA{Chop-CCG:1}"       , 5     , tsrv1-P5 , 253 , "-CT{VGC:05}" }
+  { XF:23ID2 , "-VA{Slt:3-CCG:1}"      , 1     , tsrv1-P6 , 253 , "-CT{VGC:06}" }
+  { XF:23ID2 , "-VA{GC-CCG:1}"         , 5     , tsrv1-P6 , 253 , "-CT{VGC:06}" }
+  { XF:23ID2 , "-VA{Mir:3-CCG:1}"      , 1     , tsrv2-P1 , 253 , "-CT{VGC:07}" }
+  { XF:23ID2 , "-VA{Diag:03-CCG:1}"    , 5     , tsrv2-P1 , 253 , "-CT{VGC:07}" }
+  { XF:23ID2 , "-VA{XMCD-CCG:1}"	   , 1     , tsrv2-P2 , 253	, "-CT{VGC:08}"	}
+  { XF:23ID2 , "-VA{IOXAS-CCG:1}"	   , 5	   , tsrv2-P2 , 253	, "-CT{VGC:08}"	}
+  { XF:23ID2 , "-VA{APPES-HGC:1}"	   , 1	   , tsrv2-P3 , 253	, "-CT{VGC:09}"	}
+  { XF:23ID2 , "-VA{APPES_LL-HCG:2}"   , 5	   , tsrv2-P3 , 253	, "-CT{VGC:09}"	}
+}
+
+
+file /usr/lib/epics/db/mks937b_pirg.db
+{
+ pattern
+ { Sys      , Dev                     , CHAN , PORT     , ADR , Cntl    }
+ { XF:23ID2 , "-VA{Diag:01-TCG:1}"    , 5    , tsrv1-P1 , 253 , "-CT{VGC:01}"}
+ { XF:23ID2 , "-VA{Mon-TCG:1}"        , 6    , tsrv1-P1 , 253 , "-CT{VGC:01}"}
+ { XF:23ID2 , "-VA{Slt:1-TCG:1}"      , 5    , tsrv1-P2 , 253 , "-CT{VGC:02}"}
+ { XF:23ID2 , "-VA{PSh-TCG:1}"        , 6    , tsrv1-P2 , 253 , "-CT{VGC:02}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:01-TCG:1}" , 5    , tsrv1-P3 , 253 , "-CT{VGC:03}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:02-TCG:1}" , 6    , tsrv1-P3 , 253 , "-CT{VGC:03}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:03-TCG:1}" , 5    , tsrv1-P4 , 253 , "-CT{VGC:04}"}
+ { XF:23ID2 , "-VA{Diag:02-TCG:1}"    , 6    , tsrv1-P4 , 253 , "-CT{VGC:04}"}
+ { XF:23ID2 , "-VA{Slt:2-TCG:1}"      , 5    , tsrv1-P5 , 253 , "-CT{VGC:05}"}
+ { XF:23ID2 , "-VA{Chop-TCG:1}"       , 6    , tsrv1-P5 , 253 , "-CT{VGC:05}"}
+ { XF:23ID2 , "-VA{Slt:3-TCG:1}"      , 5    , tsrv1-P6 , 253 , "-CT{VGC:06}"}
+ { XF:23ID2 , "-VA{GC-TCG:1}"         , 6    , tsrv1-P6 , 253 , "-CT{VGC:06}"}
+ { XF:23ID2 , "-VA{Mir:3-TCG:1}"      , 5    , tsrv2-P1 , 253 , "-CT{VGC:07}"}
+ { XF:23ID2 , "-VA{Diag:03-TCG:1}"    , 6    , tsrv2-P1 , 253 , "-CT{VGC:07}"}
+ { XF:23ID2	, "-VA{XMCD-TCG:1}"	      , 5    , tsrv2-P2	, 253 , "-CT{VGC:08}"}
+ { XF:23ID2	, "-VA{IOXAS-TCG:1}"	  , 6    , tsrv2-P2	, 253 , "-CT{VGC:08}"}
+ { XF:23ID2	, "-VA{APPES-TCG:1}"	  , 5    , tsrv2-P3	, 253 , "-CT{VGC:09}"}
+ { XF:23ID2	, "-VA{APPES_LL-TCG:2}"	  , 6	 , tsrv2-P3	, 253 , "-CT{VGC:09}"}
+ { XF:23ID2	, "-VA{APPES_B-TCG:3}"	  , 5	 , tsrv2-P4	, 253 , "-CT{VGC:10}"}
+ { XF:23ID2	, "-VA{APPES_B-TCG:4}"	  , 6	 , tsrv2-P4	, 253 , "-CT{VGC:10}"}
+ { XF:23ID2     , "-VA{APPES:LL_B-TCG:5}"    , 5    , tsrv2-P5     , 253 , "-CT{VGC:11}"}
+ { XF:23ID2     , "-VA{BKP_Com:1-TCG:1}"    , 6    , tsrv2-P5     , 253 , "-CT{VGC:11}"}
+}
+
+
+file /usr/lib/epics/db/mks937b_relay_pirg.db
+{
+ pattern
+ { Sys         , Dev                  , SPNUM , PORT     , ADR , Cntl    }
+ { XF:23ID2 , "-VA{Diag:01-TCG:1}"    , 9     , tsrv1-P1 , 253 , "-CT{VGC:01}"}
+ { XF:23ID2 , "-VA{Mon-TCG:1}"        , 11    , tsrv1-P1 , 253 , "-CT{VGC:01}"}
+ { XF:23ID2 , "-VA{Slt:1-TCG:1}"      , 9     , tsrv1-P2 , 253 , "-CT{VGC:02}"}
+ { XF:23ID2 , "-VA{PSh-TCG:1}"        , 11    , tsrv1-P2 , 253 , "-CT{VGC:02}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:01-TCG:1}" , 9     , tsrv1-P3 , 253 , "-CT{VGC:03}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:02-TCG:1}" , 11    , tsrv1-P3 , 253 , "-CT{VGC:03}"}
+ { XF:23ID2 , "-VA{Pmp:Inl:03-TCG:1}" , 9     , tsrv1-P4 , 253 , "-CT{VGC:04}"}
+ { XF:23ID2 , "-VA{Diag:02-TCG:1}"    , 11    , tsrv1-P4 , 253 , "-CT{VGC:04}"}
+ { XF:23ID2 , "-VA{Slt:2-TCG:1}"      , 9     , tsrv1-P5 , 253 , "-CT{VGC:05}"}
+ { XF:23ID2 , "-VA{Chop-TCG:1}"       , 11    , tsrv1-P5 , 253 , "-CT{VGC:05}"}
+ { XF:23ID2 , "-VA{Slt:3-TCG:1}"      , 9     , tsrv1-P6 , 253 , "-CT{VGC:06}"}
+ { XF:23ID2 , "-VA{GC-TCG:1}"         , 11    , tsrv1-P6 , 253 , "-CT{VGC:06}"}
+ { XF:23ID2 , "-VA{Mir:3-TCG:1}"      , 9     , tsrv2-P1 , 253 , "-CT{VGC:07}"}
+ { XF:23ID2 , "-VA{Diag:03-TCG:1}"    , 11    , tsrv2-P1 , 253 , "-CT{VGC:07}"}
+ { XF:23ID2	, "-VA{XMCD-TCG:1}"	      , 9	  , tsrv2-P2 , 253	, "-VA{VGC:1}"	}
+ { XF:23ID2	, "-VA{IOXAS-TCG:1}"	  , 11	  , tsrv2-P2 , 253	, "-VA{VGC:1}"	}
+ { XF:23ID2	, "-VA{APPES-TCG:1}"	  , 9	  , tsrv2-P3 , 253	, "-VA{VGC:2}"	}
+ { XF:23ID2	, "-VA{APPES_LL-TCG:2}"	  , 11	  , tsrv2-P3 , 253	, "-VA{VGC:2}"	}
+ { XF:23ID2	, "-VA{APPES_B-TCG:3}"	  , 9	  , tsrv2-P4 , 253	, "-VA{VGC:3}"	}
+ { XF:23ID2	, "-VA{APPES_B-TCG:4}"	  , 11	  , tsrv2-P4 , 253	, "-VA{VGC:3}"	}
+ { XF:23ID2     , "-VA{APPES:LL_B-TCG:5}"    , 9    , tsrv2-P5     , 253 , "-CT{VGC:11}"}
+ { XF:23ID2     , "-VA{BKP_Com:1-TCG:1}"    , 11    , tsrv2-P5     , 253 , "-CT{VGC:11}"}
+}
+

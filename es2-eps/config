@@ -1,0 +1,4 @@
+NAME=es2-eps
+PORT=4103
+HOST=xf23id2-ioc1
+USER=softioc

@@ -1,0 +1,296 @@
+locktimeout = 5000;
+replytimeout = 500;
+readtimeout  = 50;
+writetimeout = 100;
+extrainput   = Ignore;
+MaxInput = 0;
+Terminator = CR;
+
+# set output main voltage
+setOutpVolt {
+	out "sour:volt %.5f"; #:volt
+	wait 500;
+}
+
+getOutpVolt {
+	out "sour:volt?";
+	in  "%f";
+}
+
+# set output main current
+setOutpCurr {
+	out "sour:curr %.5f"; #:curr
+	wait 500;
+}
+
+getOutpCurr {
+	out "sour:curr?";
+	in  "%f";
+}
+
+# measure voltage/current
+measVolt {
+	out "meas:volt?";
+	in  "%f";
+}
+
+measCurr {
+	out "meas:curr?";
+	in  "%f";
+}
+
+#Enable/disable output power main
+setOutpMain {
+	out "outp %{off|on}";
+	wait 500;
+}
+
+getOutpMain {
+	out "outp?";
+	in  "%{0|1}";
+}
+
+# Enable the auxiliary output
+setOutpAux {
+	out "outp:aux %{off|on}";
+	wait 500;
+}
+
+getOutpAux {
+	out "outp:aux?";
+	in  "%{0|1}";
+}
+
+# Output auto start mode
+setOutpPOn {
+	out "outp:pon %{off|on}";
+	wait 500;
+}
+
+getOutpPOn {
+	out "outp:pon?"
+	in  "%{0|1}";
+}
+
+# Auxliary auto start mode
+setOutpAuxPOn {
+	out "outp:aux:pon %{off|on}";
+	wait 500;
+}
+
+getOutpAuxPOn{
+	out "outp:aux:pon?";
+	in  "%{0|1}";
+}
+
+# Clear flash failure alarm
+clearFlashFailAlrm {
+	out "outp:prot:cle";
+	wait 500;
+}
+
+# set foldback mode
+setFoldMode {
+	out "outp:prot:fold %{NONE|CV|CC}";
+	wait 500;
+}
+
+getFoldMode {
+	out "outp:prot:fold?";
+	in "Foldback Mode: %{NONE|CV|CC}";
+}
+
+# set foldback delay
+setFoldDly {
+	out "outp:prot:fold:del %f"; # 0.5-50s
+	wait 500;
+}
+
+getFoldDly {
+	out "*adr \$1";	
+	out "outp:prot:fold:del?";
+	in  "%f";
+}
+
+# Reset activated foldback protection
+resetFoldProt {
+	out "outp:prot:cle";
+	wait 500;
+}
+
+# Set OVP setpoint
+setOVPSP {
+	out "sour:volt:prot:over %f"; # 75-95
+	wait 500;
+}
+
+getOVPSP {
+	out "sour:volt:prot:over?";
+	in  "%f";
+}
+
+# Get UVP setpoint
+getUVPSP {
+	out "sour:volt:prot:und?";
+	in  "%f"; # (couldn't set, needs to know why)
+}
+
+# GetOCPSP (read only)
+getOCPSP {
+	out "sour:curr:prot?";
+	in  "%f"; # 11.55
+}
+
+#OTP mode, just set from front panel, no remote control
+
+# Set interlock function
+setIntlkProt {
+	out "sens:prot:int %{off|on}";
+	wait 500;
+}
+
+getIntlkProt {
+	out "sens:prot:int?";
+	in  "%{0|1}";
+}
+
+# enable/disable 0 voltage output reset at power-on
+set0VoltPOn {
+	out "syst:pon:volt %{off|on}";
+	wait 500;
+}
+
+get0VoltPOn {
+	out "syst:pon:volt?";
+	in  "%{0|1}";
+}
+
+# enable/disable 0 voltage output preset upon output enable
+set0VoltOutpEnbl{
+	out "syst:pon:ena:volt %{off|on}";
+	wait 500;
+}
+
+get0VoltOutpEnbl {
+	out "syst:pon:ena:volt?";
+	in  "%{0|1}";
+}
+
+# enable/disable 0 current output reset at power-on
+set0CurrPOn {
+	out "syst:pon:curr %{off|on}";
+	wait 500;
+}
+
+get0CurrPOn {
+	out "syst:pon:curr?";
+	in  "%{0|1}";
+}
+
+# enable/disable 0 current output preset upon output enable
+set0CurrOutpEnbl {
+	out "syst:pon:ena:curr %{off|on}";
+	wait 500;
+}
+
+get0CurrOutpEnbl {
+	out "syst:pon:ena:curr?";
+	in  "%{0|1}";
+}
+
+# save/recall settings
+saveSettings {
+	out "syst:save %{1|2|3}";
+	wait 500;
+}
+
+recallSettings {
+	out "syst:rec %{1|2|3}";
+	wait 500;
+}
+
+# enable/disable local lockout
+setLocalLock{
+	out "syst:rem:stat %{local|remote}";
+	wait 500;
+}
+
+getLocalLock {
+	out "syst:rem:stat?";
+	in  "Front Panel %{Unlocked|Locked}";
+}
+
+# set controller/slave unit
+setUnitMode {
+	out "sour:comb:csh %{controller|slave}";
+	wait 500;
+}
+
+getUnitMode {
+	out "sour:comb:csh?";
+	in  "%{CONTroller|SLAVe}";
+}
+
+# voltage-controlled voltage APG
+setVoltAPG {
+	out "syst:rem:sour:volt %{LOCAL|IAVoltage|AVOLtage|IAResistive|ARESistive}";
+	wait 500;
+}
+
+getVoltAPG {
+	out "syst:rem:sour:volt?";
+	in  "%{Voltage mode: LOCAL|Analog Isolated|Analog Non-isolated|Resistor Isolated|Resistor Non-isolated}";
+}
+
+# Set analog voltage input level
+setAPRVoltLevel {
+	out "syst:comm:apr:lev:volt %f"; # 2-10
+	wait 500;
+}
+
+getAPRVoltLevel {
+	out "syst:comm:apr:lev:volt?";
+	in  "%f";
+}
+
+# measure apr voltage
+getAPRVolt {
+	out "meas:apr:volt?";
+	in  "%f";
+}
+
+# voltage-controlled current APG
+setCurrAPG {
+	out "syst:rem:sour:curr %{LOCAL|IAVoltage|AVOLtage|IAResistive|ARESistive}";
+	wait 500;
+}
+
+getCurrAPG {
+	out "syst:rem:sour:curr?";
+	in  "Current mode: %{LOCAL|Analog Isolated|Analog Non-isolated|Resistor Isolated|Resistor Non-isolated}";
+}
+
+# Set analog current input level
+setAPRCurrLevel {
+	out "syst:comm:apr:lev:curr %f"; # 2-10
+	wait 500;
+}
+
+getAPRCurrLevel {
+	out "syst:comm:apr:lev:curr?";
+	in  "%f";
+}
+
+# error
+#error {
+#	out "syst:err?";
+#	out "%*d, "%s";
+#}
+
+# reset
+reset {
+	out "syst:res";
+	wait 500;
+}
+
+

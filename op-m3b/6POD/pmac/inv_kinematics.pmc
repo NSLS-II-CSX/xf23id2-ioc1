@@ -1,0 +1,55 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+; INVERSE Kinematics
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&1
+OPEN inverse CLEAR
+
+; Calculate R transformation matrix
+R11 = cos(PoseA)*cos(PoseB)
+R12 = cos(PoseA)*sin(PoseB)*sin(PoseC)-sin(PoseA)*cos(PoseC)
+R13 = cos(PoseA)*sin(PoseB)*cos(PoseC)+sin(PoseA)*sin(PoseC)
+R14 = PoseX
+R21 = sin(PoseA)*cos(PoseB)
+R22 = sin(PoseA)*sin(PoseB)*sin(PoseC)+cos(PoseA)*cos(PoseC)
+R23 = sin(PoseA)*sin(PoseB)*cos(PoseC)-cos(PoseA)*sin(PoseC)
+R24 = PoseY
+R31 = -sin(PoseB)
+R32 = cos(PoseB)*sin(PoseC)
+R33 = cos(PoseB)*cos(PoseC)
+R34 = PoseZ
+; Compute commanded leg lengths from commanded "pose"
+Leg = 1
+WHILE (Leg !> 6)       ; For each leg
+  Row = 1
+  Temp1 = 0     ; Temp1 holds leg length
+  WHILE (Row !> 3)     ; Each matrix row computes 1 coordinate of leg
+    ; Temp holds xformed platform coord, then leg coord extent
+    ; Rotate platform points: + = R[Row,Col]*P[Leg,Col]
+    Temp = Q(Rbase+(Row-1)*4+1)*Q(PUCSBase+(Leg-1)*3+1)
+    Temp = Temp+Q(Rbase+(Row-1)*4+2)*Q(PUCSBase+(Leg-1)*3+2)
+    Temp = Temp+Q(Rbase+(Row-1)*4+3)*Q(PUCSBase+(Leg-1)*3+3)
+    Temp = Temp+Q(Rbase+(Row-1)*4+4)
+    ; Subtract base coordinate from transformed platform coordinate
+    Temp = Temp-Q(PLCSBase+(Leg-1)*3+Row)
+    Temp1 = Temp1+Temp*Temp     ; Add in to leg length calcs
+    Row = Row+1
+  ENDWHILE     ; WHILE (Row !> 3)
+  Q(LenBase+Leg) = sqrt(Temp1)     ; Leg length in user units
+  ;IF (Q(LenBase+Leg) !< (MinLen) And Q(LenBase+Leg) !> MaxLen)
+    
+    P(MPosBase+Leg) = LegScale*(Q(LenBase+Leg)-ZeroLen)    ; in motor counts
+    
+  ;ELSE
+  ;  RunTmErr_CS1 = True    ; Commanded out of range -- stop
+  ;ENDIF
+  Leg = Leg+1
+  ENDWHILE		; WHILE (Leg !> 6)
+  
+CLOSE     ; (open inverse)

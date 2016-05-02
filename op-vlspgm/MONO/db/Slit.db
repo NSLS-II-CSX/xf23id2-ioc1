@@ -1,0 +1,202 @@
+## 2-blade slit database [V0.3, 30.01.2012]
+## derived from 2slit.db as part of synApps
+## - removed OPR setting
+## - modified tweaking (simplified with calcout record)
+## - minor renaming
+## - added position readback calculation
+## - added stop command
+
+record(calc,"$(P)$(R):ERR_CLC")
+{
+	field(DESC, "Calc System Error Status")
+	field(INPA,"$(P)$(R)$(mXp)_HOMING_STS CP")
+	field(INPB,"$(P)$(R)$(mXn)_HOMING_STS CP")
+	field(CALC,"A=4&&B=4?0:1")
+}
+
+record(bi,"$(P)$(R):ERR_STS") {
+	field(DESC, "System Error Status")
+	field(INP, "$(P)$(R):ERR_CLC CP NMS")
+	field(ZNAM,"OK")
+	field(ONAM,"Error")	
+	field(ZSV,"NO_ALARM")
+	field(OSV,"MAJOR")
+}
+
+grecord(bo,"$(P)$(R):SIZE_ST_CMD") {
+	field(DESC,"Stop Motors")
+	field(OUT,"$(P)$(R)_STOP_CMD PP")
+}
+
+grecord(bo,"$(P)$(R):OFFSET_ST_CMD") {
+	field(DESC,"Stop Motors")
+	field(OUT,"$(P)$(R)_STOP_CMD PP")
+}
+
+grecord(transform,"$(P)$(R)_STOP_CMD") {
+	field(DESC,"stop both motors")
+	field(SCAN,"Passive")
+	field(INPC,"1")
+	field(CLCA,"c")
+	field(CLCB,"c")	
+	field(OUTA,"$(P)$(R)$(mXp).STOP PP MS")
+	field(OUTB,"$(P)$(R)$(mXn).STOP PP MS")
+}
+grecord(transform,"$(P)$(R)_POS") {
+	field(DESC,"calculated from encoder")
+	field(INPA,"$(P)$(R)$(mXp).RBV  CP NMS")
+	field(INPB,"$(P)$(R)$(mXn).RBV  CP NMS")
+	field(CLCD,"A-B") 		# size 
+	field(CLCO,"((A-(B*(-1)))/2)") 	# offset
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+}
+
+grecord(ai,"$(P)$(R):SIZE_MON") {
+	field(INP,"$(P)$(R)_POS.D CP MS")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+}
+grecord(ai,"$(P)$(R):OFFSET_MON") {
+	field(INP,"$(P)$(R)_POS.O CP MS")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+}
+
+grecord(ao,"$(P)$(R)_XP") {
+	field(OUT,"$(P)$(R)_t1.A  PP MS")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+}
+grecord(ao,"$(P)$(R)_XN") {
+	field(OUT,"$(P)$(R)_t1.B  PP MS")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+}
+
+record(ao,"$(P)$(R):SIZE_TWV_SP") {
+	field(DESC, "Slit Size Tweak Value")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+	info(autosaveFields, "VAL")
+}
+
+record(calcout,"$(P)$(R):SIZE_TWP_CMD")
+{
+	field(OOPT,"Every Time")
+	field(INPA,"$(P)$(R):SIZE_POS_SP NPP")
+	field(INPB,"$(P)$(R):SIZE_TWV_SP NPP")
+	field(CALC,"A+B")
+	field(OUT,"$(P)$(R):SIZE_POS_SP PP")
+}
+
+record(calcout,"$(P)$(R):SIZE_TWN_CMD")
+{
+	field(OOPT,"Every Time")
+	field(INPA,"$(P)$(R):SIZE_POS_SP NPP")
+	field(INPB,"$(P)$(R):SIZE_TWV_SP NPP")
+	field(CALC,"A-B")
+	field(OUT,"$(P)$(R):SIZE_POS_SP PP")
+}
+
+record(ao,"$(P)$(R):OFFSET_TWV_SP") {
+	field(DESC, "Slit Offset Tweak Value")
+	field(PREC,"$(PREC)")
+	field(EGU, "$(EGU)")
+	info(autosaveFields, "VAL")
+}
+
+record(calcout,"$(P)$(R):OFFSET_TWP_CMD")
+{
+	field(OOPT,"Every Time")
+	field(INPA,"$(P)$(R):OFFSET_POS_SP NPP")
+	field(INPB,"$(P)$(R):OFFSET_TWV_SP NPP")
+	field(CALC,"A+B")
+	field(OUT,"$(P)$(R):OFFSET_POS_SP PP")
+}
+
+record(calcout,"$(P)$(R):OFFSET_TWN_CMD")
+{
+	field(OOPT,"Every Time")
+	field(INPA,"$(P)$(R):OFFSET_POS_SP NPP")
+	field(INPB,"$(P)$(R):OFFSET_TWV_SP NPP")
+	field(CALC,"A-B")
+	field(OUT,"$(P)$(R):OFFSET_POS_SP PP")
+}
+
+grecord(ao,"$(P)$(R):SIZE_POS_SP") {
+	field(OUT,"$(P)$(R)_t1.C  NPP MS")
+	field(PREC,"$(PREC)")
+	field(EGU,"$(EGU)")
+	info(autosaveFields, "VAL")
+}
+grecord(ao,"$(P)$(R):OFFSET_POS_SP") {
+	field(OUT,"$(P)$(R)_t1.D  NPP MS")
+	field(PREC,"$(PREC)")
+	field(EGU,"$(EGU)")
+	info(autosaveFields, "VAL")
+}
+
+grecord(ao,"$(P)$(R):SIZE_SP") {
+	field(OUT,"$(P)$(R)_t1.C  NPP MS")
+	field(PREC,"$(PREC)")
+	field(EGU,"$(EGU)")
+	field(FLNK,"$(P)$(R)_t1 PP")	
+}
+grecord(ao,"$(P)$(R):OFFSET_SP") {
+	field(OUT,"$(P)$(R)_t1.D  NPP MS")
+	field(PREC,"$(PREC)")
+	field(EGU,"$(EGU)")
+	field(FLNK,"$(P)$(R)_t1 PP")	
+}
+
+grecord(ao,"$(P)$(R)_vback1") {
+	field(OUT,"$(P)$(R)_t1.A  NPP NMS")
+	field(DOL,"$(P)$(R)$(mXp).VAL NPP NMS")
+	field(OMSL,"closed_loop")
+	field(PREC,"$(PREC)")
+}
+grecord(ao,"$(P)$(R)_vback2") {
+	field(OUT,"$(P)$(R)_t1.B  PP MS")
+	field(DOL,"$(P)$(R)$(mXn).VAL  NPP NMS")
+	field(OMSL,"closed_loop")
+	field(PREC,"$(PREC)")
+}
+grecord(ao,"$(P)$(R)_XPBPut") {
+	field(SDIS,"$(P)$(R)_XP.PACT  NPP NMS")
+	field(OUT,"$(P)$(R)_XP.VAL  PP MS")
+}
+grecord(ao,"$(P)$(R)_XNBPut") {
+	field(SDIS,"$(P)$(R)_XN.PACT  NPP NMS")
+	field(OUT,"$(P)$(R)_XN.VAL  PP MS")
+}
+grecord(ao,"$(P)$(R)_SIZEBPut") {
+	field(SDIS,"$(P)$(R):SIZE_POS_SP.PACT  NPP NMS")
+	field(OUT,"$(P)$(R):SIZE_POS_SP.VAL  PP MS")
+}
+grecord(ao,"$(P)$(R)_OFFSETBPut") {
+	field(SDIS,"$(P)$(R):OFFSET_POS_SP.PACT  NPP NMS")
+	field(OUT,"$(P)$(R):OFFSET_POS_SP.VAL  PP MS")
+}
+grecord(fanout,"$(P)$(R)_sync") {
+	field(PINI,"0")
+	field(LNK1,"$(P)$(R)_vback1.PROC  PP MS")
+	field(LNK2,"$(P)$(R)_vback2.PROC  PP MS")
+}
+grecord(transform,"$(P)$(R)_t1") {
+	field(DESC,"XP(a),XN(b)->SIZE(c),OFFS")
+	field(CLCA,"d+c/2")
+	field(CLCB,"d-c/2")
+	field(CLCC,"a-b")
+	field(CLCD,"(a+b)/2")
+	field(CLCF,"a")
+	field(CLCG,"b")
+	field(INPE,"1")
+	field(OUTA,"$(P)$(R)_XPBPut.VAL  PP MS")
+	field(OUTB,"$(P)$(R)_XNBPut.VAL  PP MS")
+	field(OUTC,"$(P)$(R)_SIZEBPut.VAL  PP MS")
+	field(OUTD,"$(P)$(R)_OFFSETBPut.VAL  PP MS")
+	field(OUTF,"$(P)$(R)$(mXp).VAL  PP MS")
+	field(OUTG,"$(P)$(R)$(mXn).VAL  PP MS")
+	field(PREC,"$(PREC)")
+}

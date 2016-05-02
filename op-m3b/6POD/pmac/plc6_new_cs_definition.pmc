@@ -1,0 +1,359 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+;	Calculates new coordinate systems
+; &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+OPEN PLC 6 CLEAR
+
+SetupCSStarted = True
+
+ADR&1	;Address C.S.
+
+;Define new UCS since LCS changed
+;UCS rotation matrix
+DISABLE PLC 7
+
+IF (newCSswitch = 1)
+
+  ;Set new LCS
+  TCPPoseA = TCPPoseAuRad/6Pod_Degs2UserUnit
+  TCPPoseB = TCPPoseBuRad/6Pod_Degs2UserUnit
+  TCPPoseC = TCPPoseCuRad/6Pod_Degs2UserUnit
+  
+  NewLCSPoseA = NewLCSPoseAuRad/6Pod_Degs2UserUnit
+  NewLCSPoseB = NewLCSPoseBuRad/6Pod_Degs2UserUnit
+  NewLCSPoseC = NewLCSPoseCuRad/6Pod_Degs2UserUnit
+  
+  ActRUCS11 = cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+  ActRUCS12 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)-sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS13 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)+sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS14 = PoseXReport
+  ActRUCS21 = sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+  ActRUCS22 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)+cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS23 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)-cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS24 = PoseYReport
+  ActRUCS31 = -sin(PoseBReport/6Pod_Degs2UserUnit)
+  ActRUCS32 = cos(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS33 = cos(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+  ActRUCS34 = PoseZReport
+  
+  ;LCS rotation matrix
+  RLCS11 = cos(LCSPoseA)*cos(LCSPoseB)
+  RLCS12 = cos(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)-sin(LCSPoseA)*cos(LCSPoseC)
+  RLCS13 = cos(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)+sin(LCSPoseA)*sin(LCSPoseC)
+  RLCS14 = LCSPoseX
+  RLCS21 = sin(LCSPoseA)*cos(LCSPoseB)
+  RLCS22 = sin(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)+cos(LCSPoseA)*cos(LCSPoseC)
+  RLCS23 = sin(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)-cos(LCSPoseA)*sin(LCSPoseC)
+  RLCS24 = LCSPoseY
+  RLCS31 = -sin(LCSPoseB)
+  RLCS32 = cos(LCSPoseB)*sin(LCSPoseC)
+  RLCS33 = cos(LCSPoseB)*cos(LCSPoseC)
+  RLCS34 = LCSPoseZ
+  
+  ;new LCS rotation matrix
+  NewRLCS11 = cos(NewLCSPoseA)*cos(NewLCSPoseB)
+  NewRLCS12 = cos(NewLCSPoseA)*sin(NewLCSPoseB)*sin(NewLCSPoseC)-sin(NewLCSPoseA)*cos(NewLCSPoseC)
+  NewRLCS13 = cos(NewLCSPoseA)*sin(NewLCSPoseB)*cos(NewLCSPoseC)+sin(NewLCSPoseA)*sin(NewLCSPoseC)
+  NewRLCS14 = NewLCSPoseX
+  NewRLCS21 = sin(NewLCSPoseA)*cos(NewLCSPoseB)
+  NewRLCS22 = sin(NewLCSPoseA)*sin(NewLCSPoseB)*sin(NewLCSPoseC)+cos(NewLCSPoseA)*cos(NewLCSPoseC)
+  NewRLCS23 = sin(NewLCSPoseA)*sin(NewLCSPoseB)*cos(NewLCSPoseC)-cos(NewLCSPoseA)*sin(NewLCSPoseC)
+  NewRLCS24 = NewLCSPoseY
+  NewRLCS31 = -sin(NewLCSPoseB)
+  NewRLCS32 = cos(NewLCSPoseB)*sin(NewLCSPoseC)
+  NewRLCS33 = cos(NewLCSPoseB)*cos(NewLCSPoseC)
+  NewRLCS34 = NewLCSPoseZ
+  
+  ;TCP rotation matrix
+  RTCP11 = cos(TCPPoseA)*cos(TCPPoseB)
+  RTCP12 = cos(TCPPoseA)*sin(TCPPoseB)*sin(TCPPoseC)-sin(TCPPoseA)*cos(TCPPoseC)
+  RTCP13 = cos(TCPPoseA)*sin(TCPPoseB)*cos(TCPPoseC)+sin(TCPPoseA)*sin(TCPPoseC)
+  RTCP14 = TCPPoseX
+  RTCP21 = sin(TCPPoseA)*cos(TCPPoseB)
+  RTCP22 = sin(TCPPoseA)*sin(TCPPoseB)*sin(TCPPoseC)+cos(TCPPoseA)*cos(TCPPoseC)
+  RTCP23 = sin(TCPPoseA)*sin(TCPPoseB)*cos(TCPPoseC)-cos(TCPPoseA)*sin(TCPPoseC)
+  RTCP24 = TCPPoseY
+  RTCP31 = -sin(TCPPoseB)
+  RTCP32 = cos(TCPPoseB)*sin(TCPPoseC)
+  RTCP33 = cos(TCPPoseB)*cos(TCPPoseC)
+  RTCP34 = TCPPoseZ
+  
+  ;Calculate new UCS
+  ;LCSnew'*LCS*UCS
+  newRUCS11 = (RLCS11*ActRUCS11+RLCS12*ActRUCS21+RLCS13*ActRUCS31)*NewRLCS11 + (RLCS21*ActRUCS11+RLCS22*ActRUCS21+RLCS23*ActRUCS31)*NewRLCS21 + (RLCS31*ActRUCS11+RLCS32*ActRUCS21+RLCS33*ActRUCS31)*NewRLCS31
+  newRUCS12 = (RLCS11*ActRUCS12+RLCS12*ActRUCS22+RLCS13*ActRUCS32)*NewRLCS11 + (RLCS21*ActRUCS12+RLCS22*ActRUCS22+RLCS23*ActRUCS32)*NewRLCS21 + (RLCS31*ActRUCS12+RLCS32*ActRUCS22+RLCS33*ActRUCS32)*NewRLCS31
+  newRUCS13 = (RLCS11*ActRUCS13+RLCS12*ActRUCS23+RLCS13*ActRUCS33)*NewRLCS11 + (RLCS21*ActRUCS13+RLCS22*ActRUCS23+RLCS23*ActRUCS33)*NewRLCS21 + (RLCS31*ActRUCS13+RLCS32*ActRUCS23+RLCS33*ActRUCS33)*NewRLCS31
+  newRUCS21 = (RLCS11*ActRUCS11+RLCS12*ActRUCS21+RLCS13*ActRUCS31)*NewRLCS12 + (RLCS21*ActRUCS11+RLCS22*ActRUCS21+RLCS23*ActRUCS31)*NewRLCS22 + (RLCS31*ActRUCS11+RLCS32*ActRUCS21+RLCS33*ActRUCS31)*NewRLCS32
+  newRUCS22 = (RLCS11*ActRUCS12+RLCS12*ActRUCS22+RLCS13*ActRUCS32)*NewRLCS12 + (RLCS21*ActRUCS12+RLCS22*ActRUCS22+RLCS23*ActRUCS32)*NewRLCS22 + (RLCS31*ActRUCS12+RLCS32*ActRUCS22+RLCS33*ActRUCS32)*NewRLCS32
+  newRUCS23 = (RLCS11*ActRUCS13+RLCS12*ActRUCS23+RLCS13*ActRUCS33)*NewRLCS12 + (RLCS21*ActRUCS13+RLCS22*ActRUCS23+RLCS23*ActRUCS33)*NewRLCS22 + (RLCS31*ActRUCS13+RLCS32*ActRUCS23+RLCS33*ActRUCS33)*NewRLCS32
+  newRUCS31 = (RLCS11*ActRUCS11+RLCS12*ActRUCS21+RLCS13*ActRUCS31)*NewRLCS13 + (RLCS21*ActRUCS11+RLCS22*ActRUCS21+RLCS23*ActRUCS31)*NewRLCS23 + (RLCS31*ActRUCS11+RLCS32*ActRUCS21+RLCS33*ActRUCS31)*NewRLCS33
+  newRUCS32 = (RLCS11*ActRUCS12+RLCS12*ActRUCS22+RLCS13*ActRUCS32)*NewRLCS13 + (RLCS21*ActRUCS12+RLCS22*ActRUCS22+RLCS23*ActRUCS32)*NewRLCS23 + (RLCS31*ActRUCS12+RLCS32*ActRUCS22+RLCS33*ActRUCS32)*NewRLCS33
+  newRUCS33 = (RLCS11*ActRUCS13+RLCS12*ActRUCS23+RLCS13*ActRUCS33)*NewRLCS13 + (RLCS21*ActRUCS13+RLCS22*ActRUCS23+RLCS23*ActRUCS33)*NewRLCS23 + (RLCS31*ActRUCS13+RLCS32*ActRUCS23+RLCS33*ActRUCS33)*NewRLCS33
+  
+  UCSPoseB = ASIN(-newRUCS31)
+  UCSPoseA = ATAN(newRUCS21/newRUCS11)
+  UCSPoseC = ATAN(newRUCS32/newRUCS33)
+  UCSPoseBuRad = UCSPoseB * 6Pod_Degs2UserUnit
+  UCSPoseAuRad = UCSPoseA * 6Pod_Degs2UserUnit
+  UCSPoseCuRad = UCSPoseC * 6Pod_Degs2UserUnit
+  
+  TempNewCS  = 	(LCSPoseX-NewLCSPoseX+RLCS11*PoseXReport+RLCS12*PoseYReport+RLCS13*PoseZReport)*RLCS11 + (LCSPoseY-NewLCSPoseY+RLCS21*PoseXReport+RLCS22*PoseYReport+RLCS23*PoseZReport)*RLCS21
+  UCSPoseX = TempNewCS + (LCSPoseZ-NewLCSPoseZ+RLCS31*PoseXReport+RLCS32*PoseYReport+RLCS33*PoseZReport)*RLCS31
+  TempNewCS  = (LCSPoseX-NewLCSPoseX+RLCS11*PoseXReport+RLCS12*PoseYReport+RLCS13*PoseZReport)*RLCS12 + (LCSPoseY-NewLCSPoseY+RLCS21*PoseXReport+RLCS22*PoseYReport+RLCS23*PoseZReport)*RLCS22
+  UCSPoseY = TempNewCS + (LCSPoseZ-NewLCSPoseZ+RLCS31*PoseXReport+RLCS32*PoseYReport+RLCS33*PoseZReport)*RLCS32
+  TempNewCS = (LCSPoseX-NewLCSPoseX+RLCS11*PoseXReport+RLCS12*PoseYReport+RLCS13*PoseZReport)*RLCS13 + (LCSPoseY-NewLCSPoseY+RLCS21*PoseXReport+RLCS22*PoseYReport+RLCS23*PoseZReport)*RLCS23
+  UCSPoseZ = TempNewCS + (LCSPoseZ-NewLCSPoseZ+RLCS31*PoseXReport+RLCS32*PoseYReport+RLCS33*PoseZReport)*RLCS33
+  
+  LCSPoseA = NewLCSPoseA
+  LCSPoseB = NewLCSPoseB
+  LCSPoseC = NewLCSPoseC
+  LCSPoseX = NewLCSPoseX
+  LCSPoseY = NewLCSPoseY
+  LCSPoseZ = NewLCSPoseZ
+  LCSPoseAuRad = NewLCSPoseAuRad
+  LCSPoseBuRad = NewLCSPoseBuRad
+  LCSPoseCuRad = NewLCSPoseCuRad
+  
+  RLCS11 = NewRLCS11
+  RLCS12 = NewRLCS12
+  RLCS13 = NewRLCS13
+  RLCS21 = NewRLCS21
+  RLCS22 = NewRLCS22
+  RLCS23 = NewRLCS23
+  RLCS31 = NewRLCS31
+  RLCS32 = NewRLCS32
+  RLCS33 = NewRLCS33
+  
+  LegA = 1
+  WHILE (LegA !> 6)
+    ;Calculate new base joints
+    Q(PLCSBase+3*(LegA-1)+1) = RLCS11 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS21 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS31 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+    Q(PLCSBase+3*(LegA-1)+2) = RLCS12 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS22 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS32 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+    Q(PLCSBase+3*(LegA-1)+3) = RLCS13 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS23 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS33 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+    LegA = LegA+1
+  ENDWHILE		; WHILE (LegA !> 6)
+    
+  ENDIF
+  
+  IF (newCSswitch = 2)
+
+    ;Set new TCP
+    ; UCSPoseA = UCSPoseAuRad/6Pod_Degs2UserUnit
+    ; UCSPoseB = UCSPoseBuRad/6Pod_Degs2UserUnit
+    ; UCSPoseC = UCSPoseCuRad/6Pod_Degs2UserUnit
+    
+    TCPPoseA = TCPPoseAuRad/6Pod_Degs2UserUnit
+    TCPPoseB = TCPPoseBuRad/6Pod_Degs2UserUnit
+    TCPPoseC = TCPPoseCuRad/6Pod_Degs2UserUnit
+    
+    NewTCPPoseA = NewTCPPoseAuRad/6Pod_Degs2UserUnit
+    NewTCPPoseB = NewTCPPoseBuRad/6Pod_Degs2UserUnit
+    NewTCPPoseC = NewTCPPoseCuRad/6Pod_Degs2UserUnit
+    
+    ActRUCS11 = cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS12 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)-sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS13 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)+sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS14 = PoseXReport
+    ActRUCS21 = sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS22 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)+cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS23 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)-cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS24 = PoseYReport
+    ActRUCS31 = -sin(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS32 = cos(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS33 = cos(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS34 = PoseZReport
+    
+    ;LCS rotation matrix
+    RLCS11 = cos(LCSPoseA)*cos(LCSPoseB)
+    RLCS12 = cos(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)-sin(LCSPoseA)*cos(LCSPoseC)
+    RLCS13 = cos(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)+sin(LCSPoseA)*sin(LCSPoseC)
+    RLCS14 = LCSPoseX
+    RLCS21 = sin(LCSPoseA)*cos(LCSPoseB)
+    RLCS22 = sin(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)+cos(LCSPoseA)*cos(LCSPoseC)
+    RLCS23 = sin(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)-cos(LCSPoseA)*sin(LCSPoseC)
+    RLCS24 = LCSPoseY
+    RLCS31 = -sin(LCSPoseB)
+    RLCS32 = cos(LCSPoseB)*sin(LCSPoseC)
+    RLCS33 = cos(LCSPoseB)*cos(LCSPoseC)
+    RLCS34 = LCSPoseZ
+    
+    ;new LCS rotation matrix
+    NewRTCP11 = cos(NewTCPPoseA)*cos(NewTCPPoseB)
+    NewRTCP12 = cos(NewTCPPoseA)*sin(NewTCPPoseB)*sin(NewTCPPoseC)-sin(NewTCPPoseA)*cos(NewTCPPoseC)
+    NewRTCP13 = cos(NewTCPPoseA)*sin(NewTCPPoseB)*cos(NewTCPPoseC)+sin(NewTCPPoseA)*sin(NewTCPPoseC)
+    NewRTCP14 = NewTCPPoseX
+    NewRTCP21 = sin(NewTCPPoseA)*cos(NewTCPPoseB)
+    NewRTCP22 = sin(NewTCPPoseA)*sin(NewTCPPoseB)*sin(NewTCPPoseC)+cos(NewTCPPoseA)*cos(NewTCPPoseC)
+    NewRTCP23 = sin(NewTCPPoseA)*sin(NewTCPPoseB)*cos(NewTCPPoseC)-cos(NewTCPPoseA)*sin(NewTCPPoseC)
+    NewRTCP24 = NewTCPPoseY
+    NewRTCP31 = -sin(NewTCPPoseB)
+    NewRTCP32 = cos(NewTCPPoseB)*sin(NewTCPPoseC)
+    NewRTCP33 = cos(NewTCPPoseB)*cos(NewTCPPoseC)
+    NewRTCP34 = NewTCPPoseZ
+    
+    ;TCP rotation matrix
+    RTCP11 = cos(TCPPoseA)*cos(TCPPoseB)
+    RTCP12 = cos(TCPPoseA)*sin(TCPPoseB)*sin(TCPPoseC)-sin(TCPPoseA)*cos(TCPPoseC)
+    RTCP13 = cos(TCPPoseA)*sin(TCPPoseB)*cos(TCPPoseC)+sin(TCPPoseA)*sin(TCPPoseC)
+    RTCP14 = TCPPoseX
+    RTCP21 = sin(TCPPoseA)*cos(TCPPoseB)
+    RTCP22 = sin(TCPPoseA)*sin(TCPPoseB)*sin(TCPPoseC)+cos(TCPPoseA)*cos(TCPPoseC)
+    RTCP23 = sin(TCPPoseA)*sin(TCPPoseB)*cos(TCPPoseC)-cos(TCPPoseA)*sin(TCPPoseC)
+    RTCP24 = TCPPoseY
+    RTCP31 = -sin(TCPPoseB)
+    RTCP32 = cos(TCPPoseB)*sin(TCPPoseC)
+    RTCP33 = cos(TCPPoseB)*cos(TCPPoseC)
+    RTCP34 = TCPPoseZ
+    
+    ;Calculate new UCS
+    ;UCS*TCP'*newTCP
+    newRUCS11 = (RTCP11*NewRTCP11+RTCP21*NewRTCP21+RTCP31*NewRTCP31)*ActRUCS11 + (RTCP12*NewRTCP11+RTCP22*NewRTCP21+RTCP32*NewRTCP31)*ActRUCS12 + (RTCP13*NewRTCP11+RTCP23*NewRTCP21+RTCP33*NewRTCP31)*ActRUCS13
+    newRUCS12 = (RTCP11*NewRTCP12+RTCP21*NewRTCP22+RTCP31*NewRTCP32)*ActRUCS11 + (RTCP12*NewRTCP12+RTCP22*NewRTCP22+RTCP32*NewRTCP32)*ActRUCS12 + (RTCP13*NewRTCP12+RTCP23*NewRTCP22+RTCP33*NewRTCP32)*ActRUCS13
+    newRUCS13 = (RTCP11*NewRTCP13+RTCP21*NewRTCP23+RTCP31*NewRTCP33)*ActRUCS11 + (RTCP12*NewRTCP13+RTCP22*NewRTCP23+RTCP32*NewRTCP33)*ActRUCS12 + (RTCP13*NewRTCP13+RTCP23*NewRTCP23+RTCP33*NewRTCP33)*ActRUCS13
+    newRUCS21 = (RTCP11*NewRTCP11+RTCP21*NewRTCP21+RTCP31*NewRTCP31)*ActRUCS21 + (RTCP12*NewRTCP11+RTCP22*NewRTCP21+RTCP32*NewRTCP31)*ActRUCS22 + (RTCP13*NewRTCP11+RTCP23*NewRTCP21+RTCP33*NewRTCP31)*ActRUCS23
+    newRUCS22 = (RTCP11*NewRTCP12+RTCP21*NewRTCP22+RTCP31*NewRTCP32)*ActRUCS21 + (RTCP12*NewRTCP12+RTCP22*NewRTCP22+RTCP32*NewRTCP32)*ActRUCS22 + (RTCP13*NewRTCP12+RTCP23*NewRTCP22+RTCP33*NewRTCP32)*ActRUCS23
+    newRUCS23 = (RTCP11*NewRTCP13+RTCP21*NewRTCP23+RTCP31*NewRTCP33)*ActRUCS21 + (RTCP12*NewRTCP13+RTCP22*NewRTCP23+RTCP32*NewRTCP33)*ActRUCS22 + (RTCP13*NewRTCP13+RTCP23*NewRTCP23+RTCP33*NewRTCP33)*ActRUCS23
+    newRUCS31 = (RTCP11*NewRTCP11+RTCP21*NewRTCP21+RTCP31*NewRTCP31)*ActRUCS31 + (RTCP12*NewRTCP11+RTCP22*NewRTCP21+RTCP32*NewRTCP31)*ActRUCS32 + (RTCP13*NewRTCP11+RTCP23*NewRTCP21+RTCP33*NewRTCP31)*ActRUCS33
+    newRUCS32 = (RTCP11*NewRTCP12+RTCP21*NewRTCP22+RTCP31*NewRTCP32)*ActRUCS31 + (RTCP12*NewRTCP12+RTCP22*NewRTCP22+RTCP32*NewRTCP32)*ActRUCS32 + (RTCP13*NewRTCP12+RTCP23*NewRTCP22+RTCP33*NewRTCP32)*ActRUCS33
+    newRUCS33 = (RTCP11*NewRTCP13+RTCP21*NewRTCP23+RTCP31*NewRTCP33)*ActRUCS31 + (RTCP12*NewRTCP13+RTCP22*NewRTCP23+RTCP32*NewRTCP33)*ActRUCS32 + (RTCP13*NewRTCP13+RTCP23*NewRTCP23+RTCP33*NewRTCP33)*ActRUCS33
+    
+    UCSPoseB = ASIN(-newRUCS31)
+    UCSPoseA = ATAN(newRUCS21/newRUCS11)
+    UCSPoseC = ATAN(newRUCS32/newRUCS33)
+    UCSPoseBuRad = UCSPoseB * 6Pod_Degs2UserUnit
+    UCSPoseAuRad = UCSPoseA * 6Pod_Degs2UserUnit
+    UCSPoseCuRad = UCSPoseC * 6Pod_Degs2UserUnit
+    
+    TempNewCS =  (ActRUCS11 * RTCP11 +  ActRUCS12 * RTCP12 + ActRUCS13 * RTCP13)* (NewTCPPoseX - TCPPoseX) + (ActRUCS11 * RTCP21 +  ActRUCS12 * RTCP22 + ActRUCS13 * RTCP23)* (NewTCPPoseY - TCPPoseY)
+    UCSPoseX = TempNewCS + (ActRUCS11 * RTCP31 +  ActRUCS12 * RTCP32 + ActRUCS13 * RTCP33)* (NewTCPPoseZ - TCPPoseZ) + PoseXReport
+    TempNewCS =  (ActRUCS21 * RTCP11 +  ActRUCS22 * RTCP12 + ActRUCS23 * RTCP13)* (NewTCPPoseX - TCPPoseX) + (ActRUCS21 * RTCP21 +  ActRUCS22 * RTCP22 + ActRUCS23 * RTCP23)* (NewTCPPoseY - TCPPoseY)
+    UCSPoseY =  TempNewCS +(ActRUCS21 * RTCP31 +  ActRUCS22 * RTCP32 + ActRUCS23 * RTCP33)* (NewTCPPoseZ - TCPPoseZ) + PoseYReport
+    TempNewCS = (ActRUCS31 * RTCP11 +  ActRUCS32 * RTCP12 + ActRUCS33 * RTCP13)* (NewTCPPoseX - TCPPoseX) + (ActRUCS31 * RTCP21 +  ActRUCS32 * RTCP22 + ActRUCS33 * RTCP23)* (NewTCPPoseY - TCPPoseY)
+    UCSPoseZ =  TempNewCS +(ActRUCS31 * RTCP31 +  ActRUCS32 * RTCP32 + ActRUCS33 * RTCP33)* (NewTCPPoseZ - TCPPoseZ) + PoseZReport
+    
+    TCPPoseA = NewTCPPoseA
+    TCPPoseB = NewTCPPoseB
+    TCPPoseC = NewTCPPoseC
+    TCPPoseX = NewTCPPoseX
+    TCPPoseY = NewTCPPoseY
+    TCPPoseZ = NewTCPPoseZ
+    TCPPoseAuRad = NewTCPPoseAuRad
+    TCPPoseBuRad = NewTCPPoseBuRad
+    TCPPoseCuRad = NewTCPPoseCuRad
+    
+    RTCP11 = NewRTCP11
+    RTCP12 = NewRTCP12
+    RTCP13 = NewRTCP13
+    RTCP21 = NewRTCP21
+    RTCP22 = NewRTCP22
+    RTCP23 = NewRTCP23
+    RTCP31 = NewRTCP31
+    RTCP32 = NewRTCP32
+    RTCP33 = NewRTCP33
+    
+    LegA = 1
+    WHILE (LegA !> 6)
+      ;Calculate new base joints
+      Q(PUCSBase+3*(LegA-1)+1) = RTCP11 * (Q( PposeBase+3*(LegA-1)+1)-TCPPoseX) + RTCP21 * (Q( PposeBase+3*(LegA-1)+2)-TCPPoseY) + RTCP31 * (Q( PposeBase+3*(LegA-1)+3)-TCPPoseZ)
+      Q(PUCSBase+3*(LegA-1)+2) = RTCP12 * (Q( PposeBase+3*(LegA-1)+1)-TCPPoseX) + RTCP22 * (Q( PposeBase+3*(LegA-1)+2)-TCPPoseY) + RTCP32 * (Q( PposeBase+3*(LegA-1)+3)-TCPPoseZ)
+      Q(PUCSBase+3*(LegA-1)+3) = RTCP13 * (Q( PposeBase+3*(LegA-1)+1)-TCPPoseX) + RTCP23 * (Q( PposeBase+3*(LegA-1)+2)-TCPPoseY) + RTCP33 * (Q( PposeBase+3*(LegA-1)+3)-TCPPoseZ)
+      LegA = LegA+1
+    ENDWHILE
+    
+  ENDIF
+  
+  IF (newCSswitch = 3)
+
+    ;Set LCS as current UCS
+    ;LCS rotation matrix
+    RLCS11 = cos(LCSPoseA)*cos(LCSPoseB)
+    RLCS12 = cos(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)-sin(LCSPoseA)*cos(LCSPoseC)
+    RLCS13 = cos(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)+sin(LCSPoseA)*sin(LCSPoseC)
+    RLCS14 = LCSPoseX
+    RLCS21 = sin(LCSPoseA)*cos(LCSPoseB)
+    RLCS22 = sin(LCSPoseA)*sin(LCSPoseB)*sin(LCSPoseC)+cos(LCSPoseA)*cos(LCSPoseC)
+    RLCS23 = sin(LCSPoseA)*sin(LCSPoseB)*cos(LCSPoseC)-cos(LCSPoseA)*sin(LCSPoseC)
+    RLCS24 = LCSPoseY
+    RLCS31 = -sin(LCSPoseB)
+    RLCS32 = cos(LCSPoseB)*sin(LCSPoseC)
+    RLCS33 = cos(LCSPoseB)*cos(LCSPoseC)
+    RLCS34 = LCSPoseZ
+    
+    ActRUCS11 = cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS12 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)-sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS13 = cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)+sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS14 = PoseXReport
+    ActRUCS21 = sin(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS22 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)+cos(PoseAReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS23 = sin(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)-cos(PoseAReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS24 = PoseYReport
+    ActRUCS31 = -sin(PoseBReport/6Pod_Degs2UserUnit)
+    ActRUCS32 = cos(PoseBReport/6Pod_Degs2UserUnit)*sin(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS33 = cos(PoseBReport/6Pod_Degs2UserUnit)*cos(PoseCReport/6Pod_Degs2UserUnit)
+    ActRUCS34 = PoseZReport
+    
+    ;new LCS rotation matrix
+    NewRLCS11 = RLCS11*ActRUCS11 + RLCS12*ActRUCS21 + RLCS13*ActRUCS31
+    NewRLCS12 = RLCS11*ActRUCS12 + RLCS12*ActRUCS22 + RLCS13*ActRUCS32
+    NewRLCS13 = RLCS11*ActRUCS13 + RLCS12*ActRUCS23 + RLCS13*ActRUCS33
+    NewRLCS21 = RLCS21*ActRUCS11 + RLCS22*ActRUCS21 + RLCS23*ActRUCS31
+    NewRLCS22 = RLCS21*ActRUCS12 + RLCS22*ActRUCS22 + RLCS23*ActRUCS32
+    NewRLCS23 = RLCS21*ActRUCS13 + RLCS22*ActRUCS23 + RLCS23*ActRUCS33
+    NewRLCS31 = RLCS31*ActRUCS11 + RLCS32*ActRUCS21 + RLCS33*ActRUCS31
+    NewRLCS32 = RLCS31*ActRUCS12 + RLCS32*ActRUCS22 + RLCS33*ActRUCS32
+    NewRLCS33 = RLCS31*ActRUCS13 + RLCS32*ActRUCS23 + RLCS33*ActRUCS33
+    
+    LCSPoseB = ASIN(-NewRLCS31)
+    LCSPoseA = ATAN(NewRLCS21/NewRLCS11)
+    LCSPoseC = ATAN(NewRLCS32/NewRLCS33)
+    LCSPoseBuRad = LCSPoseB * 6Pod_Degs2UserUnit
+    LCSPoseAuRad = LCSPoseA * 6Pod_Degs2UserUnit
+    LCSPoseCuRad = LCSPoseC * 6Pod_Degs2UserUnit
+    
+    LCSPoseX = RLCS11*PoseXReport+RLCS12*PoseYReport+RLCS13*PoseZReport+LCSPoseX
+    LCSPoseY = RLCS21*PoseXReport+RLCS22*PoseYReport+RLCS23*PoseZReport+LCSPoseY
+    LCSPoseZ = RLCS31*PoseXReport+RLCS32*PoseYReport+RLCS33*PoseZReport+LCSPoseZ
+    
+    UCSPoseA = 0
+    UCSPoseB = 0
+    UCSPoseC = 0
+    UCSPoseX = 0
+    UCSPoseY = 0
+    UCSPoseZ = 0
+    UCSPoseBuRad = 0
+    UCSPoseAuRad = 0
+    UCSPoseCuRad = 0
+    
+    RLCS11 = NewRLCS11
+    RLCS12 = NewRLCS12
+    RLCS13 = NewRLCS13
+    RLCS21 = NewRLCS21
+    RLCS22 = NewRLCS22
+    RLCS23 = NewRLCS23
+    RLCS31 = NewRLCS31
+    RLCS32 = NewRLCS32
+    RLCS33 = NewRLCS33
+    
+    LegA = 1
+    WHILE (LegA !> 6)
+      ;Calculate new base joints
+      Q(PLCSBase+3*(LegA-1)+1) = RLCS11 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS21 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS31 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+      Q(PLCSBase+3*(LegA-1)+2) = RLCS12 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS22 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS32 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+      Q(PLCSBase+3*(LegA-1)+3) = RLCS13 * (Q( BposBase+3*(LegA-1)+1)-LCSPoseX) + RLCS23 * (Q( BposBase+3*(LegA-1)+2)-LCSPoseY) + RLCS33 * (Q( BposBase+3*(LegA-1)+3)-LCSPoseZ)
+      LegA = LegA+1
+    ENDWHILE		; WHILE (LegA !> 6)
+     
+  ENDIF
+
+	SetupCSStarted = False
+  ENABLE PLC7
+  DISABLE PLC6
+
+CLOSE

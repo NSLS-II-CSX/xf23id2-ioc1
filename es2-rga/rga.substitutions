@@ -1,0 +1,34 @@
+file /usr/lib/epics/db/hiden_rga_global.db
+{
+pattern { Sys		, Dev		, PORT		}
+	{ XF:23ID2-VA, "{Mir:3-RGA:1}", tsrv1-P7 }
+	{ XF:23ID2-VA, "{APPES-RGA:1}", tsrv2-P7 }
+}
+
+file /usr/lib/epics/db/hiden_rga_bar.db
+{
+pattern { Sys		, Dev		, PORT		}
+	{ XF:23ID2-VA, "{Mir:3-RGA:1}", tsrv1-P7 }
+	{ XF:23ID2-VA, "{APPES-RGA:1}", tsrv2-P7 }
+}
+
+file /usr/lib/epics/db/hiden_rga_prfl.db
+{
+pattern { Sys		, Dev		, PORT		}
+	{ XF:23ID2-VA, "{Mir:3-RGA:1}", tsrv1-P7 }
+	{ XF:23ID2-VA, "{APPES-RGA:1}", tsrv2-P7 }
+}
+
+file /usr/lib/epics/db/hiden_rga_mid.db
+{
+pattern { Sys		, Dev		, PORT		}
+	{ XF:23ID2-VA, "{Mir:3-RGA:1}", tsrv1-P7 }
+	{ XF:23ID2-VA, "{APPES-RGA:1}", tsrv2-P7 }
+}
+
+file /usr/lib/epics/db/hiden_rga_degas.db
+{
+pattern { Sys		, Dev		, PORT		}
+	{ XF:23ID2-VA, "{Mir:3-RGA:1}", tsrv1-P7 }
+	{ XF:23ID2-VA, "{APPES-RGA:1}", tsrv2-P7 }
+}

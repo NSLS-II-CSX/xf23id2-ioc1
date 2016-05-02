@@ -1,0 +1,164 @@
+CLOSE
+END GATHER
+DELETE GATHER
+DELETE TRACE
+
+
+#define	RM_bit1									M6007		; Channel 1 Position 2 Data C RM bit
+#define	RM_bit2									M6017		; Channel 2 Position 2 Data C RM bit
+#define	Ch1EnDatCtrl						M6001		; Channel 1 EnDat control register
+#define	Ch2EnDatCtrl						M6011		; Channel 2 EnDat control register
+Ch1EnDatCtrl->X:$78B20,0,24,U						; Channel 1 EnDat control register Address for Geo Brick
+Ch2EnDatCtrl->X:$78B24,0,24,U						; Channel 2 EnDat control register Address for Geo Brick
+
+OPEN PLC 11 CLEAR
+; homing PLC (motor 1 (default motor, summed four RON channels), motor 5 (homing motor, one RON channel), mirror pitch)
+#define MotorJogPos1 #1J+
+#define MotorJogNeg1 #1J-
+#define DefaultMotorEnable1 #1J/
+#define DefaultMotorOL1 #1o0
+#define DefaultMotorStop1 #1A #1J/
+#define HomeMotor1 #1hm
+#define Motor1Jog0 #1J=0
+#define MotorsKill1 #1K
+#define HomingStatus1 M1116
+;#define Timer1 P1117
+#define	Timer1       						I6511			; Use Coord#15 Timer 1
+#define	msec1        						*8388607/i10 While (I6511 > 0)endwhile
+
+#define HomingSpeed1 I123			; homing speed
+#define STOPL1 M130						; stopped on position limit
+#define DesVelZero1 M133				; desired velocity zero bit
+#define OLMode1 M138						; open loop mode active bit
+#define HOCPL1 M145						; homing complete status
+
+
+#define MotorJogPos2 #2J+
+#define MotorJogNeg2 #2J-
+#define DefaultMotorEnable2 #2J/
+#define DefaultMotorOL2 #2o0
+#define DefaultMotorStop2 #2A #2J/
+#define HomeMotor2 #2hm
+#define Motor2Jog0 #2J=0
+#define MotorsKill2 #2K
+#define HomingStatus2 M1216
+;#define Timer2 P1220
+#define	Timer2       						I6512			; Use Coord#15 Timer 2
+#define	msec2        						*8388607/i10 While (I6512 > 0)endwhile
+
+#define HomingSpeed2 I223			; homing speed
+#define STOPL2 M230						; stopped on position limit
+#define DesVelZero2 M233				; desired velocity zero bit
+#define OLMode2 M238						; open loop mode active bit
+#define HOCPL2 M245						; homing complete status
+
+
+IF(HomingStatus1=1 OR HomingStatus2=1)
+	IF(HomingStatus2!=2)	
+		HomingStatus2=2
+		COMMAND"DefaultMotorStop1"
+		COMMAND"DefaultMotorStop2"		
+		Timer1=500 msec1
+		IF(HomingSpeed2 < 0)
+			COMMAND"MotorJogPos2"
+		ENDIF
+		IF(HomingSpeed2 > 0)
+			COMMAND"MotorJogNeg2"
+		ENDIF
+		Timer1=500 msec1
+	ENDIF
+ENDIF
+
+IF(HomingStatus2=2 AND HomingStatus1!=2)
+	IF (STOPL2=1 AND STOPL1=0 AND DesVelZero1=1)
+		HomingStatus1=2
+		Timer2=500 msec2
+		IF(HomingSpeed1 < 0)
+			COMMAND"MotorJogPos1"
+		ENDIF
+		IF(HomingSpeed1 > 0)
+			COMMAND"MotorJogNeg1"
+		ENDIF
+		Timer2=500 msec2
+	ELSE
+		IF (DesVelZero2=1 OR OLMode2=1)
+			HomingStatus1=8	; error
+			HomingStatus2=8	; error		
+		ENDIF
+	ENDIF
+ENDIF
+
+IF(HomingStatus1=2 AND HomingStatus2=2)
+	IF (STOPL1=1 AND STOPL2=1)
+		Timer1=400 msec1
+
+		Ch1EnDatCtrl=$2a141e			; perform reset to get rid of an old captured position and to clear RM bit		
+		Ch2EnDatCtrl=$2a141e			; perform reset to get rid of an old captured position and to clear RM bit
+		Timer1 = 100 msec1					; Wait for 100 msec
+
+		Ch1EnDatCtrl=$42141e			; Request Additional Information in Data C, byte 0 and 1 for Position 2
+		Ch2EnDatCtrl=$42141e			; Request Additional Information in Data C, byte 0 and 1 for Position 2
+		Timer1=100 msec1						; Wait for 100 msec
+		
+		HomingStatus1=3 
+		HomingStatus2=3 
+		
+		Timer1=400 msec1
+		
+		IF(HomingSpeed1 < 0)
+			COMMAND"MotorJogNeg1"
+			COMMAND"MotorJogNeg2"
+		ENDIF
+		IF(HomingSpeed1 > 0)
+			COMMAND"MotorJogPos1"
+			COMMAND"MotorJogPos2"
+		ENDIF		
+		Timer1=500 msec1
+	ELSE
+		IF (OLMode1=1) OR (DesVelZero1=1) OR (OLMode2=1)	;motors killed without reference found 
+			HomingStatus1=8	; error
+			HomingStatus2=8	; error
+			COMMAND"MotorsKill1"
+			COMMAND"MotorsKill2"	
+		ENDIF
+	ENDIF
+ENDIF
+
+IF (HomingStatus1=3 AND HomingStatus2=3) 	; searching home position
+	IF (RM_bit1=1 AND RM_bit2=1)						; found home position
+		Timer1=500 msec1
+
+		COMMAND"MotorsKill1"
+		COMMAND"MotorsKill2"
+
+		Timer1=3000 msec1
+		
+		COMMAND"ENA PLC 21"	; GeoBrick LV Endat referencing for axis 1
+		COMMAND"ENA PLC 22"	; GeoBrick LV Endat referencing for axis 2
+
+		Timer1=0
+		Timer1=500 msec1
+		
+		COMMAND"DefaultMotorEnable1"
+		COMMAND"DefaultMotorEnable2"
+	
+		HomingStatus1=4
+		HomingStatus2=4
+		HOCPL1=1	;set homing complete Bit 1
+		HOCPL2=1	;set homing complete Bit 2 
+		
+	ELSE	
+		IF (DesVelZero1=1) OR (OLMode1=1) OR (DesVelZero2=1) OR (OLMode2=1)
+			HomingStatus1=8	; error
+			HomingStatus2=8	; error
+			COMMAND"MotorsKill1"
+			COMMAND"MotorsKill2"
+		ENDIF
+	ENDIF
+ENDIF
+	
+CLOSE
+
+
+
+

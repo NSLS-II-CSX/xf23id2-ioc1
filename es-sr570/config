@@ -1,0 +1,4 @@
+NAME=es-sr570
+USER=softioc
+PORT=5015
+HOST=xf23id2-ioc1

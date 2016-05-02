@@ -1,0 +1,107 @@
+CLOSE
+END GATHER
+DELETE GATHER
+DELETE TRACE
+
+#define Mtr1OpenLoop M138
+Mtr1OpenLoop->X:$B0,18,1
+#define Mtr2OpenLoop M238
+Mtr2OpenLoop->X:$130,18,1
+#define Mtr3OpenLoop M338
+Mtr3OpenLoop->X:$1B0,18,1
+#define Mtr4OpenLoop M438
+Mtr4OpenLoop->X:$230,18,1
+
+#define Enc1LossIn M180
+Enc1LossIn->*
+#define Enc1Error M181
+Enc1Error->Y:$78B21,23,1	; EnDat Data Registers Channel 1 B 23 TimeOut Err High active
+#define Enc2LossIn M280
+Enc2LossIn->*
+#define Enc2Error M281
+Enc2Error->Y:$78B25,23,1	; EnDat Data Registers Channel 2 B 23 TimeOut Err High active
+#define Enc3LossIn M380
+Enc3LossIn->Y:$78807,2,1
+#define Enc4LossIn M480
+Enc4LossIn->Y:$78807,3,1
+
+#define Enc1LossError P401
+#define Enc2LossError P402
+#define Enc3LossError P403
+#define Enc4LossError P404
+
+#define Mtr1Kill #1K
+#define Mtr2Kill #2K
+#define Mtr3Kill #3K
+#define Mtr4Kill #4K
+
+#define HomingStatus1 M1116
+#define HomingStatus2 M1216
+#define HomingStatus3 M1316
+#define HomingStatus4 M1416
+
+#define Lost 0
+#define OK 1
+
+#define NoError 0
+#define Error 1
+
+#define NotHomed 0
+#define Disabled 0
+#define Enabled 1
+
+OPEN PLC 4 CLEAR
+; PLC for checking and reacting to encoder loss
+
+Enc1LossIn=1^Enc1Error	;invert by XOR with 1
+Enc2LossIn=1^Enc2Error	;invert by XOR with 1
+
+IF(Enc1LossIn=Lost)
+	IF (Mtr1OpenLoop=Disabled) 
+		COMMAND"Mtr1Kill"
+	END IF
+	Enc1LossError=Error
+	HomingStatus1=NotHomed
+END IF
+
+IF(Enc2LossIn=Lost)
+	IF (Mtr2OpenLoop=Disabled) 
+		COMMAND"Mtr2Kill"
+	END IF
+	Enc2LossError=Error
+	HomingStatus2=NotHomed
+END IF
+
+IF(Enc3LossIn=Lost)
+	IF (Mtr3OpenLoop=Disabled) 
+		COMMAND"Mtr3Kill"
+	END IF
+	Enc3LossError=Error
+	HomingStatus3=NotHomed
+END IF
+
+IF(Enc4LossIn=Lost)
+	IF (Mtr4OpenLoop=Disabled) 
+		COMMAND"Mtr4Kill"
+	END IF
+	Enc4LossError=Error
+	HomingStatus4=NotHomed	
+END IF
+
+IF(Mtr1OpenLoop=Enabled AND Enc1LossIn=OK)
+	Enc1LossError=NoError
+END IF
+
+IF(Mtr2OpenLoop=Enabled AND Enc2LossIn=OK)
+	Enc2LossError=NoError
+END IF
+
+IF(Mtr3OpenLoop=Enabled AND Enc3LossIn=OK)
+	Enc3LossError=NoError
+END IF
+
+IF(Mtr4OpenLoop=Enabled AND Enc4LossIn=OK)
+	Enc4LossError=NoError
+END IF
+
+CLOSE

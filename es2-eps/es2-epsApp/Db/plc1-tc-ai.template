@@ -1,0 +1,18 @@
+## Database for thermocouple tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	TC
+
+# Temperature readback
+record(ai, "$(Sys)$(Dev)T-I")
+{
+        field(DESC, "$(Dev) T")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@$(PLC) EPICS_TC_Data[$(Indx)] S 1")
+	field(PREC, "2")
+	field(EGU,  "C")
+}
+

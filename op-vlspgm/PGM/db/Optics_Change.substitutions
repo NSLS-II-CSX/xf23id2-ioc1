@@ -1,0 +1,6 @@
+file db/Optics_Change.template {
+	pattern	{ ASYNPORT,	SCAN,		P,	R, 	AXIS,	AXIS_NO,DCPL_VAR, 	DCPL_PROG, EGU, PREC, NAME1,			NAME2,			NAME3,	NAME4,	NAME5,	NAME6,	NAME7,	NAME8,	NAME9,	NAME10}
+  		{ "pmac1",	"1 second",	"RSXS",	"PGM01","MIR",	"3",	"P361", 	"13", 	"mm", 	"1",	"Mirror (left)",	"Mirror (center)",	"Mirror (right)","not used","not used","not used","not used","not used","not used","not used"}
+		{ "pmac1",	"1 second",	"RSXS",	"PGM01","GRT",	"4",	"P461", 	"14", 	"mm", 	"1",	"Grating 180 (left)",	"Grating 180 (center)",	"Grating 180 (right)","Grating 800 (left)","Grating 800 (center)","Grating 800 (right)","Grating 1400 (left)","Grating 1400 (center)","Grating 1400 (right)","Dummy Grating"}
+}
+#EOF

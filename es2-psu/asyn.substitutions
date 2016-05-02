@@ -1,0 +1,6 @@
+file /epics/iocs/SorensonXG850/db/asynRecord.template
+{
+	pattern { P		, R		, PORT		, ADDR	, OMAX	, IMAX	}
+		{ XF:23ID2-VA	, "{PSU:1}"	, XF23ID2_PSU1	, 0	, 0	, 0	}
+}
+

@@ -1,0 +1,11 @@
+= IXS VDCM in hutch A
+
+== Axes ==
+[1] {APPES:1-Ax:X}	- APPES X
+[2] {APPES:1-Ax:Y}	- APPES Y 
+[3] {APPES:1-Ax:Z}	- APPES Z
+[4] {APPES:1-Ax:R}	- APPES R
+
+Offset set to 0.65 degree
+Offset values = -117133 (raw), -0.65 degree as read from pmac.
+Reverse motor direction in EPICS to NEGative

@@ -1,0 +1,26 @@
+file db/SAI_SingleMotorStatus.template {
+pattern {	P,		P1,		R,		AXIS,		PMAC_MTR}
+        { 	"XF:23ID2-OP","MCTR01",	"{Mir:3B-Ax:",	"7}Mtr",	7}
+        { 	"XF:23ID2-OP","MCTR01",	"{Mir:3B-Ax:",	"8}Mtr",	8}
+}
+
+file db/SAI_MotorRecord.template {
+    pattern {	ASYNPORT,	PMACPORT,	TMOT,	PMAC_MTR,	P,		R,		AXIS,	DESC,		MRES,	PREC,	EGU,	VEL,	TACC,	OFFS,	HSLM,	LSLM}
+        { 	"pmac",		"PMAC",		1.0,	7,		"XF:23ID2-OP","{Mir:3B-Ax:",	"7}Mtr","Motor 7",	1,	3,	"cts",	10,	0.1,	0.0,	0,	0}
+        { 	"pmac",		"PMAC",		1.0,	8,		"XF:23ID2-OP","{Mir:3B-Ax:",	"8}Mtr","Motor 8",	1,	3,	"cts",	10,	0.1,	0.0,	0,	0}
+}
+
+file db/SAI_MotorHoming.template {
+    pattern {	ASYNPORT,	TMOT,	SCAN,		PMAC_MTR,	P,		R,		AXIS,	EGU,	AXISSCALE,	HVEL}
+        { 	"pmac",		1.0,	".2 second",	"7",		"XF:23ID2-OP",	"{Mir:3B-Ax:",	"7}Mtr","cts",	1,		10}
+        { 	"pmac",		1.0,	".2 second",	"8",		"XF:23ID2-OP",	"{Mir:3B-Ax:",	"8}Mtr","cts",	1,		10}
+}
+
+file db/SAI_EncoderLoss.template {
+pattern {	P,		R,		AXIS,	SCAN, 		ASYNPORT, 	VARSTS, VARCLR}
+        { 	"XF:23ID2-OP",	"{Mir:3B-Ax:",	"7}Mtr","1 second",	"pmac",		"M781",	"M901"}
+        { 	"XF:23ID2-OP",	"{Mir:3B-Ax:",	"8}Mtr","1 second",	"pmac",		"M881",	"M901"}
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr
+#EOF

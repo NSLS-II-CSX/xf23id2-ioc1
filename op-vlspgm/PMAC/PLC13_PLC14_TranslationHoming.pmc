@@ -1,0 +1,134 @@
+CLOSE
+END GATHER
+DELETE GATHER
+DELETE TRACE
+
+OPEN PLC 12 CLEAR
+CLOSE
+
+
+M329->X:$1B0,10
+m1316->*; remove possible variable referencing to other registers than itself
+OPEN PLC 13 CLEAR
+; homing PLC (motor 3, mirror translation)
+#define MotorJogPos #3J+
+#define MotorJogNeg #3J-
+#define MotorHoming #3hm3
+#define MotorAbort #3A
+#define HomingStatus M1316
+#define Timer P1317
+#define HomingSpeed I323				; homing speed
+#define STOPL M330							; stopped on position limit
+#define HOCPL M345							; homing complete status
+#define HomingInProgress M329	; homing in progress bit
+#define DesVelZero M333				; desired velocity zero bit
+#define OLMode M338						; open loop mode active bit
+
+
+IF(HomingStatus=1)
+	COMMAND"MotorAbort"
+	Timer=0
+	WHILE (Timer<500) Timer=Timer+1
+	ENDWHILE
+	Timer=0
+	HomingStatus=2	
+	IF(HomingSpeed < 0)
+		COMMAND"MotorJogPos"
+	ENDIF
+	IF(HomingSpeed > 0)
+		COMMAND"MotorJogNeg"
+	ENDIF
+	Timer=0
+	WHILE (Timer<500) Timer=Timer+1
+	ENDWHILE	
+ENDIF
+IF(HomingStatus=2)
+	IF (STOPL = 1) 
+		Timer=0
+		WHILE (Timer<500) Timer=Timer+1
+		ENDWHILE
+		COMMAND"MotorHoming"
+		Timer=0
+		WHILE (Timer<10) Timer=Timer+1
+		ENDWHILE
+		HomingStatus=3
+	ELSE
+		IF (OLMode=1 OR DesVelZero=1) 
+			HomingStatus=8	; error 
+		ENDIF 
+	ENDIF
+ENDIF
+IF (HomingStatus=3) ; searching home position
+	IF (HOCPL = 1)		; found home position
+		HomingStatus=4
+	ELSE	
+		IF(HomingInProgress=0)
+			HomingStatus=8	; error
+		ENDIF
+	ENDIF
+ENDIF
+CLOSE
+
+
+;M1229->X:$630,10
+M429->X:$230,10
+m1416->*		; remove possible variable referencing to other registers than itself		
+OPEN PLC 14 CLEAR
+; homing PLC (motor 4, grating translation)
+#define MotorJogPos #4J+
+#define MotorJogNeg #4J-
+#define MotorHoming #4hm4
+#define MotorAbort #4A
+#define HomingStatus M1416
+#define Timer P1417
+#define HomingSpeed I423				; homing speed
+#define STOPL M430							; stopped on position limit
+#define HOCPL M445							; homing complete status
+#define HomingInProgress M429		; homing in progress bit
+#define DesVelZero M433					; desired velocity zero bit
+#define OLMode M438							; open loop mode active bit
+
+
+IF(HomingStatus=1)
+	COMMAND"MotorAbort"
+	Timer=0
+	WHILE (Timer<500) Timer=Timer+1
+	ENDWHILE
+	Timer=0
+	HomingStatus=2	
+	IF(HomingSpeed < 0)
+		COMMAND"MotorJogPos"
+	ENDIF
+	IF(HomingSpeed > 0)
+		COMMAND"MotorJogNeg"
+	ENDIF
+	Timer=0
+	WHILE (Timer<500) Timer=Timer+1
+	ENDWHILE	
+ENDIF
+IF(HomingStatus=2)
+	IF (STOPL = 1) 
+		Timer=0
+		WHILE (Timer<500) Timer=Timer+1
+		ENDWHILE
+		COMMAND"MotorHoming"
+		Timer=0
+		WHILE (Timer<10) Timer=Timer+1
+		ENDWHILE
+		HomingStatus=3
+	ELSE
+		IF (OLMode=1 OR DesVelZero=1) 
+			HomingStatus=8	; error 
+		ENDIF 
+	ENDIF
+ENDIF
+IF (HomingStatus=3) ; searching home position
+	IF (HOCPL = 1)		; found home position
+		HomingStatus=4
+	ELSE	
+		IF(HomingInProgress=0)
+			HomingStatus=8	; error
+		ENDIF
+	ENDIF
+ENDIF
+CLOSE

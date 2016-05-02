@@ -1,0 +1,16 @@
+file db/SAI_8MotorStatus.db {
+    pattern {	ASYNPORT,	TMOT,		SCAN,		P,		R}
+        { 	"pmac",		"1",		".2 second",	"XF:23ID2-OP","MCTR01"}
+}
+
+file db/SAI_SingleMotorStatus.template {
+pattern {	P,		P1,		R,		AXIS,		PMAC_MTR}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"1}Mtr",	1}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"2}Mtr",	2}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"3}Mtr",	3}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"4}Mtr",	4}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"5}Mtr",	5}
+        { 	"XF:23ID2-OP",	"MCTR01",	"{Mir:3B-Ax:",	"6}Mtr",	6}
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr

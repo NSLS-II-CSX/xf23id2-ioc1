@@ -1,0 +1,7 @@
+# global config file for softioc start script
+NAME=cam-diag1
+PORT=4203
+USER=softioc
+HOST=xf23id2-ioc1
+
+

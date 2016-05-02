@@ -1,0 +1,4 @@
+NAME=va-01
+PORT=4002
+HOST=xf23id2-ioc1
+USER=softioc

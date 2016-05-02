@@ -1,0 +1,10 @@
+file db/6Pod_Positions.template {
+    pattern { 	ASYNPORT, SCAN,		TMOT,	CS,	QVAR,	P,		R,		S,	PINI,	NAME1,		NAME2,		NAME3, 		NAME4,	NAME5,	NAME6,	PREC1,	PREC2,	PREC3,	PREC4,	PREC5,	PREC6,	EGU1,	EGU2,	EGU3,	EGU4,	EGU5,	EGU6, 	SLO1,	SLO2,	SLO3,	SLO4,	SLO5,	SLO6  }
+        { 	"pmac"	, ".2 second",	"1",	"1",	"Q651",	"XF:23ID2-OP",	"{Mir:3B-Ax:",	"",	"NO",	"Yaw}Mtr",	"Rol}Mtr",	"Pit}Mtr",	"X}Mtr","Z}Mtr","Y}Mtr","3",	"3",	"3",	"3",	"3",	"3",	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	-1,	1,	1}
+        { 	"pmac"	, ".2 second",	"1",	"1",	"Q641",	"XF:23ID2-OP",	"{Mir:3B-",	"", 	"NO",	"Ax:1}Mtr",	"Ax:2}Mtr",	"Ax:3}Mtr",	"Ax:4}Mtr","Ax:5}Mtr","Ax:6}Mtr","3",	"3",	"3",	"3",	"3",	"3",	"mm",	"mm",	"mm",	"mm",	"mm",	"mm",	1,	1,	1,	1,	1,	1}
+        { 	"pmac"	, "Passive",	"1",	"1",	"Q851",	"XF:23ID2-OP",	"{Mir:3B-Ax:",	"TCP_", "YES",	"Yaw}Mtr",	"Rol}Mtr",	"Pit}Mtr",	"X}Mtr","Z}Mtr","Y}Mtr","3",	"3",	"3",	"3",	"3",	"3",	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	1,	1,	1,	-1,	1,	1}
+        { 	"pmac"	, "Passive",	"1",	"1",	"P3100","XF:23ID2-OP",	"{Mir:3B-Ax:",	"PLIM_","NO",	"Yaw}Mtr",	"Rol}Mtr",	"Pit}Mtr",	"X}Mtr","Z}Mtr","Y}Mtr","3",	"3",	"3",	"3",	"3",	"3",	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	1,	1,	1}
+        { 	"pmac"	, "Passive",	"1",	"1",	"P3106","XF:23ID2-OP",	"{Mir:3B-Ax:",	"MLIM_","NO",	"Yaw}Mtr",	"Rol}Mtr",	"Pit}Mtr",	"X}Mtr","Z}Mtr","Y}Mtr","3",	"3",	"3",	"3",	"3",	"3",	"mrad",	"mrad",	"mrad",	"mm",	"mm",	"mm",	0.001,	0.001,	0.001,	1,	1,	1}
+}
+
+# Sample Naming - XF:23ID2-OP{Mir:3B-Ax:1}Mtr

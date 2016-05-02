@@ -1,0 +1,73 @@
+CLOSE
+UNDEFINE ALL
+DELETE GATHER
+DELETE TRACE
+
+#include "macro_definitions.pmc"
+
+;****************************************************************************
+;if homing program is interrupted limits and/or kinematic calculation
+;can stay disabled. This plc makes sure that limits for the motors and
+;kinematic calculation are enabled after every homing procedure. It also
+;assigns the motors back to inverse kinematic axis
+;****************************************************************************
+
+OPEN PLC 3 CLEAR
+
+If (ProgRun_CS1 = False And HmStarted_Prog11 = 1)
+  CMD"&1#1->I #2->I #3->I #4->I #5->I #6->I"    ;inverse kinematic axis
+  FlgModCtrl_Ax1 = LimitsON
+  FlgModCtrl_Ax2 = LimitsON
+  FlgModCtrl_Ax3 = LimitsON
+  FlgModCtrl_Ax4 = LimitsON
+  FlgModCtrl_Ax5 = LimitsON
+  FlgModCtrl_Ax6 = LimitsON
+  FlgModCtrl_Ax7 = LimitsON
+  FlgModCtrl_Ax8 = LimitsON
+  
+  ;Force Capture on reference Pulse
+  CapCtrl_Ax1 = 1	; capture on marker pulse
+  CapCtrl_Ax2 = 1
+  CapCtrl_Ax3 = 1
+  CapCtrl_Ax4 = 1
+  CapCtrl_Ax5 = 1
+  CapCtrl_Ax6 = 1
+  CapCtrl_Ax7 = 1
+  CapCtrl_Ax8 = 1
+  
+  CapFlgSel_Ax1 = 0	; use home switch as a flag
+  CapFlgSel_Ax2 = 0
+  CapFlgSel_Ax3 = 0
+  CapFlgSel_Ax4 = 0
+  CapFlgSel_Ax5 = 0
+  CapFlgSel_Ax6 = 0
+  CapFlgSel_Ax7 = 0
+  CapFlgSel_Ax8 = 0
+  
+  ;Force Default Gain Parameters
+  PIDPropGain_Ax1	=	DefaultPropGain_Ax1
+  PIDPropGain_Ax2	=	DefaultPropGain_Ax2
+  PIDPropGain_Ax3	=	DefaultPropGain_Ax3
+  PIDPropGain_Ax4	=	DefaultPropGain_Ax4
+  PIDPropGain_Ax5	=	DefaultPropGain_Ax5
+  PIDPropGain_Ax6	=	DefaultPropGain_Ax6
+  
+  ;PIDDervGain_Ax1 = DefaultDervGain
+  ;PIDDervGain_Ax2 = DefaultDervGain
+  ;PIDDervGain_Ax3 = DefaultDervGain
+  ;PIDDervGain_Ax4 = DefaultDervGain
+  ;PIDDervGain_Ax5 = DefaultDervGain
+  ;PIDDervGain_Ax6 = DefaultDervGain
+  
+  PIDKVFFGain_Ax1	=	DefaultKVFFGain_Ax1
+  PIDKVFFGain_Ax2	=	DefaultKVFFGain_Ax2
+  PIDKVFFGain_Ax3	=	DefaultKVFFGain_Ax3
+  PIDKVFFGain_Ax4	=	DefaultKVFFGain_Ax4
+  PIDKVFFGain_Ax5	=	DefaultKVFFGain_Ax5
+  PIDKVFFGain_Ax6	=	DefaultKVFFGain_Ax6
+  HmStarted_Prog11 = Reset
+  KinematicsEna_CS1 = Enabled
+EndIf
+
+CLOSE
+

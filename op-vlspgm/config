@@ -1,0 +1,7 @@
+# global config file for softioc start script
+NAME=op-vlspgm
+PORT=4005
+USER=op-vlspgm
+HOST=xf23id2-ioc1
+EXEC=/epics/iocs/op-vlspgm/st.cmd
+

@@ -1,0 +1,2075 @@
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sw:OpnLim-Sts")
+{
+        field(DESC, "{APPES-GV:1} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sw:ClsLim-Sts")
+{
+        field(DESC, "{APPES-GV:1} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sts:Coil-Sts")
+{
+        field(DESC, "{APPES-GV:1} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Pos-Sts")
+{
+        field(DESC, "{APPES-GV:1} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Err-Sts")
+{
+        field(DESC, "{APPES-GV:1} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sts:FailOpn-Sts")
+{
+        field(DESC, "{APPES-GV:1} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sts:FailCls-Sts")
+{
+        field(DESC, "{APPES-GV:1} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:1} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:1}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:1} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_1_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{APPES-GV:1}Cmd:Opn-Cmd")
+{
+        field(DESC, "{APPES-GV:1} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_1_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{APPES-GV:1}Cmd:Cls-Cmd")
+{
+        field(DESC, "{APPES-GV:1} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_1_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{APPES-GV:1}DB:Pos-Calc_")
+{
+        field(DESC, "{APPES-GV:1} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{APPES-GV:1}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{APPES-GV:1}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{APPES-GV:1}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{APPES-GV:1}DB:Pos-Sts")
+{
+        field(DESC, "{APPES-GV:1} Sts")
+        field(INP,  "XF:23ID2-VA{APPES-GV:1}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sw:OpnLim-Sts")
+{
+        field(DESC, "{APPES-GV:2} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sw:ClsLim-Sts")
+{
+        field(DESC, "{APPES-GV:2} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sts:Coil-Sts")
+{
+        field(DESC, "{APPES-GV:2} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Pos-Sts")
+{
+        field(DESC, "{APPES-GV:2} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Err-Sts")
+{
+        field(DESC, "{APPES-GV:2} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sts:FailOpn-Sts")
+{
+        field(DESC, "{APPES-GV:2} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sts:FailCls-Sts")
+{
+        field(DESC, "{APPES-GV:2} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:2} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:2}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:2} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_2_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{APPES-GV:2}Cmd:Opn-Cmd")
+{
+        field(DESC, "{APPES-GV:2} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_2_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{APPES-GV:2}Cmd:Cls-Cmd")
+{
+        field(DESC, "{APPES-GV:2} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_2_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{APPES-GV:2}DB:Pos-Calc_")
+{
+        field(DESC, "{APPES-GV:2} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{APPES-GV:2}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{APPES-GV:2}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{APPES-GV:2}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{APPES-GV:2}DB:Pos-Sts")
+{
+        field(DESC, "{APPES-GV:2} Sts")
+        field(INP,  "XF:23ID2-VA{APPES-GV:2}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sw:OpnLim-Sts")
+{
+        field(DESC, "{APPES-GV:3} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sw:ClsLim-Sts")
+{
+        field(DESC, "{APPES-GV:3} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sts:Coil-Sts")
+{
+        field(DESC, "{APPES-GV:3} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Pos-Sts")
+{
+        field(DESC, "{APPES-GV:3} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Err-Sts")
+{
+        field(DESC, "{APPES-GV:3} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sts:FailOpn-Sts")
+{
+        field(DESC, "{APPES-GV:3} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sts:FailCls-Sts")
+{
+        field(DESC, "{APPES-GV:3} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:3} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:3}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:3} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_3_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{APPES-GV:3}Cmd:Opn-Cmd")
+{
+        field(DESC, "{APPES-GV:3} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_3_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{APPES-GV:3}Cmd:Cls-Cmd")
+{
+        field(DESC, "{APPES-GV:3} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_3_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{APPES-GV:3}DB:Pos-Calc_")
+{
+        field(DESC, "{APPES-GV:3} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{APPES-GV:3}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{APPES-GV:3}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{APPES-GV:3}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{APPES-GV:3}DB:Pos-Sts")
+{
+        field(DESC, "{APPES-GV:3} Sts")
+        field(INP,  "XF:23ID2-VA{APPES-GV:3}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sw:OpnLim-Sts")
+{
+        field(DESC, "{APPES-GV:4} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sw:ClsLim-Sts")
+{
+        field(DESC, "{APPES-GV:4} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sts:Coil-Sts")
+{
+        field(DESC, "{APPES-GV:4} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Pos-Sts")
+{
+        field(DESC, "{APPES-GV:4} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Err-Sts")
+{
+        field(DESC, "{APPES-GV:4} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sts:FailOpn-Sts")
+{
+        field(DESC, "{APPES-GV:4} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sts:FailCls-Sts")
+{
+        field(DESC, "{APPES-GV:4} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:4} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:4}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:4} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_M_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{APPES-GV:4}Cmd:Opn-Cmd")
+{
+        field(DESC, "{APPES-GV:4} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_M_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{APPES-GV:4}Cmd:Cls-Cmd")
+{
+        field(DESC, "{APPES-GV:4} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_M_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{APPES-GV:4}DB:Pos-Calc_")
+{
+        field(DESC, "{APPES-GV:4} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{APPES-GV:4}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{APPES-GV:4}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{APPES-GV:4}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{APPES-GV:4}DB:Pos-Sts")
+{
+        field(DESC, "{APPES-GV:4} Sts")
+        field(INP,  "XF:23ID2-VA{APPES-GV:4}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sw:OpnLim-Sts")
+{
+        field(DESC, "{APPES-GV:5} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sw:ClsLim-Sts")
+{
+        field(DESC, "{APPES-GV:5} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sts:Coil-Sts")
+{
+        field(DESC, "{APPES-GV:5} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Pos-Sts")
+{
+        field(DESC, "{APPES-GV:5} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Err-Sts")
+{
+        field(DESC, "{APPES-GV:5} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sts:FailOpn-Sts")
+{
+        field(DESC, "{APPES-GV:5} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sts:FailCls-Sts")
+{
+        field(DESC, "{APPES-GV:5} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:5} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{APPES-GV:5}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{APPES-GV:5} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_L_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{APPES-GV:5}Cmd:Opn-Cmd")
+{
+        field(DESC, "{APPES-GV:5} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_L_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{APPES-GV:5}Cmd:Cls-Cmd")
+{
+        field(DESC, "{APPES-GV:5} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_L_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{APPES-GV:5}DB:Pos-Calc_")
+{
+        field(DESC, "{APPES-GV:5} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{APPES-GV:5}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{APPES-GV:5}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{APPES-GV:5}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{APPES-GV:5}DB:Pos-Sts")
+{
+        field(DESC, "{APPES-GV:5} Sts")
+        field(INP,  "XF:23ID2-VA{APPES-GV:5}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sw:OpnLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sw:ClsLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sts:Coil-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Err-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sts:FailOpn-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sts:FailCls-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:1}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I1_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{IOXAS-GV:1}Cmd:Opn-Cmd")
+{
+        field(DESC, "{IOXAS-GV:1} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I1_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{IOXAS-GV:1}Cmd:Cls-Cmd")
+{
+        field(DESC, "{IOXAS-GV:1} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I1_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{IOXAS-GV:1}DB:Pos-Calc_")
+{
+        field(DESC, "{IOXAS-GV:1} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{IOXAS-GV:1}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{IOXAS-GV:1}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{IOXAS-GV:1}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{IOXAS-GV:1}DB:Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:1} Sts")
+        field(INP,  "XF:23ID2-VA{IOXAS-GV:1}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sw:OpnLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sw:ClsLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sts:Coil-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Err-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sts:FailOpn-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sts:FailCls-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:2}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I2_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{IOXAS-GV:2}Cmd:Opn-Cmd")
+{
+        field(DESC, "{IOXAS-GV:2} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I2_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{IOXAS-GV:2}Cmd:Cls-Cmd")
+{
+        field(DESC, "{IOXAS-GV:2} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I2_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{IOXAS-GV:2}DB:Pos-Calc_")
+{
+        field(DESC, "{IOXAS-GV:2} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{IOXAS-GV:2}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{IOXAS-GV:2}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{IOXAS-GV:2}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{IOXAS-GV:2}DB:Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:2} Sts")
+        field(INP,  "XF:23ID2-VA{IOXAS-GV:2}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sw:OpnLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sw:ClsLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sts:Coil-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Err-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sts:FailOpn-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sts:FailCls-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:3}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I3_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{IOXAS-GV:3}Cmd:Opn-Cmd")
+{
+        field(DESC, "{IOXAS-GV:3} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I3_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{IOXAS-GV:3}Cmd:Cls-Cmd")
+{
+        field(DESC, "{IOXAS-GV:3} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I3_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{IOXAS-GV:3}DB:Pos-Calc_")
+{
+        field(DESC, "{IOXAS-GV:3} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{IOXAS-GV:3}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{IOXAS-GV:3}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{IOXAS-GV:3}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{IOXAS-GV:3}DB:Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:3} Sts")
+        field(INP,  "XF:23ID2-VA{IOXAS-GV:3}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sw:OpnLim-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sw:ClsLim-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sts:Coil-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Pos-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Err-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sts:FailOpn-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sts:FailCls-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{XMCD-GV:1} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{XMCD-GV:1}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{XMCD-GV:1} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_X_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{XMCD-GV:1}Cmd:Opn-Cmd")
+{
+        field(DESC, "{XMCD-GV:1} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_X_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{XMCD-GV:1}Cmd:Cls-Cmd")
+{
+        field(DESC, "{XMCD-GV:1} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_X_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{XMCD-GV:1}DB:Pos-Calc_")
+{
+        field(DESC, "{XMCD-GV:1} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{XMCD-GV:1}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{XMCD-GV:1}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{XMCD-GV:1}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{XMCD-GV:1}DB:Pos-Sts")
+{
+        field(DESC, "{XMCD-GV:1} Sts")
+        field(INP,  "XF:23ID2-VA{XMCD-GV:1}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum GV tags in CHX EPS Allen Bradley PLC
+
+## Substitutions:
+## Sys          -       System
+## PLC          -       PLC name
+## Dev          -       GV name
+## Indx         -       GV index in PLC
+
+# GV signals
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sw:OpnLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Opn Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.OpnSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sw:ClsLim-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Cls Limit Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.ClsSw S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sts:Coil-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Coil Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.Coil1 S 0.5")
+        field(ZNAM, "SW Low")
+        field(ONAM, "SW High")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.Sts S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Err-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Err Status")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.StsFault S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sts:FailOpn-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Fail Open")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.FailedToOpn S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sts:FailCls-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Fail Close")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.FailedToCls S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MINOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sts:DS_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} DS I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.LockDS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+record(bi, "XF:23ID2-VA{IOXAS-GV:4}Sts:US_Intlk-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} US I/L Sts")
+        field(SCAN, "I/O Intr")
+        field(DTYP, "EtherIP")
+        field(INP, "@XF23ID2_EPS GV_I4_Sts.LockUS S 0.5")
+        field(ZNAM, "Error")
+        field(ONAM, "OK")
+        field(ZSV,  "MAJOR")
+}
+
+# GV commands
+record(bo, "XF:23ID2-VA{IOXAS-GV:4}Cmd:Opn-Cmd")
+{
+        field(DESC, "{IOXAS-GV:4} Open Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I4_Cmd.OpnCmd S 0.5")
+        field(ZNAM, "Not Open")
+        field(ONAM, "Open")
+}
+
+record(bo, "XF:23ID2-VA{IOXAS-GV:4}Cmd:Cls-Cmd")
+{
+        field(DESC, "{IOXAS-GV:4} Close Cmd")
+        field(SCAN, "Passive")
+        field(DTYP, "EtherIP")
+        field(OUT, "@XF23ID2_EPS GV_I4_Cmd.ClsCmd S 0.5")
+        field(ZNAM, "Not Close")
+        field(ONAM, "Close")
+}
+
+# GV status calculation
+record(calc, "XF:23ID2-VA{IOXAS-GV:4}DB:Pos-Calc_")
+{
+        field(DESC, "{IOXAS-GV:4} Calc")
+        field(SCAN, ".5 second")
+        field(INPA, "XF:23ID2-VA{IOXAS-GV:4}Err-Sts NPP MS")
+        field(INPB, "XF:23ID2-VA{IOXAS-GV:4}Pos-Sts NPP MS")
+
+        field(CALC, "!A?2:B?1:0")
+        field(FLNK, "XF:23ID2-VA{IOXAS-GV:4}DB:Pos-Sts")
+}
+
+record(mbbi, "XF:23ID2-VA{IOXAS-GV:4}DB:Pos-Sts")
+{
+        field(DESC, "{IOXAS-GV:4} Sts")
+        field(INP,  "XF:23ID2-VA{IOXAS-GV:4}DB:Pos-Calc_ NPP MS")
+        field(ZRST, "Closed")
+        field(ONST, "Open")
+        field(TWST, "Error")
+        field(ZRSV, "MINOR")
+        field(TWSV, "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{IOXAS_LL-CCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{IOXAS_LL-CCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[0] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{IOXAS-CCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{IOXAS-CCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[1] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{IOXAS_LL-TCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{IOXAS_LL-TCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[2] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{IOXAS-TCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{IOXAS-TCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[3] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES-HCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES-HCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[4] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES_LL-HCG:2}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES_LL-HCG:2} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[5] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES-TCG:1}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES-TCG:1} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[6] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES_LL-TCG:2}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES_LL-TCG:2} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[7] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES_B-TCG:3}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES_B-TCG:3} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[8] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	CCG, TCG, IP
+
+# Set point relay signal
+record(bi, "XF:23ID2-VA{APPES_B-TCG:4}Sts:Rly1PLC-Sts")
+{
+        field(DESC, "{APPES_B-TCG:4} Relay")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_Gauge_Sts[9] S 1")
+        field(ZNAM, "Relay Off")
+        field(ONAM, "Relay On")
+	field(ZSV,  "MAJOR")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "XF:23ID2-VA{APPES-FG:1}P-I")
+{
+        field(DESC, "{APPES-FG:1} Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_P_Data[1] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:1}P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_High[1] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "XF:23ID2-VA{APPES-FG:1}P:High-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:1}P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_High[1] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:1}P:High-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:1}P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:1}P:High-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:1}P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:1}P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_HiHi[1] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:1}P:HiHi-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:1}P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_HiHi[1] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:1}P:HiHi-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:1}P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:1}P:HiHi-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:1}P-I.HIGH")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "XF:23ID2-VA{APPES-FG:2}P-I")
+{
+        field(DESC, "{APPES-FG:2} Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_P_Data[2] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:2}P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_High[2] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "XF:23ID2-VA{APPES-FG:2}P:High-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:2}P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_High[2] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:2}P:High-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:2}P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:2}P:High-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:2}P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:2}P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_HiHi[2] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:2}P:HiHi-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:2}P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_HiHi[2] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:2}P:HiHi-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:2}P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:2}P:HiHi-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:2}P-I.HIGH")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "XF:23ID2-VA{APPES-FG:3}P-I")
+{
+        field(DESC, "{APPES-FG:3} Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_P_Data[3] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:3}P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_High[3] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "XF:23ID2-VA{APPES-FG:3}P:High-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:3}P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_High[3] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:3}P:High-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:3}P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:3}P:High-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:3}P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:3}P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_HiHi[3] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:3}P:HiHi-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:3}P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_HiHi[3] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:3}P:HiHi-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:3}P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:3}P:HiHi-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:3}P-I.HIGH")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "XF:23ID2-VA{APPES-FG:4}P-I")
+{
+        field(DESC, "{APPES-FG:4} Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_P_Data[0] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:4}P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_High[0] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "XF:23ID2-VA{APPES-FG:4}P:High-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:4}P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_High[0] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:4}P:High-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:4}P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:4}P:High-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:4}P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:4}P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_HiHi[0] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:4}P:HiHi-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:4}P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_HiHi[0] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:4}P:HiHi-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:4}P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:4}P:HiHi-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:4}P-I.HIGH")
+}
+
+## Database for Vacuum gauge and pump tags in CSX ES2 
+
+## Substitutions:
+## Sys		-	System
+## PLC		-	PLC name
+## Dev		-	FG
+
+# Pressure readback
+record(ai, "XF:23ID2-VA{APPES-FG:5}P-I")
+{
+        field(DESC, "{APPES-FG:5} Pressure")
+        field(DTYP, "EtherIP")
+	field(SCAN, "I/O Intr")
+        field(INP, "@XF23ID2_EPS EPICS_P_Data[4] S 1")
+	field(PREC, "2")
+}
+
+# Pressure high setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:5}P:High-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_High[4] S 1")
+        field(PREC, "2")
+	field(EGU,  "Torr")
+	field(FLNK, "XF:23ID2-VA{APPES-FG:5}P:High-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:5}P:High-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_High[4] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:5}P:High-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:5}P:High-ao_")
+{
+    field(DESC, "Aux High pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:5}P:High-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:5}P-I.HIGH")
+}
+
+# Pressure hihi setpoint
+record(ao, "XF:23ID2-VA{APPES-FG:5}P:HiHi-SP")
+{
+        field(DESC, "P Warining SP")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(OUT, "@XF23ID2_EPS EPICS_P_HiHi[4] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:5}P:HiHi-RB")
+}
+
+record(ai, "XF:23ID2-VA{APPES-FG:5}P:HiHi-RB")
+{
+        field(DESC, "P Warining RB")
+        field(DTYP, "EtherIP")
+        field(SCAN, "Passive")
+        field(INP, "@XF23ID2_EPS EPICS_P_HiHi[4] S 1")
+        field(PREC, "2")
+        field(EGU,  "Torr")
+        field(FLNK, "XF:23ID2-VA{APPES-FG:5}P:HiHi-ao_")
+}
+
+record(ao, "XF:23ID2-VA{APPES-FG:5}P:HiHi-ao_")
+{
+    field(DESC, "Aux HiHi pass")
+    field(OMSL, "closed_loop")
+    field(DOL,  "XF:23ID2-VA{APPES-FG:5}P:HiHi-RB PP")
+    field(OUT,  "XF:23ID2-VA{APPES-FG:5}P-I.HIGH")
+}
+
