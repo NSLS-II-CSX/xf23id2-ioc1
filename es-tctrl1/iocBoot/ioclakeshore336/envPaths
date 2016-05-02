@@ -1,0 +1,4 @@
+epicsEnvSet("ARCH","linux-x86_64")
+epicsEnvSet("IOC","ioclakeshore336")
+epicsEnvSet("TOP","/epics/iocs/es-tctrl1")
+epicsEnvSet("EPICS_BASE","/usr/lib/epics")

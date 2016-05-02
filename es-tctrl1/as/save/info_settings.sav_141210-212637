@@ -1,0 +1,53 @@
+# autosave R5.0	Automatically generated - DO NOT MODIFY - 141210-212432
+XF:23ID1-ES{TCtrl:1-Chan:A}T:Lim-SP.VAL 310
+XF:23ID1-ES{TCtrl:1-Chan:A}Val:FltrP-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:A}Val:FltrW-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:B}T:Lim-SP.VAL 310
+XF:23ID1-ES{TCtrl:1-Chan:B}Val:FltrP-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:B}Val:FltrW-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:C}T:Lim-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:C}Val:FltrP-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:C}Val:FltrW-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:D}T:Lim-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:D}Val:FltrP-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:D}Val:FltrW-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Gain:D-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Gain:I-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Gain:P-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Out:MaxI-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}T-SP.VAL 32
+XF:23ID1-ES{TCtrl:1-Out:1}Val:Ramp-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Gain:D-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Gain:I-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Gain:P-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Out:MaxI-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}T-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Val:Ramp-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:A}Cmd:Fltr-Sel.VAL 1
+XF:23ID1-ES{TCtrl:1-Chan:B}Cmd:Fltr-Sel.VAL 1
+XF:23ID1-ES{TCtrl:1-Chan:C}Cmd:Fltr-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:D}Cmd:Fltr-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Enbl:Ramp-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Enbl:Ramp-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1}FOut.SCAN 9
+XF:23ID1-ES{TCtrl:1-Out:1}Enbl-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Mode-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Mode:ATune-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Out-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Out:Disp-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Out:Max-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Out:R-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:1}Val:Range-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Enbl-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Mode-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Mode:ATune-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Out-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Out:Disp-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Out:Max-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Out:R-SP.VAL 0
+XF:23ID1-ES{TCtrl:1-Out:2}Val:Range-Sel.VAL 0
+XF:23ID1-ES{TCtrl:1-Chan:A}T:Name-SP.VAL Control
+XF:23ID1-ES{TCtrl:1-Chan:B}T:Name-SP.VAL 
+XF:23ID1-ES{TCtrl:1-Chan:C}T:Name-SP.VAL 
+XF:23ID1-ES{TCtrl:1-Chan:D}T:Name-SP.VAL 
+<END>
